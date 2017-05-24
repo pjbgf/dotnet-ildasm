@@ -9,7 +9,7 @@
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool.</Description>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
-    <PackageId>ildasm</PackageId>
+    <PackageId>dotnet-ildasm</PackageId>
     <PackageTags>dotnet-ildasm, ildasm</PackageTags>
     <PackageProjectUrl>https://github.com/pjbgf/dotnet-ildasm</PackageProjectUrl>
   </PropertyGroup>

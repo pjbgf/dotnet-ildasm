@@ -1,4 +1,8 @@
 #IL Disassembler tool
+[![Build status](https://ci.appveyor.com/api/projects/status/is3qcb0gnf018vx6/branch/master?svg=true)](https://ci.appveyor.com/project/pjbgf/dotnet-ildasm/branch/master) 
+[![Nuget](https://img.shields.io/nuget/dt/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm)
+[![Nuget](https://img.shields.io/nuget/v/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm)
+[![Nuget](https://img.shields.io/nuget/vpre/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm)
 
 # Usage
 Implemented as a dotnet cli extension, which allows for an easy to use command line:
