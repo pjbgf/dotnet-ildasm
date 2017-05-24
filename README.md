@@ -11,8 +11,8 @@ Implemented as a dotnet cli extension, which allows for an easy to use command l
 dotnet ildasm myassembly.dll -t
 ```
 
--t = Output as text
--o = Output path - Default is the name of assembly with the extension ".il"
+-t = Output as text  
+-o = Output path - Default is the name of assembly with the extension ".il"  
 
 # Install
 
