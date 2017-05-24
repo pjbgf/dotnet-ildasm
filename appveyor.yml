@@ -1,6 +1,6 @@
 version: '0.1.{build}' 
 configuration:
-- Debug 
+- Release
 platform: Any CPU 
 image: Visual Studio 2017
 
@@ -24,7 +24,7 @@ build_script:
 - dotnet build
 
 after_test:
-- pack-all --configuration %CONFIGURATION%
+- dotnet pack
 
 artifacts:
 - path: '**\*.nupkg'
