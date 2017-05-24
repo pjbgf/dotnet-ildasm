@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26510.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm", "dotnet-ildasm\dotnet-ildasm.csproj", "{6F4CEE53-D085-4B26-A7D3-9FE626FC1550}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm", "src\dotnet-ildasm\dotnet-ildasm.csproj", "{6F4CEE53-D085-4B26-A7D3-9FE626FC1550}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{98ACE31A-8E21-4953-A55E-E62C6E10921B}"
 	ProjectSection(SolutionItems) = preProject
