@@ -2,8 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
     <RootNamespace>DotNet.Ildasm</RootNamespace>
+    <Version>$(GitVersion_NuGetVersion)</Version>
+    <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
+    <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
+    <Description>Light-weight cross platform IL disassembler tool.</Description>
+    <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
+    <PackageId>ildasm</PackageId>
+    <PackageTags>dotnet-ildasm, ildasm</PackageTags>
+    <PackageProjectUrl>https://github.com/pjbgf/dotnet-ildasm</PackageProjectUrl>
   </PropertyGroup>
   
   <ItemGroup>
