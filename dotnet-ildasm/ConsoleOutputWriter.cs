@@ -2,7 +2,7 @@ using System;
 
 namespace DotNet.Ildasm
 {
-    internal class ConsoleOutputWriter : IOutputWriter
+    internal sealed class ConsoleOutputWriter : IOutputWriter
     {
         public void Write(string value)
         {

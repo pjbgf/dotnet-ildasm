@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using CommandLine;
 using Mono.Cecil;
@@ -26,6 +27,13 @@ namespace DotNet.Ildasm
 
             if (options.IsTextOutput)
                 outputWriter = new ConsoleOutputWriter();
+            else
+            {
+                if (string.IsNullOrEmpty(options.OutputPath))
+                    options.OutputPath = Path.GetFileNameWithoutExtension(options.FilePath) + ".il";
+
+                outputWriter = new FileOutputWriter(options.OutputPath);
+            }
 
             new Disassembler(outputWriter).Execute(options);
 
