@@ -17,7 +17,7 @@ dotnet ildasm myassembly.dll /t
 
 ```
 <ItemGroup>
-  <DotNetCliToolReference Include="CoreCover" Version="*" />
+  <DotNetCliToolReference Include="dotnet-ildasm" Version="*" />
 </ItemGroup>
 ```
 PS: Please specify the actual version instead of using *.
