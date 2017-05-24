@@ -1,0 +1,40 @@
+version: '0.1.{build}' 
+configuration:
+- Debug 
+platform: Any CPU 
+image: Visual Studio 2017
+
+environment: 
+ DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+init:
+- ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0") 
+
+install:
+- choco install gitversion.portable -pre -y
+
+assembly_info:
+  patch: false
+
+before_build:
+- nuget restore
+- ps: gitversion /l console /output buildserver /updateAssemblyInfo
+
+build_script:
+- dotnet build
+
+after_test:
+- pack-all --configuration %CONFIGURATION%
+
+artifacts:
+- path: '**\*.nupkg'
+
+deploy:
+  - provider: NuGet
+    server: 
+    api_key:
+      secure: Hh52nD8i4YR/X5yRRaqWNchtVaH3/IvAzl9XcGPsrfQI0DnvJB9Odeju0e5yIG4D
+    artifact: /.*\.nupkg/
+ 
+skip_commits:
+  files: '**/*.md'

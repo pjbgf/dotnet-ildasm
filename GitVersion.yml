@@ -1,0 +1,8 @@
+next-version: 0.1.0
+branches:
+  features?[/-]:
+    mode: ContinuousDeployment
+    tag: prerelease
+  master: {}
+ignore:
+  sha: []
