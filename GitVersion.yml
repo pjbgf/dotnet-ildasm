@@ -3,10 +3,8 @@ branches:
   features?[/-]:
     mode: ContinuousDeployment
     tag: unstable
-    is-release-branch: false
   master: 
     mode: ContinuousDeployment
-    tag: prerelease
-    is-release-branch: true
+    tag: beta
 ignore:
   sha: []
