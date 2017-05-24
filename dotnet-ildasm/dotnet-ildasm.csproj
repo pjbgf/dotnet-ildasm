@@ -8,6 +8,7 @@
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool.</Description>
+    <PackageReleaseNotes>Pre-release: functional but unstable.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
     <PackageTags>dotnet-ildasm, ildasm</PackageTags>
