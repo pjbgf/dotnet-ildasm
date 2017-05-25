@@ -30,7 +30,7 @@ namespace DotNet.Ildasm
                 _outputWriter.WriteLine();
                 _outputWriter.WriteLine($".assembly extern {reference.Name}");
                 _outputWriter.WriteLine("{");
-                //TODO: Show publickeytoken in HEX
+                //TODO: Show publickeytoken in HEX #3
                 _outputWriter.WriteLine($"// .publickeytoken {ToBinary(reference.PublicKeyToken)} // Needs proper formatting");
                 _outputWriter.WriteLine($".ver {reference.Version.Major}:{reference.Version.Minor}:{reference.Version.Revision}:{reference.Version.Build}");
                 _outputWriter.WriteLine("}");
@@ -57,9 +57,9 @@ namespace DotNet.Ildasm
                     _outputWriter.Write("//");
                 }
 
-                //TODO: Check whether custom attributes can NOT be instance 
-                //TODO: Convert .Net types onto IL types
-                //TODO: Add custom attributes parameter values
+                //TODO: Signature to use IL types #2
+                //TODO: Add custom attributes parameter values #4
+                //TODO: External Types should always be preceded by their assembly names #6
                 _outputWriter.WriteLine($".custom instance {customAttribute.Constructor.ToString()}");
             }
 
@@ -107,6 +107,8 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
             foreach (var instruction in ilProcessor.Body.Instructions)
             {
+                //TODO: Use IL types instead of .Net types #2
+                //TODO: External Types should always be preceded by their assembly names #6
                 _outputWriter.WriteLine(instruction.ToString());
             }
 
@@ -131,9 +133,9 @@ namespace DotNet.Ildasm
             if (type.IsBeforeFieldInit)
                 _outputWriter.Write(" beforefieldinit");
 
-            //TODO: Signature to be IL compatible
+            //TODO: Signature to use IL types #2
             _outputWriter.Write($" {type.FullName}");
-            //TODO: Add assembly that implements the type
+            //TODO: External Types should always be preceded by their assembly names #6
             _outputWriter.Write($" extends {type.BaseType.FullName}");
         }
 
@@ -158,7 +160,7 @@ namespace DotNet.Ildasm
             if (!method.IsStatic)
                 _outputWriter.Write(" instance");
 
-            //TODO: Signature to be IL compatible
+            //TODO: Signature to use IL types #2
             _outputWriter.Write($" {method.FullName}");
 
             if (method.IsManaged)
@@ -171,12 +173,12 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine($".module '{ type.Module.Assembly.Name.Name }'");
             _outputWriter.WriteLine($"// MVID: {{{type.Module.Mvid}}}");
 
-            //TODO: Load module information
+            //TODO: Load module information #1
             _outputWriter.WriteLine($"// .imagebase 0x000000 (Currently not supported)");
             _outputWriter.WriteLine($"// .file alignment 0x000000 (Currently not supported)");
             _outputWriter.WriteLine($"// .stackreserve 0x000000 (Currently not supported)");
 
-            //TODO: Load subsystem from actual memory instead of assume it
+            //TODO: Load subsystem from actual memory instead of assume it #1
             if (type.Module.Kind == ModuleKind.Console || type.Module.Kind == ModuleKind.Windows)
                 _outputWriter.WriteLine($"//.subsystem 0x{ GetSubsystem(type.Module.Kind).ToString("x3") }");
 
