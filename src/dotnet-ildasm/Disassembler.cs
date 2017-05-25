@@ -7,17 +7,20 @@ namespace DotNet.Ildasm
     sealed class Disassembler
     {
         private readonly IOutputWriter _outputWriter;
+        private readonly CommandOptions _options;
+        private readonly ItemFilter _itemFilter;
 
-        internal Disassembler(IOutputWriter outputWriter)
+        internal Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter)
         {
             _outputWriter = outputWriter;
+            _options = options;
+            _itemFilter = itemFilter;
         }
 
-        internal void Execute(CommandOptions options)
+        internal void Execute()
         {
-            var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(options.FilePath);
+            var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(_options.FilePath);
 
-            WriteExterns(assembly);
             WriteAssemblyData(assembly);
         }
 
@@ -42,8 +45,32 @@ namespace DotNet.Ildasm
 
         private void WriteAssemblyData(AssemblyDefinition assembly)
         {
+            if (!_itemFilter.HasFilter)
+            {
+                WriteExterns(assembly);
+                WriteAssemblySection(assembly);
+            }
+
+            foreach (var module in assembly.Modules)
+            {
+                if (!_itemFilter.HasFilter)
+                    HandleModule(module);
+
+                foreach (var type in module.Types)
+                {
+                    if (string.Compare(type.Name, "<Module>") == 0)
+                        continue;
+                    
+                    if (string.IsNullOrEmpty(_itemFilter.Class) || string.Compare(type.Name, _itemFilter.Class, StringComparison.CurrentCulture) == 0)
+                        HandleType(type);
+                }
+            }
+        }
+
+        private void WriteAssemblySection(AssemblyDefinition assembly)
+        {
             _outputWriter.WriteLine();
-            _outputWriter.WriteLine($".assembly '{ assembly.Name.Name }'");
+            _outputWriter.WriteLine($".assembly '{assembly.Name.Name}'");
             _outputWriter.WriteLine("{");
 
             foreach (var customAttribute in assembly.CustomAttributes)
@@ -51,7 +78,8 @@ namespace DotNet.Ildasm
                 if (String.Compare(customAttribute.AttributeType.Name, "DebuggableAttribute",
                         StringComparison.CurrentCultureIgnoreCase) == 0)
                 {
-                    _outputWriter.WriteLine("// The following custom attribute is added automatically for debugging purposes, do not uncomment. ");
+                    _outputWriter.WriteLine(
+                        "// The following custom attribute is added automatically for debugging purposes, do not uncomment. ");
                     _outputWriter.Write("//");
                 }
 
@@ -62,30 +90,22 @@ namespace DotNet.Ildasm
             }
 
             _outputWriter.WriteLine($".hash algorithm 0x{assembly.Name.HashAlgorithm.ToString("X")}");
-            _outputWriter.WriteLine($".ver {assembly.Name.Version.Major}:{assembly.Name.Version.Minor}:{assembly.Name.Version.Revision}:{assembly.Name.Version.Build}");
+            _outputWriter.WriteLine(
+                $".ver {assembly.Name.Version.Major}:{assembly.Name.Version.Minor}:{assembly.Name.Version.Revision}:{assembly.Name.Version.Build}");
             _outputWriter.WriteLine("}");
-
-            foreach (var module in assembly.Modules)
-            {
-                foreach (var type in module.Types)
-                {
-                    if (string.Compare(type.Name, "<Module>") == 0)
-                        HandleModule(type);
-                    else
-                        HandleType(type);
-                }
-            }
         }
 
         private void HandleType(TypeDefinition type)
         {
             _outputWriter.WriteLine();
             WriteTypeSignature(type);
+            _outputWriter.WriteLine();
             _outputWriter.WriteLine("{");
-
+            
             foreach (var method in type.Methods)
             {
-                HandleMethod(method);
+                if (string.IsNullOrEmpty(_itemFilter.Method) || string.Compare(method.Name, _itemFilter.Method, StringComparison.CurrentCulture) == 0)
+                    HandleMethod(method);
             }
                
             _outputWriter.WriteLine();
@@ -170,11 +190,11 @@ namespace DotNet.Ildasm
                 _outputWriter.Write(" cil managed");
         }
 
-        private void HandleModule(TypeDefinition type)
+        private void HandleModule(ModuleDefinition module)
         {
             _outputWriter.WriteLine("");
-            _outputWriter.WriteLine($".module '{ type.Module.Assembly.Name.Name }'");
-            _outputWriter.WriteLine($"// MVID: {{{type.Module.Mvid}}}");
+            _outputWriter.WriteLine($".module '{ module.Assembly.Name.Name }'");
+            _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
 
             //TODO: Load module information #1
             _outputWriter.WriteLine($"// .imagebase 0x000000 (Currently not supported)");
@@ -182,8 +202,8 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine($"// .stackreserve 0x000000 (Currently not supported)");
 
             //TODO: Load subsystem from actual memory instead of assume it #1
-            if (type.Module.Kind == ModuleKind.Console || type.Module.Kind == ModuleKind.Windows)
-                _outputWriter.WriteLine($"//.subsystem 0x{ GetSubsystem(type.Module.Kind).ToString("x3") }");
+            if (module.Kind == ModuleKind.Console || module.Kind == ModuleKind.Windows)
+                _outputWriter.WriteLine($"//.subsystem 0x{ GetSubsystem(module.Kind).ToString("x3") }");
 
             _outputWriter.WriteLine($"// .cornflags 0x000000 (Currently not supported)");
             _outputWriter.WriteLine($"// image base:  ");
