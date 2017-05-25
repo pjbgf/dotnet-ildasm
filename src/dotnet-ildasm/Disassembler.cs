@@ -33,7 +33,7 @@ namespace DotNet.Ildasm
                 _outputWriter.WriteLine($".assembly extern { reference.Name }");
                 _outputWriter.WriteLine("{");
                 //TODO: Show publickeytoken in HEX #3
-                _outputWriter.WriteLine($".publickeytoken ({ ExtractValueInHex(reference.PublicKeyToken) })");
+                _outputWriter.WriteLine($".publickeytoken ( { ExtractValueInHex(reference.PublicKeyToken) } )");
                 _outputWriter.WriteLine($".ver { reference.Version.Major }:{ reference.Version.Minor }:{ reference.Version.Revision }:{ reference.Version.Build }");
                 _outputWriter.WriteLine("}");
             }
@@ -42,12 +42,6 @@ namespace DotNet.Ildasm
         private string ExtractValueInHex(Byte[] data)
         {
             return BitConverter.ToString(data);
-        }
-
-        private string ExtractValue(Byte[] data)
-        {
-            return Convert.ToBase64String(data);
-            //return string.Join(" ", data.Select(byt => BitConverter.ToChar(new []{ byt }, 0)));
         }
 
         private void WriteAssemblyData(AssemblyDefinition assembly)
