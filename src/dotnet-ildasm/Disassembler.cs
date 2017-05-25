@@ -32,7 +32,6 @@ namespace DotNet.Ildasm
                 _outputWriter.WriteLine();
                 _outputWriter.WriteLine($".assembly extern { reference.Name }");
                 _outputWriter.WriteLine("{");
-                //TODO: Show publickeytoken in HEX #3
                 _outputWriter.WriteLine($".publickeytoken ( { ExtractValueInHex(reference.PublicKeyToken) } )");
                 _outputWriter.WriteLine($".ver { reference.Version.Major }:{ reference.Version.Minor }:{ reference.Version.Revision }:{ reference.Version.Build }");
                 _outputWriter.WriteLine("}");
