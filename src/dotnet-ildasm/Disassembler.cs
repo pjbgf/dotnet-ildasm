@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Mono.Cecil;
 
 namespace DotNet.Ildasm
@@ -86,16 +84,16 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine("{");
 
             foreach (var method in type.Methods)
+            {
                 HandleMethod(method);
-
+            }
+               
             _outputWriter.WriteLine();
             _outputWriter.WriteLine($"}} // End of class {type.FullName}");
         }
 
         private void HandleMethod(MethodDefinition method)
         {
-            var ilProcessor = method.Body.GetILProcessor();
-
             _outputWriter.WriteLine();
             WriteMethodSignature(method);
             _outputWriter.WriteLine("{");
@@ -103,15 +101,19 @@ namespace DotNet.Ildasm
             if (method.DeclaringType.Module.EntryPoint == method)
                 _outputWriter.WriteLine(".entrypoint");
 
-            _outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
-            _outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
-            foreach (var instruction in ilProcessor.Body.Instructions)
+            if (method.HasBody)
             {
-                //TODO: Use IL types instead of .Net types #2
-                //TODO: External Types should always be preceded by their assembly names #6
-                _outputWriter.WriteLine(instruction.ToString());
-            }
+                _outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
+                _outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
 
+                var ilProcessor = method.Body.GetILProcessor();
+                foreach (var instruction in ilProcessor.Body.Instructions)
+                {
+                    //TODO: Use IL types instead of .Net types #2
+                    //TODO: External Types should always be preceded by their assembly names #6
+                    _outputWriter.WriteLine(instruction.ToString());
+                }
+            }
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
         }
 
@@ -136,7 +138,8 @@ namespace DotNet.Ildasm
             //TODO: Signature to use IL types #2
             _outputWriter.Write($" {type.FullName}");
             //TODO: External Types should always be preceded by their assembly names #6
-            _outputWriter.Write($" extends {type.BaseType.FullName}");
+            if(!type.IsInterface)
+                _outputWriter.Write($" extends {type.BaseType.FullName}");
         }
 
         private void WriteMethodSignature(MethodDefinition method)
