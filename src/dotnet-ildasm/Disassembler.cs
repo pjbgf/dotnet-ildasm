@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using Mono.Cecil;
 
 namespace DotNet.Ildasm
@@ -29,18 +30,24 @@ namespace DotNet.Ildasm
             foreach (var reference in assembly.MainModule.AssemblyReferences)
             {
                 _outputWriter.WriteLine();
-                _outputWriter.WriteLine($".assembly extern {reference.Name}");
+                _outputWriter.WriteLine($".assembly extern { reference.Name }");
                 _outputWriter.WriteLine("{");
                 //TODO: Show publickeytoken in HEX #3
-                _outputWriter.WriteLine($"// .publickeytoken {ToBinary(reference.PublicKeyToken)} // Needs proper formatting");
-                _outputWriter.WriteLine($".ver {reference.Version.Major}:{reference.Version.Minor}:{reference.Version.Revision}:{reference.Version.Build}");
+                _outputWriter.WriteLine($".publickeytoken ({ ExtractValueInHex(reference.PublicKeyToken) })");
+                _outputWriter.WriteLine($".ver { reference.Version.Major }:{ reference.Version.Minor }:{ reference.Version.Revision }:{ reference.Version.Build }");
                 _outputWriter.WriteLine("}");
             }
         }
 
-        private String ToBinary(Byte[] data)
+        private string ExtractValueInHex(Byte[] data)
         {
-            return string.Join(" ", data.Select(byt => string.Format("{0:X}", Convert.ToString(byt, 2))));
+            return BitConverter.ToString(data);
+        }
+
+        private string ExtractValue(Byte[] data)
+        {
+            return Convert.ToBase64String(data);
+            //return string.Join(" ", data.Select(byt => BitConverter.ToChar(new []{ byt }, 0)));
         }
 
         private void WriteAssemblyData(AssemblyDefinition assembly)
@@ -60,7 +67,7 @@ namespace DotNet.Ildasm
                 {
                     if (string.Compare(type.Name, "<Module>") == 0)
                         continue;
-                    
+
                     if (string.IsNullOrEmpty(_itemFilter.Class) || string.Compare(type.Name, _itemFilter.Class, StringComparison.CurrentCulture) == 0)
                         HandleType(type);
                 }
@@ -101,13 +108,13 @@ namespace DotNet.Ildasm
             WriteTypeSignature(type);
             _outputWriter.WriteLine();
             _outputWriter.WriteLine("{");
-            
+
             foreach (var method in type.Methods)
             {
                 if (string.IsNullOrEmpty(_itemFilter.Method) || string.Compare(method.Name, _itemFilter.Method, StringComparison.CurrentCulture) == 0)
                     HandleMethod(method);
             }
-               
+
             _outputWriter.WriteLine();
             _outputWriter.WriteLine($"}} // End of class {type.FullName}");
         }
@@ -158,7 +165,7 @@ namespace DotNet.Ildasm
             //TODO: Signature to use IL types #2
             _outputWriter.Write($" {type.FullName}");
             //TODO: External Types should always be preceded by their assembly names #6
-            if(!type.IsInterface)
+            if (!type.IsInterface)
                 _outputWriter.Write($" extends {type.BaseType.FullName}");
         }
 
