@@ -86,8 +86,11 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine("{");
 
             foreach (var method in type.Methods)
+            {
+                if(method.HasBody)
                 HandleMethod(method);
-
+            }
+               
             _outputWriter.WriteLine();
             _outputWriter.WriteLine($"}} // End of class {type.FullName}");
         }
@@ -136,6 +139,7 @@ namespace DotNet.Ildasm
             //TODO: Signature to use IL types #2
             _outputWriter.Write($" {type.FullName}");
             //TODO: External Types should always be preceded by their assembly names #6
+            if(!type.IsInterface)
             _outputWriter.Write($" extends {type.BaseType.FullName}");
         }
 
