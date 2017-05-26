@@ -2,5 +2,8 @@
 {
     public class PublicClass
     {
+        public void PublicVoidMethod()
+        {
+        }
     }
 }

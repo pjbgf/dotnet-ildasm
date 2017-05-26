@@ -41,12 +41,45 @@ namespace DotNet.Ildasm
             builder.Append($" {typeDefinition.FullName}");
 
             if (typeDefinition.BaseType != null)
-                builder.Append($" extends [{ typeDefinition.BaseType.GetElementType().Scope.Name }]{ typeDefinition.BaseType.FullName }");
+                builder.Append(
+                    $" extends [{typeDefinition.BaseType.GetElementType().Scope.Name}]{typeDefinition.BaseType.FullName}");
 
             if (typeDefinition.HasInterfaces)
                 builder.Append(
                     $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.FullName))}");
 
+            return builder.ToString();
+        }
+
+
+        public string GetMethodSignature(MethodDefinition method)
+        {
+            var builder = new StringBuilder();
+            builder.Append(".method");
+
+            if (method.IsPublic)
+                builder.Append(" public");
+            else if (method.IsPrivate)
+                builder.Append(" private");
+
+            if (method.IsHideBySig)
+                builder.Append(" hidebysig");
+
+            if (method.IsSpecialName)
+                builder.Append(" specialname");
+
+            if (method.IsRuntimeSpecialName)
+                builder.Append(" rtspecialname");
+
+            if (!method.IsStatic)
+                builder.Append(" instance");
+
+            builder.Append($" {method.ReturnType.MetadataType.ToString().ToLowerInvariant()}");
+            builder.Append($" {method.Name}()");
+
+            if (method.IsManaged)
+                builder.Append(" cil managed");
+            
             return builder.ToString();
         }
     }
