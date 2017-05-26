@@ -33,7 +33,7 @@ namespace DotNet.Ildasm
             }
 
             var itemFilter = new ItemFilter(options.ItemFilter);
-            new Disassembler(outputWriter, options, itemFilter).Execute();
+            new Disassembler(outputWriter, options, itemFilter, new CilHelper()).Execute();
 
             return 0;
         }

@@ -12,12 +12,14 @@ namespace DotNet.Ildasm
         private readonly IOutputWriter _outputWriter;
         private readonly CommandOptions _options;
         private readonly ItemFilter _itemFilter;
+        private readonly CilHelper _cilHelper;
 
-        internal Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter)
+        internal Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
         {
             _outputWriter = outputWriter;
             _options = options;
             _itemFilter = itemFilter;
+            _cilHelper = cilHelper;
         }
 
         internal void Execute()
@@ -132,7 +134,7 @@ namespace DotNet.Ildasm
         private void HandleType(TypeDefinition type)
         {
             _outputWriter.WriteLine();
-            WriteTypeSignature(type);
+            _outputWriter.WriteLine(_cilHelper.GetTypeSignature(type));
             _outputWriter.WriteLine();
             _outputWriter.WriteLine("{");
 
@@ -170,48 +172,6 @@ namespace DotNet.Ildasm
                 }
             }
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
-        }
-
-        private void WriteTypeSignature(TypeDefinition type)
-        {
-            _outputWriter.Write(".class");
-
-            if (type.IsPublic)
-                _outputWriter.Write(" public");
-            else
-                _outputWriter.Write(" private");
-
-            if (type.IsSequentialLayout)
-                _outputWriter.Write(" sequential");
-
-            if (type.IsInterface)
-                _outputWriter.Write(" interface");
-
-            if (type.IsAbstract)
-                _outputWriter.Write(" abstract");
-
-            if (type.IsAutoLayout)
-                _outputWriter.Write(" auto");
-
-            if (type.IsAnsiClass)
-                _outputWriter.Write(" ansi");
-
-            if (type.IsAbstract)
-                _outputWriter.Write(" sealed");
-
-            if (type.IsBeforeFieldInit)
-                _outputWriter.Write(" beforefieldinit");
-
-            //TODO: Signature to use IL types #2
-            _outputWriter.Write($" {type.FullName}");
-
-            if (type.BaseType != null)
-                //TODO: External Types should always be preceded by their assembly names #6
-                _outputWriter.Write($" extends {type.BaseType.FullName}");
-
-            if (type.HasInterfaces)
-                //TODO: External Types should always be preceded by their assembly names #6
-                _outputWriter.Write($" implements { string.Join(", ", type.Interfaces.Select(x => x.InterfaceType.FullName )) }");
         }
 
         private void WriteMethodSignature(MethodDefinition method)
