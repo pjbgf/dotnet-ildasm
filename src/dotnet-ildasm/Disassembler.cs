@@ -178,8 +178,11 @@ namespace DotNet.Ildasm
 
             if (type.IsPublic)
                 _outputWriter.Write(" public");
-            else if (type.IsNotPublic)
+            else
                 _outputWriter.Write(" private");
+
+            if (type.IsSequentialLayout)
+                _outputWriter.Write(" sequential");
 
             if (type.IsInterface)
                 _outputWriter.Write(" interface");
@@ -192,6 +195,9 @@ namespace DotNet.Ildasm
 
             if (type.IsAnsiClass)
                 _outputWriter.Write(" ansi");
+
+            if (type.IsAbstract)
+                _outputWriter.Write(" sealed");
 
             if (type.IsBeforeFieldInit)
                 _outputWriter.Write(" beforefieldinit");
