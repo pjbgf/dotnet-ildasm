@@ -2,9 +2,7 @@ next-version: 0.1.1
 branches:
   features?[/-]:
     mode: ContinuousDeployment
-    tag: unstable
-  master: 
-    mode: ContinuousDeployment
     tag: beta
+  master: {}
 ignore:
   sha: []
