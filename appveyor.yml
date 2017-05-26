@@ -27,7 +27,7 @@ test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
 
 after_test:
-- dotnet pack
+- dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
 
 artifacts:
 - path: '**\*.nupkg'
