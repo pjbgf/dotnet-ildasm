@@ -177,7 +177,8 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine("");
             _outputWriter.WriteLine($".module '{ module.Assembly.Name.Name }'");
             _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
-
+            
+            
             //TODO: Load module information #1
             _outputWriter.WriteLine($"// .imagebase 0x000000 (Currently not supported)");
             _outputWriter.WriteLine($"// .file alignment 0x000000 (Currently not supported)");
