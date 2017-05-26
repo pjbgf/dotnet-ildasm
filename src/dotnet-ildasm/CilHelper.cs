@@ -75,12 +75,33 @@ namespace DotNet.Ildasm
                 builder.Append(" instance");
 
             builder.Append($" {method.ReturnType.MetadataType.ToString().ToLowerInvariant()}");
-            builder.Append($" {method.Name}()");
+            builder.Append($" {method.Name}");
+
+            AppendMethodParameters(method, builder);
 
             if (method.IsManaged)
                 builder.Append(" cil managed");
             
             return builder.ToString();
+        }
+
+        private static void AppendMethodParameters(MethodDefinition method, StringBuilder builder)
+        {
+            builder.Append("(");
+            
+            if (method.HasParameters)
+            {
+                for (int i = 0; i < method.Parameters.Count; i++)
+                {
+                    if (i > 0)
+                        builder.Append(",");
+
+                    builder.Append($"{method.Parameters[i].ParameterType.MetadataType.ToString().ToLowerInvariant()} ");
+                    builder.Append(method.Parameters[i].Name);
+                }
+            }
+            
+            builder.Append(")");
         }
     }
 }

@@ -5,5 +5,9 @@
         public void PublicVoidMethod()
         {
         }
+        
+        public void PublicVoidMethodSingleParameter(string parameter1)
+        {
+        }
     }
 }

@@ -51,7 +51,6 @@ namespace DotNet.Ildasm.SampleTests
 
             Assert.Equal(expectedIL, signature);
         }
-        
 
         [Fact]
         public void Generate_Valid_IL_For_PublicVoidMethod_Signature()
@@ -60,6 +59,19 @@ namespace DotNet.Ildasm.SampleTests
                 ".method public hidebysig instance void PublicVoidMethod() cil managed";
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == "PublicClass");
             var method = type.Methods.FirstOrDefault(x => x.Name == "PublicVoidMethod");
+            
+            var signature = _cilHelper.GetMethodSignature(method);
+
+            Assert.Equal(expectedIL, signature);
+        }
+
+        [Fact]
+        public void Generate_Valid_IL_For_PublicVoidMethodSingleParameter_Signature()
+        {
+            var expectedIL =
+                ".method public hidebysig instance void PublicVoidMethodSingleParameter(string parameter1) cil managed";
+            var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == "PublicClass");
+            var method = type.Methods.FirstOrDefault(x => x.Name == "PublicVoidMethodSingleParameter");
             
             var signature = _cilHelper.GetMethodSignature(method);
 
