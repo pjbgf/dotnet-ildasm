@@ -135,7 +135,6 @@ namespace DotNet.Ildasm
         {
             _outputWriter.WriteLine();
             _outputWriter.WriteLine(_cilHelper.GetTypeSignature(type));
-            _outputWriter.WriteLine();
             _outputWriter.WriteLine("{");
 
             foreach (var method in type.Methods)
@@ -152,7 +151,6 @@ namespace DotNet.Ildasm
         {
             _outputWriter.WriteLine();
             _outputWriter.WriteLine(_cilHelper.GetMethodSignature(method));
-            _outputWriter.WriteLine();
             _outputWriter.WriteLine("{");
 
             if (method.DeclaringType.Module.EntryPoint == method)
