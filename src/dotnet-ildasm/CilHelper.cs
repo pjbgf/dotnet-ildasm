@@ -73,6 +73,15 @@ namespace DotNet.Ildasm
             if (method.IsHideBySig)
                 builder.Append(" hidebysig");
 
+            if (method.IsNewSlot)
+                builder.Append(" newslot");
+
+            if (method.IsAbstract)
+                builder.Append(" abstract");
+
+            if (method.IsVirtual)
+                builder.Append(" virtual");
+
             if (method.IsSpecialName)
                 builder.Append(" specialname");
 
