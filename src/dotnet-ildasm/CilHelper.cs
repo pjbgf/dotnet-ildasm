@@ -51,7 +51,6 @@ namespace DotNet.Ildasm
             return builder.ToString();
         }
 
-
         public string GetMethodSignature(MethodDefinition method)
         {
             var builder = new StringBuilder();
