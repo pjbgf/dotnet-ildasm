@@ -7,15 +7,10 @@ namespace DotNet.Ildasm
     {
         static void Main(string[] args)
         {
-            RunIldasm(new CommandOptions
-            {
-                FilePath = "c:\\git\\dotnet-hello\\bin\\Debug\\netcoreapp1.0\\dotnet-hello.dll",
-                IsTextOutput = true
-            });
-            //var result = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-            //result.MapResult(
-            //    RunIldasm,
-            //    _ => ShowInfo());
+            var result = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
+            result.MapResult(
+                RunIldasm,
+                _ => ShowInfo());
         }
 
         private static int ShowInfo()

@@ -180,6 +180,12 @@ namespace DotNet.Ildasm
             else if (type.IsNotPublic)
                 _outputWriter.Write(" private");
 
+            if (type.IsInterface)
+                _outputWriter.Write(" interface");
+
+            if (type.IsAbstract)
+                _outputWriter.Write(" abstract");
+
             if (type.IsAutoLayout)
                 _outputWriter.Write(" auto");
 
@@ -191,9 +197,14 @@ namespace DotNet.Ildasm
 
             //TODO: Signature to use IL types #2
             _outputWriter.Write($" {type.FullName}");
-            //TODO: External Types should always be preceded by their assembly names #6
-            if (!type.IsInterface)
+
+            if (type.BaseType != null)
+                //TODO: External Types should always be preceded by their assembly names #6
                 _outputWriter.Write($" extends {type.BaseType.FullName}");
+
+            if (type.HasInterfaces)
+                //TODO: External Types should always be preceded by their assembly names #6
+                _outputWriter.Write($" implements { string.Join(", ", type.Interfaces.Select(x => x.InterfaceType.FullName )) }");
         }
 
         private void WriteMethodSignature(MethodDefinition method)
