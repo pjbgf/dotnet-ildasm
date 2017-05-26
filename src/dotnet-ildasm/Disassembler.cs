@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Mono.Cecil;
@@ -83,16 +85,48 @@ namespace DotNet.Ildasm
                     _outputWriter.Write("//");
                 }
 
-                //TODO: Signature to use IL types #2
                 //TODO: Add custom attributes parameter values #4
+                //TODO: Signature to use IL types #2
                 //TODO: External Types should always be preceded by their assembly names #6
-                _outputWriter.WriteLine($".custom instance {customAttribute.Constructor.ToString()}");
+                _outputWriter.WriteLine($".custom instance {customAttribute.Constructor.ToString()} = ( { ExtractValueInHex(customAttribute) } )");
             }
 
             _outputWriter.WriteLine($".hash algorithm 0x{assembly.Name.HashAlgorithm.ToString("X")}");
             _outputWriter.WriteLine(
                 $".ver {assembly.Name.Version.Major}:{assembly.Name.Version.Minor}:{assembly.Name.Version.Revision}:{assembly.Name.Version.Build}");
             _outputWriter.WriteLine("}");
+        }
+
+#if NETCORE_2
+        byte[] ObjectToByteArray(object obj)
+        {
+            if (obj == null)
+                return null;
+
+            var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
+        }
+#else
+        byte[] ObjectToByteArray(object obj)
+        {
+            return new byte[] { };
+        }
+#endif
+
+        private string ExtractValueInHex(CustomAttribute customAttribute)
+        {
+            if (customAttribute.IsResolved && customAttribute.ConstructorArguments != null)
+            {
+                var customAttributeArgument = customAttribute.ConstructorArguments.FirstOrDefault();
+                byte[] bytes = ObjectToByteArray(customAttributeArgument);
+                return ExtractValueInHex(bytes);
+            }
+
+            return string.Empty;
         }
 
         private void HandleType(TypeDefinition type)

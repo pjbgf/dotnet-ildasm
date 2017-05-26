@@ -19,6 +19,7 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
+    <PackageReference Include="NETStandard.Library" Version="2.1.0-preview1-25325-01" />
   </ItemGroup>
 
 </Project>
