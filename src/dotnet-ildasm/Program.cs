@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using CommandLine;
-using Mono.Cecil;
 
 namespace DotNet.Ildasm
 {
@@ -35,7 +32,8 @@ namespace DotNet.Ildasm
                 outputWriter = new FileOutputWriter(options.OutputPath);
             }
 
-            new Disassembler(outputWriter).Execute(options);
+            var itemFilter = new ItemFilter(options.ItemFilter);
+            new Disassembler(outputWriter, options, itemFilter).Execute();
 
             return 0;
         }

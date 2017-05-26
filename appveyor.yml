@@ -23,6 +23,9 @@ before_build:
 build_script:
 - dotnet build
 
+test_script:
+- dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
+
 after_test:
 - dotnet pack
 
