@@ -23,11 +23,11 @@ namespace DotNet.Ildasm
             if (typeDefinition.IsInterface)
                 builder.Append(" interface");
 
-            if (typeDefinition.IsAutoLayout)
-                builder.Append(" auto");
-
             if (typeDefinition.IsAbstract)
                 builder.Append(" abstract");
+
+            if (typeDefinition.IsAutoLayout)
+                builder.Append(" auto");
 
             if (typeDefinition.IsAnsiClass)
                 builder.Append(" ansi");
