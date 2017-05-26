@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Mono.Cecil;
 
@@ -42,13 +43,21 @@ namespace DotNet.Ildasm
 
             if (typeDefinition.BaseType != null)
                 builder.Append(
-                    $" extends [{typeDefinition.BaseType.GetElementType().Scope.Name}]{typeDefinition.BaseType.FullName}");
+                    $" extends {GetFullTypeName(typeDefinition.BaseType)}");
 
             if (typeDefinition.HasInterfaces)
                 builder.Append(
                     $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.FullName))}");
 
             return builder.ToString();
+        }
+
+        public string GetFullTypeName(TypeReference typeReference)
+        {
+            if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name, StringComparison.CurrentCultureIgnoreCase) == 0)
+                return $"{typeReference.FullName}";
+            
+            return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 
         public string GetMethodSignature(MethodDefinition method)
