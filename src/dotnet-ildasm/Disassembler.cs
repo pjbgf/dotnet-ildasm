@@ -151,7 +151,7 @@ namespace DotNet.Ildasm
         private void HandleMethod(MethodDefinition method)
         {
             _outputWriter.WriteLine();
-            WriteMethodSignature(method);
+            _outputWriter.WriteLine(_cilHelper.GetMethodSignature(method));
             _outputWriter.WriteLine();
             _outputWriter.WriteLine("{");
 
@@ -172,34 +172,6 @@ namespace DotNet.Ildasm
                 }
             }
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
-        }
-
-        private void WriteMethodSignature(MethodDefinition method)
-        {
-            _outputWriter.Write(".method");
-
-            if (method.IsPublic)
-                _outputWriter.Write(" public");
-            else if (method.IsPrivate)
-                _outputWriter.Write(" private");
-
-            if (method.IsHideBySig)
-                _outputWriter.Write(" hidebysig");
-
-            if (method.IsSpecialName)
-                _outputWriter.Write(" specialname");
-
-            if (method.IsRuntimeSpecialName)
-                _outputWriter.Write(" rtspecialname");
-
-            if (!method.IsStatic)
-                _outputWriter.Write(" instance");
-
-            //TODO: Signature to use IL types #2
-            _outputWriter.Write($" {method.FullName}");
-
-            if (method.IsManaged)
-                _outputWriter.Write(" cil managed");
         }
 
         private void HandleModule(ModuleDefinition module)
