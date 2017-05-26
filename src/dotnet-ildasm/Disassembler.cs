@@ -150,6 +150,7 @@ namespace DotNet.Ildasm
         {
             _outputWriter.WriteLine();
             WriteMethodSignature(method);
+            _outputWriter.WriteLine();
             _outputWriter.WriteLine("{");
 
             if (method.DeclaringType.Module.EntryPoint == method)
