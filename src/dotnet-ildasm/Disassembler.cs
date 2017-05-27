@@ -7,14 +7,14 @@ using Mono.Cecil;
 
 namespace DotNet.Ildasm
 {
-    sealed class Disassembler
+    public sealed class Disassembler
     {
         private readonly IOutputWriter _outputWriter;
         private readonly CommandOptions _options;
         private readonly ItemFilter _itemFilter;
         private readonly CilHelper _cilHelper;
 
-        internal Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
+        public Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
         {
             _outputWriter = outputWriter;
             _options = options;
@@ -22,7 +22,7 @@ namespace DotNet.Ildasm
             _cilHelper = cilHelper;
         }
 
-        internal void Execute()
+        public void Execute()
         {
             var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(_options.FilePath);
 
@@ -136,7 +136,7 @@ namespace DotNet.Ildasm
         private void HandleModule(ModuleDefinition module)
         {
             _outputWriter.WriteLine("");
-            _outputWriter.WriteLine($".module '{ module.Assembly.Name.Name }'");
+            _outputWriter.WriteLine($".module '{ Path.GetFileName(_options.FilePath) }'");
             _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
 
             var peHeader = PeHeaderHelper.GetPeHeaders(_options.FilePath);

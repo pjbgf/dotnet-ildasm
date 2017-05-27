@@ -2,7 +2,7 @@
 
 namespace DotNet.Ildasm
 {
-    internal class CommandOptions
+    public class CommandOptions
     {
         [Option('t', "text", Required = false, HelpText = "Output results to the console.")]
         public bool IsTextOutput { get; set; }
