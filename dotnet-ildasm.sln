@@ -16,8 +16,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm.Tests", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm.Sample.Standard", "src\dotnet-ildasm.Sample.Standard\dotnet-ildasm.Sample.Standard.csproj", "{AAEC7394-13DC-4FD3-96C3-3B2A6E481D2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-ildasm.Interop", "src\dotnet-ildasm.Interop\dotnet-ildasm.Interop.csproj", "{4324B02A-15C5-4A73-BCDB-A5A1FB7526F4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,9 +34,6 @@ Global
 		{AAEC7394-13DC-4FD3-96C3-3B2A6E481D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAEC7394-13DC-4FD3-96C3-3B2A6E481D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAEC7394-13DC-4FD3-96C3-3B2A6E481D2C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4324B02A-15C5-4A73-BCDB-A5A1FB7526F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4324B02A-15C5-4A73-BCDB-A5A1FB7526F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4324B02A-15C5-4A73-BCDB-A5A1FB7526F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

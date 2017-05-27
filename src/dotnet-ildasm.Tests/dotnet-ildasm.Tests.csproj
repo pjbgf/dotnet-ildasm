@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
     <RootNamespace>DotNet.Ildasm</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
@@ -10,7 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dotnet-ildasm.Sample.Standard\dotnet-ildasm.Sample.Standard.csproj" />
-    <ProjectReference Include="..\dotnet-ildasm.Interop\dotnet-ildasm.Interop.csproj" />
     <ProjectReference Include="..\dotnet-ildasm\dotnet-ildasm.csproj" />
   </ItemGroup>
 </Project>
