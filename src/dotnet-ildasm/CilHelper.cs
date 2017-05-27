@@ -132,28 +132,21 @@ namespace DotNet.Ildasm
         public string GetCustomAttribute(CustomAttribute customAttribute)
         {
             return $".custom instance void {GetFullTypeName(customAttribute.AttributeType)}::{customAttribute.Constructor.Name}" +
-                   $"{GetConstructorArguments(customAttribute.ConstructorArguments)}";
+                   $"{GetConstructorArguments(customAttribute)}";
         }
 
-        private string GetConstructorArguments(Collection<CustomAttributeArgument> constructorArguments)
+        private string GetConstructorArguments(CustomAttribute customAttribute)
         {
             StringBuilder builder = new StringBuilder();
+
+            var argument = customAttribute.ConstructorArguments.FirstOrDefault();
+
+            if (!customAttribute.HasConstructorArguments)
+                builder.Append("()");
+            else
+                builder.Append($"({argument.Type.MetadataType.ToString().ToLowerInvariant()})");
             
-            if (constructorArguments?.Count > 0)
-            {
-                for (int i = 0; i < constructorArguments.Count; i++)
-                {
-                    if (i > 0)
-                        builder.Append(", ");
-
-                    var argument = constructorArguments[i];
-                    byte[] bytes = BinarySerializer.Serialize(constructorArguments);
-
-                    builder.Append(
-                        $"({argument.Type.MetadataType.ToString().ToLowerInvariant()}) = ( " +
-                        $"{BitConverter.ToString(bytes).Replace("-", " ")} )");
-                }
-            }
+            builder.Append($" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )");
 
             return builder.ToString();
         }

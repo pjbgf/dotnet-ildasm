@@ -82,11 +82,7 @@ namespace DotNet.Ildasm
             {
                 if (String.Compare(customAttribute.AttributeType.Name, "DebuggableAttribute",
                         StringComparison.CurrentCultureIgnoreCase) == 0)
-                {
-                    _outputWriter.WriteLine(
-                        "// The following custom attribute is added automatically for debugging purposes, do not uncomment. ");
-                    _outputWriter.Write("//");
-                }
+                    continue;
 
                 _outputWriter.WriteLine(_cilHelper.GetCustomAttribute(customAttribute));
             }
@@ -143,7 +139,7 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine("");
             _outputWriter.WriteLine($".module '{ module.Assembly.Name.Name }'");
             _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
-           
+
             var peHeader = PeHeaderHelper.GetPeHeaders(_options.FilePath);
             _outputWriter.WriteLine(PeHeaderHelper.GetImageBaseDirective(peHeader.PEHeader));
             _outputWriter.WriteLine(PeHeaderHelper.GetFileAlignmentDirective(peHeader.PEHeader));
