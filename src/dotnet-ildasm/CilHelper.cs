@@ -153,6 +153,11 @@ namespace DotNet.Ildasm
             return $".subsystem 0x{GetHexadecimal(Convert.ToUInt16(peHeader.Subsystem))}  // {Enum.GetName(typeof(Subsystem), peHeader.Subsystem)}";
         }
 
+        public string GetCornFlagsDirective(PEHeaders peHeaders)
+        {
+            return $".corflags 0x{GetHexadecimal(Convert.ToInt32(peHeaders.CorHeader.Flags))}  // {Enum.GetName(typeof(CorFlags), peHeaders.CorHeader.Flags)}";
+        }
+
         public string GetHexadecimal(ushort value)
         {
             return value.ToString("x4");
@@ -168,12 +173,12 @@ namespace DotNet.Ildasm
             return value.ToString("x8");
         }
 
-        public PEHeader GetPeHeader(string assemblyPath)
+        public PEHeaders GetPeHeaders(string assemblyPath)
         {
             using (var stream = File.OpenRead(assemblyPath))
             using (var peFile = new PEReader(stream))
             {
-                return peFile.PEHeaders.PEHeader;
+                return peFile.PEHeaders;
             }
         }
     }

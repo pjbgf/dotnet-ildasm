@@ -179,13 +179,12 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
 
 
-            var peHeader = _cilHelper.GetPeHeader(_options.FilePath);
-            //TODO: Load module information #1
-            _outputWriter.WriteLine(_cilHelper.GetImageBaseDirective(peHeader));
-            _outputWriter.WriteLine(_cilHelper.GetFileAlignmentDirective(peHeader));
-            _outputWriter.WriteLine(_cilHelper.GetStackReserveDirective(peHeader));
-            _outputWriter.WriteLine(_cilHelper.GetSubsystemDirective(peHeader));
-            _outputWriter.WriteLine($"// .cornflags 0x000000 (Currently not supported)");
+            var peHeader = _cilHelper.GetPeHeaders(_options.FilePath);
+            _outputWriter.WriteLine(_cilHelper.GetImageBaseDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(_cilHelper.GetFileAlignmentDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(_cilHelper.GetStackReserveDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(_cilHelper.GetSubsystemDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(_cilHelper.GetCornFlagsDirective(peHeader));
             _outputWriter.WriteLine($"// image base:  ");
         }
 
