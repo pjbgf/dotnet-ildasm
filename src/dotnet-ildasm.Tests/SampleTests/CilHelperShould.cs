@@ -63,5 +63,16 @@ namespace DotNet.Ildasm.SampleTests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Extract_FileAlignment_Directive()
+        {
+            var expected = ".file alignment 0x00000200";
+            
+            var peHeader = _cilHelper.GetPeHeader(DotnetIldasmSampleStandardDll);
+            var actual = _cilHelper.GetFileAlignmentDirective(peHeader);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

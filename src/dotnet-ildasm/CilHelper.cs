@@ -138,9 +138,19 @@ namespace DotNet.Ildasm
             return $".imagebase 0x{GetHexadecimal(peHeader.ImageBase)}";
         }
 
+        public string GetFileAlignmentDirective(PEHeader peHeader)
+        {
+            return $".file alignment 0x{GetHexadecimal(peHeader.FileAlignment)}";
+        }
+
+        public string GetHexadecimal(int value)
+        {
+            return value.ToString("x8");
+        }
+
         public string GetHexadecimal(ulong value)
         {
-            return value.ToString("X");
+            return value.ToString("x8");
         }
 
         public PEHeader GetPeHeader(string assemblyPath)
