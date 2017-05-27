@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection.PortableExecutable;
-using System.Text;
 
-namespace DotNet.Ildasm.Interop
+namespace DotNet.Ildasm
 {
     public static class PeHeaderHelper
     {

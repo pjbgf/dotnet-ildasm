@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Mono.Cecil;
-using DotNet.Ildasm.Interop;
 
 namespace DotNet.Ildasm
 {

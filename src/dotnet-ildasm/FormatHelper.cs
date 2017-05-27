@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DotNet.Ildasm.Interop
+﻿namespace DotNet.Ildasm
 {
     public static class FormatHelper
     {

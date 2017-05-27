@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using Mono.Cecil;
 using Xunit;
-using DotNet.Ildasm.Interop;
 
 namespace DotNet.Ildasm.SampleTests
 {
