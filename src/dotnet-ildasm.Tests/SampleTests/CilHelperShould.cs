@@ -85,5 +85,16 @@ namespace DotNet.Ildasm.SampleTests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Extract_Subsystem_Directive()
+        {
+            var expected = ".subsystem 0x0003  // WindowsCui";
+            
+            var peHeader = _cilHelper.GetPeHeader(DotnetIldasmSampleStandardDll);
+            var actual = _cilHelper.GetSubsystemDirective(peHeader);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

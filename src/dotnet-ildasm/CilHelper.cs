@@ -148,6 +148,16 @@ namespace DotNet.Ildasm
             return $".stackreserve 0x{GetHexadecimal(peHeader.SizeOfStackReserve)}";
         }
 
+        public string GetSubsystemDirective(PEHeader peHeader)
+        {
+            return $".subsystem 0x{GetHexadecimal(Convert.ToUInt16(peHeader.Subsystem))}  // {Enum.GetName(typeof(Subsystem), peHeader.Subsystem)}";
+        }
+
+        public string GetHexadecimal(ushort value)
+        {
+            return value.ToString("x4");
+        }
+
         public string GetHexadecimal(int value)
         {
             return value.ToString("x8");

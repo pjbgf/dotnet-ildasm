@@ -184,11 +184,7 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine(_cilHelper.GetImageBaseDirective(peHeader));
             _outputWriter.WriteLine(_cilHelper.GetFileAlignmentDirective(peHeader));
             _outputWriter.WriteLine(_cilHelper.GetStackReserveDirective(peHeader));
-
-            //TODO: Load subsystem from actual memory instead of assume it #1
-            if (module.Kind == ModuleKind.Console || module.Kind == ModuleKind.Windows)
-                _outputWriter.WriteLine($"//.subsystem 0x{ GetSubsystem(module.Kind).ToString("x3") }");
-
+            _outputWriter.WriteLine(_cilHelper.GetSubsystemDirective(peHeader));
             _outputWriter.WriteLine($"// .cornflags 0x000000 (Currently not supported)");
             _outputWriter.WriteLine($"// image base:  ");
         }
