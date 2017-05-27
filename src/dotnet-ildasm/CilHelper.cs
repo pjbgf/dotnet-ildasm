@@ -89,6 +89,9 @@ namespace DotNet.Ildasm
             if (method.IsRuntimeSpecialName)
                 builder.Append(" rtspecialname");
 
+            if (method.IsFinal)
+                builder.Append(" final");
+
             if (!method.IsStatic)
                 builder.Append(" instance");
 
@@ -116,15 +119,6 @@ namespace DotNet.Ildasm
 
                     var parameterDefinition = method.Parameters[i];
                     builder.Append($"{parameterDefinition.ParameterType.MetadataType.ToString().ToLowerInvariant()} ");
-//                    if (parameterDefinition.ParameterType.IsPrimitive)
-//                    {
-//                        builder.Append($"{parameterDefinition.ParameterType.MetadataType.ToString().ToLowerInvariant()} ");
-//                    }
-//                    else
-//                    {
-//                        builder.Append($"{parameterDefinition.ParameterType.FullName} ");
-//                    }
-
                     builder.Append(parameterDefinition.Name);
                 }
             }
