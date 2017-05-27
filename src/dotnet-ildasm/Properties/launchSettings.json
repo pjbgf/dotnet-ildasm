@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "dotnet-ildasm": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\dotnet-ildasm.Sample.Standard\\bin\\Debug\\netstandard1.6\\dotnet-ildasm.Sample.Standard.dll -t"
+    }
+  }
+}

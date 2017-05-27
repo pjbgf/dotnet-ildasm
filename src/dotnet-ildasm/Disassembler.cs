@@ -7,14 +7,14 @@ using Mono.Cecil;
 
 namespace DotNet.Ildasm
 {
-    sealed class Disassembler
+    public sealed class Disassembler
     {
         private readonly IOutputWriter _outputWriter;
         private readonly CommandOptions _options;
         private readonly ItemFilter _itemFilter;
         private readonly CilHelper _cilHelper;
 
-        internal Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
+        public Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
         {
             _outputWriter = outputWriter;
             _options = options;
@@ -22,7 +22,7 @@ namespace DotNet.Ildasm
             _cilHelper = cilHelper;
         }
 
-        internal void Execute()
+        public void Execute()
         {
             var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(_options.FilePath);
 
@@ -81,54 +81,15 @@ namespace DotNet.Ildasm
             {
                 if (String.Compare(customAttribute.AttributeType.Name, "DebuggableAttribute",
                         StringComparison.CurrentCultureIgnoreCase) == 0)
-                {
-                    _outputWriter.WriteLine(
-                        "// The following custom attribute is added automatically for debugging purposes, do not uncomment. ");
-                    _outputWriter.Write("//");
-                }
+                    continue;
 
-                //TODO: Add custom attributes parameter values #4
-                //TODO: Signature to use IL types #2
-                //TODO: External Types should always be preceded by their assembly names #6
-                _outputWriter.WriteLine($".custom instance {customAttribute.Constructor.ToString()} = ( { ExtractValueInHex(customAttribute) } )");
+                _outputWriter.WriteLine(_cilHelper.GetCustomAttribute(customAttribute));
             }
 
             _outputWriter.WriteLine($".hash algorithm 0x{assembly.Name.HashAlgorithm.ToString("X")}");
             _outputWriter.WriteLine(
                 $".ver {assembly.Name.Version.Major}:{assembly.Name.Version.Minor}:{assembly.Name.Version.Revision}:{assembly.Name.Version.Build}");
             _outputWriter.WriteLine("}");
-        }
-
-#if NETCORE_2
-        byte[] ObjectToByteArray(object obj)
-        {
-            if (obj == null)
-                return null;
-
-            var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                return ms.ToArray();
-            }
-        }
-#else
-        byte[] ObjectToByteArray(object obj)
-        {
-            return new byte[] { };
-        }
-#endif
-
-        private string ExtractValueInHex(CustomAttribute customAttribute)
-        {
-            if (customAttribute.IsResolved && customAttribute.ConstructorArguments != null)
-            {
-                var customAttributeArgument = customAttribute.ConstructorArguments.FirstOrDefault();
-                byte[] bytes = ObjectToByteArray(customAttributeArgument);
-                return ExtractValueInHex(bytes);
-            }
-
-            return string.Empty;
         }
 
         private void HandleType(TypeDefinition type)
@@ -175,32 +136,15 @@ namespace DotNet.Ildasm
         private void HandleModule(ModuleDefinition module)
         {
             _outputWriter.WriteLine("");
-            _outputWriter.WriteLine($".module '{ module.Assembly.Name.Name }'");
+            _outputWriter.WriteLine($".module '{ Path.GetFileName(_options.FilePath) }'");
             _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
-            
-            
-            //TODO: Load module information #1
-            _outputWriter.WriteLine($"// .imagebase 0x000000 (Currently not supported)");
-            _outputWriter.WriteLine($"// .file alignment 0x000000 (Currently not supported)");
-            _outputWriter.WriteLine($"// .stackreserve 0x000000 (Currently not supported)");
 
-            //TODO: Load subsystem from actual memory instead of assume it #1
-            if (module.Kind == ModuleKind.Console || module.Kind == ModuleKind.Windows)
-                _outputWriter.WriteLine($"//.subsystem 0x{ GetSubsystem(module.Kind).ToString("x3") }");
-
-            _outputWriter.WriteLine($"// .cornflags 0x000000 (Currently not supported)");
-            _outputWriter.WriteLine($"// image base:  ");
-        }
-
-        private uint GetSubsystem(ModuleKind moduleKind)
-        {
-            if (moduleKind == ModuleKind.Console)
-                return 0x003;
-
-            if (moduleKind == ModuleKind.Windows)
-                return 0x002;
-
-            return 0;
+            var peHeader = PeHeaderHelper.GetPeHeaders(_options.FilePath);
+            _outputWriter.WriteLine(PeHeaderHelper.GetImageBaseDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(PeHeaderHelper.GetFileAlignmentDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(PeHeaderHelper.GetStackReserveDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(PeHeaderHelper.GetSubsystemDirective(peHeader.PEHeader));
+            _outputWriter.WriteLine(PeHeaderHelper.GetCornFlagsDirective(peHeader));
         }
     }
 }

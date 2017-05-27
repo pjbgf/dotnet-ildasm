@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Mono.Cecil;
+using Mono.Collections.Generic;
 
 namespace DotNet.Ildasm
 {
@@ -54,9 +56,10 @@ namespace DotNet.Ildasm
 
         public string GetFullTypeName(TypeReference typeReference)
         {
-            if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name, StringComparison.CurrentCultureIgnoreCase) == 0)
+            if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
+                    StringComparison.CurrentCultureIgnoreCase) == 0)
                 return $"{typeReference.FullName}";
-            
+
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 
@@ -88,6 +91,9 @@ namespace DotNet.Ildasm
             if (method.IsRuntimeSpecialName)
                 builder.Append(" rtspecialname");
 
+            if (method.IsFinal)
+                builder.Append(" final");
+
             if (!method.IsStatic)
                 builder.Append(" instance");
 
@@ -98,27 +104,50 @@ namespace DotNet.Ildasm
 
             if (method.IsManaged)
                 builder.Append(" cil managed");
-            
+
             return builder.ToString();
         }
 
         private static void AppendMethodParameters(MethodDefinition method, StringBuilder builder)
         {
             builder.Append("(");
-            
+
             if (method.HasParameters)
             {
                 for (int i = 0; i < method.Parameters.Count; i++)
                 {
                     if (i > 0)
-                        builder.Append(",");
+                        builder.Append(", ");
 
-                    builder.Append($"{method.Parameters[i].ParameterType.MetadataType.ToString().ToLowerInvariant()} ");
-                    builder.Append(method.Parameters[i].Name);
+                    var parameterDefinition = method.Parameters[i];
+                    builder.Append($"{parameterDefinition.ParameterType.MetadataType.ToString().ToLowerInvariant()} ");
+                    builder.Append(parameterDefinition.Name);
                 }
             }
-            
+
             builder.Append(")");
+        }
+
+        public string GetCustomAttribute(CustomAttribute customAttribute)
+        {
+            return $".custom instance void {GetFullTypeName(customAttribute.AttributeType)}::{customAttribute.Constructor.Name}" +
+                   $"{GetConstructorArguments(customAttribute)}";
+        }
+
+        private string GetConstructorArguments(CustomAttribute customAttribute)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            var argument = customAttribute.ConstructorArguments.FirstOrDefault();
+
+            if (!customAttribute.HasConstructorArguments)
+                builder.Append("()");
+            else
+                builder.Append($"({argument.Type.MetadataType.ToString().ToLowerInvariant()})");
+            
+            builder.Append($" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )");
+
+            return builder.ToString();
         }
     }
 }
