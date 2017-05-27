@@ -53,61 +53,6 @@ namespace DotNet.Ildasm.SampleTests
         }
 
         [Fact]
-        public void Extract_ImageBase_Directive()
-        {
-            var expected = ".imagebase 0x10000000";
-            
-            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = PeHeaderHelper.GetImageBaseDirective(peHeaders.PEHeader);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Extract_FileAlignment_Directive()
-        {
-            var expected = ".file alignment 0x00000200";
-            
-            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = PeHeaderHelper.GetFileAlignmentDirective(peHeaders.PEHeader);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Extract_StackReserve_Directive()
-        {
-            var expected = ".stackreserve 0x00100000";
-            
-            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = PeHeaderHelper.GetStackReserveDirective(peHeaders.PEHeader);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Extract_Subsystem_Directive()
-        {
-            var expected = ".subsystem 0x0003  // WindowsCui";
-            
-            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = PeHeaderHelper.GetSubsystemDirective(peHeaders.PEHeader);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void Extract_CornFlags_Directive()
-        {
-            var expected = ".corflags 0x00000001  // ILOnly";
-            
-            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = PeHeaderHelper.GetCornFlagsDirective(peHeaders);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void Extract_CustomAttribute()
         {
             var expected = ".custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilationRelaxationsAttribute::.ctor(int32) = ( 01 00 08 00 00 00 00 00 )";

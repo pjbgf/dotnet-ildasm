@@ -58,7 +58,7 @@ namespace DotNet.Ildasm
             foreach (var module in assembly.Modules)
             {
                 if (!_itemFilter.HasFilter)
-                    HandleModule(module);
+                    HandleModule(_options.FilePath, module.Mvid);
 
                 foreach (var type in module.Types)
                 {
@@ -133,18 +133,18 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
         }
 
-        private void HandleModule(ModuleDefinition module)
+        private void HandleModule(string filePath, Guid moduleVersionId)
         {
             _outputWriter.WriteLine("");
-            _outputWriter.WriteLine($".module '{ Path.GetFileName(_options.FilePath) }'");
-            _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
 
-            var peHeader = PeHeaderHelper.GetPeHeaders(_options.FilePath);
-            _outputWriter.WriteLine(PeHeaderHelper.GetImageBaseDirective(peHeader.PEHeader));
-            _outputWriter.WriteLine(PeHeaderHelper.GetFileAlignmentDirective(peHeader.PEHeader));
-            _outputWriter.WriteLine(PeHeaderHelper.GetStackReserveDirective(peHeader.PEHeader));
-            _outputWriter.WriteLine(PeHeaderHelper.GetSubsystemDirective(peHeader.PEHeader));
-            _outputWriter.WriteLine(PeHeaderHelper.GetCornFlagsDirective(peHeader));
+            var moduleDirectivesProcessor = new ModuleDirectivesProcessor(_options.FilePath, _outputWriter);
+            moduleDirectivesProcessor.WriteModuleDirective();
+            moduleDirectivesProcessor.WriteModuleVersionId(moduleVersionId);
+            moduleDirectivesProcessor.WriteImageBaseDirective();
+            moduleDirectivesProcessor.WriteFileAlignmentDirective();
+            moduleDirectivesProcessor.WriteStackReserveDirective();
+            moduleDirectivesProcessor.WriteSubsystemDirective();
+            moduleDirectivesProcessor.WriteCornFlagsDirective();
         }
     }
 }
