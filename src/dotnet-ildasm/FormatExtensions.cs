@@ -1,18 +1,18 @@
 ﻿namespace DotNet.Ildasm
 {
-    public static class FormatHelper
+    public static class FormatExtensions
     {
-        public static string GetHexadecimal(ushort value)
+        public static string ToHexadecimal(this ushort value)
         {
             return value.ToString("x4");
         }
 
-        public static string GetHexadecimal(int value)
+        public static string ToHexadecimal(this int value)
         {
             return value.ToString("x8");
         }
 
-        public static string GetHexadecimal(ulong value)
+        public static string ToHexadecimal(this ulong value)
         {
             return value.ToString("x8");
         }
