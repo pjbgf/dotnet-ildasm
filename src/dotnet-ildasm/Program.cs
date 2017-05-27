@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using CommandLine;
+using DotNet.Ildasm.Adapters;
 
 namespace DotNet.Ildasm
 {

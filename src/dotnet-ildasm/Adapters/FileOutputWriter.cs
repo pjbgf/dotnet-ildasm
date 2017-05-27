@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace DotNet.Ildasm
+namespace DotNet.Ildasm.Adapters
 {
-    internal sealed class FileOutputWriter : IOutputWriter
+    public sealed class FileOutputWriter : IOutputWriter
     {
         private readonly string _filePath;
 

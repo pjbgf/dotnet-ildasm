@@ -1,8 +1,8 @@
 using System;
 
-namespace DotNet.Ildasm
+namespace DotNet.Ildasm.Adapters
 {
-    internal sealed class ConsoleOutputWriter : IOutputWriter
+    public sealed class ConsoleOutputWriter : IOutputWriter
     {
         public void Write(string value)
         {
