@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Mono.Cecil;
 using Xunit;
+using DotNet.Ildasm.Interop;
 
 namespace DotNet.Ildasm.SampleTests
 {
@@ -58,8 +60,8 @@ namespace DotNet.Ildasm.SampleTests
         {
             var expected = ".imagebase 0x10000000";
             
-            var peHeaders = _cilHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = _cilHelper.GetImageBaseDirective(peHeaders.PEHeader);
+            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
+            var actual = PeHeaderHelper.GetImageBaseDirective(peHeaders.PEHeader);
 
             Assert.Equal(expected, actual);
         }
@@ -69,8 +71,8 @@ namespace DotNet.Ildasm.SampleTests
         {
             var expected = ".file alignment 0x00000200";
             
-            var peHeaders = _cilHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = _cilHelper.GetFileAlignmentDirective(peHeaders.PEHeader);
+            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
+            var actual = PeHeaderHelper.GetFileAlignmentDirective(peHeaders.PEHeader);
 
             Assert.Equal(expected, actual);
         }
@@ -80,8 +82,8 @@ namespace DotNet.Ildasm.SampleTests
         {
             var expected = ".stackreserve 0x00100000";
             
-            var peHeaders = _cilHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = _cilHelper.GetStackReserveDirective(peHeaders.PEHeader);
+            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
+            var actual = PeHeaderHelper.GetStackReserveDirective(peHeaders.PEHeader);
 
             Assert.Equal(expected, actual);
         }
@@ -91,8 +93,8 @@ namespace DotNet.Ildasm.SampleTests
         {
             var expected = ".subsystem 0x0003  // WindowsCui";
             
-            var peHeaders = _cilHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = _cilHelper.GetSubsystemDirective(peHeaders.PEHeader);
+            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
+            var actual = PeHeaderHelper.GetSubsystemDirective(peHeaders.PEHeader);
 
             Assert.Equal(expected, actual);
         }
@@ -102,8 +104,21 @@ namespace DotNet.Ildasm.SampleTests
         {
             var expected = ".corflags 0x00000001  // ILOnly";
             
-            var peHeaders = _cilHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
-            var actual = _cilHelper.GetCornFlagsDirective(peHeaders);
+            var peHeaders = PeHeaderHelper.GetPeHeaders(DotnetIldasmSampleStandardDll);
+            var actual = PeHeaderHelper.GetCornFlagsDirective(peHeaders);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Extract_CustomAttribute()
+        {
+            var expected = ".custom instance void [System.Runtime]System.Runtime.CompilerServices.CompilationRelaxationsAttribute::.ctor(int32) = ( 01 00 08 00 00 00 00 00 )";
+            var customAttribute = _assemblyDefinition.CustomAttributes.First(x => string.Compare(x.AttributeType.Name, 
+                                                                                      "CompilationRelaxationsAttribute", 
+                                                                                      StringComparison.CurrentCultureIgnoreCase) == 0);
+            
+            var actual = _cilHelper.GetCustomAttribute(customAttribute);
 
             Assert.Equal(expected, actual);
         }

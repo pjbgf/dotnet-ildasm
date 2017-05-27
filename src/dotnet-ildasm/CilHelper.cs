@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
 using System.Text;
 using Mono.Cecil;
-using MethodDefinition = Mono.Cecil.MethodDefinition;
-using TypeDefinition = Mono.Cecil.TypeDefinition;
-using TypeReference = Mono.Cecil.TypeReference;
+using Mono.Collections.Generic;
+using DotNet.Ildasm.Interop;
 
 namespace DotNet.Ildasm
 {
@@ -133,53 +129,33 @@ namespace DotNet.Ildasm
             builder.Append(")");
         }
 
-        public string GetImageBaseDirective(PEHeader peHeader)
+        public string GetCustomAttribute(CustomAttribute customAttribute)
         {
-            return $".imagebase 0x{GetHexadecimal(peHeader.ImageBase)}";
+            return $".custom instance void {GetFullTypeName(customAttribute.AttributeType)}::{customAttribute.Constructor.Name}" +
+                   $"{GetConstructorArguments(customAttribute.ConstructorArguments)}";
         }
 
-        public string GetFileAlignmentDirective(PEHeader peHeader)
+        private string GetConstructorArguments(Collection<CustomAttributeArgument> constructorArguments)
         {
-            return $".file alignment 0x{GetHexadecimal(peHeader.FileAlignment)}";
-        }
-
-        public string GetStackReserveDirective(PEHeader peHeader)
-        {
-            return $".stackreserve 0x{GetHexadecimal(peHeader.SizeOfStackReserve)}";
-        }
-
-        public string GetSubsystemDirective(PEHeader peHeader)
-        {
-            return $".subsystem 0x{GetHexadecimal(Convert.ToUInt16(peHeader.Subsystem))}  // {Enum.GetName(typeof(Subsystem), peHeader.Subsystem)}";
-        }
-
-        public string GetCornFlagsDirective(PEHeaders peHeaders)
-        {
-            return $".corflags 0x{GetHexadecimal(Convert.ToInt32(peHeaders.CorHeader.Flags))}  // {Enum.GetName(typeof(CorFlags), peHeaders.CorHeader.Flags)}";
-        }
-
-        public string GetHexadecimal(ushort value)
-        {
-            return value.ToString("x4");
-        }
-
-        public string GetHexadecimal(int value)
-        {
-            return value.ToString("x8");
-        }
-
-        public string GetHexadecimal(ulong value)
-        {
-            return value.ToString("x8");
-        }
-
-        public PEHeaders GetPeHeaders(string assemblyPath)
-        {
-            using (var stream = File.OpenRead(assemblyPath))
-            using (var peFile = new PEReader(stream))
+            StringBuilder builder = new StringBuilder();
+            
+            if (constructorArguments?.Count > 0)
             {
-                return peFile.PEHeaders;
+                for (int i = 0; i < constructorArguments.Count; i++)
+                {
+                    if (i > 0)
+                        builder.Append(", ");
+
+                    var argument = constructorArguments[i];
+                    byte[] bytes = BinarySerializer.Serialize(constructorArguments);
+
+                    builder.Append(
+                        $"({argument.Type.MetadataType.ToString().ToLowerInvariant()}) = ( " +
+                        $"{BitConverter.ToString(bytes).Replace("-", " ")} )");
+                }
             }
+
+            return builder.ToString();
         }
     }
 }
