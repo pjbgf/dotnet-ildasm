@@ -143,6 +143,11 @@ namespace DotNet.Ildasm
             return $".file alignment 0x{GetHexadecimal(peHeader.FileAlignment)}";
         }
 
+        public string GetStackReserveDirective(PEHeader peHeader)
+        {
+            return $".stackreserve 0x{GetHexadecimal(peHeader.SizeOfStackReserve)}";
+        }
+
         public string GetHexadecimal(int value)
         {
             return value.ToString("x8");

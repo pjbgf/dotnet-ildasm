@@ -74,5 +74,16 @@ namespace DotNet.Ildasm.SampleTests
 
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void Extract_StackReserve_Directive()
+        {
+            var expected = ".stackreserve 0x00100000";
+            
+            var peHeader = _cilHelper.GetPeHeader(DotnetIldasmSampleStandardDll);
+            var actual = _cilHelper.GetStackReserveDirective(peHeader);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

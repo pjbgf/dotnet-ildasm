@@ -183,7 +183,7 @@ namespace DotNet.Ildasm
             //TODO: Load module information #1
             _outputWriter.WriteLine(_cilHelper.GetImageBaseDirective(peHeader));
             _outputWriter.WriteLine(_cilHelper.GetFileAlignmentDirective(peHeader));
-            _outputWriter.WriteLine($"// .stackreserve 0x000000 (Currently not supported)");
+            _outputWriter.WriteLine(_cilHelper.GetStackReserveDirective(peHeader));
 
             //TODO: Load subsystem from actual memory instead of assume it #1
             if (module.Kind == ModuleKind.Console || module.Kind == ModuleKind.Windows)
