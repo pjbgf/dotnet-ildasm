@@ -10,11 +10,12 @@ namespace DotNet.Ildasm.SampleTests
     {
         private readonly CilHelper _cilHelper;
         private readonly AssemblyDefinition _assemblyDefinition;
+        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.Standard.dll";
 
         public CilHelperShould()
         {
             _cilHelper = new CilHelper();
-            _assemblyDefinition = Mono.Cecil.AssemblyDefinition.ReadAssembly("dotnet-ildasm.Sample.Standard.dll");
+            _assemblyDefinition = Mono.Cecil.AssemblyDefinition.ReadAssembly(DotnetIldasmSampleStandardDll);
         }
 
         [Theory]
@@ -50,6 +51,17 @@ namespace DotNet.Ildasm.SampleTests
             var signature = _cilHelper.GetMethodSignature(method);
 
             Assert.Equal(expectedIL, signature);
+        }
+
+        [Fact]
+        public void Extract_ImageBase_Directive()
+        {
+            var expected = ".imagebase 0x10000000";
+            
+            var peHeader = _cilHelper.GetPeHeader(DotnetIldasmSampleStandardDll);
+            var actual = _cilHelper.GetImageBaseDirective(peHeader);
+
+            Assert.Equal(expected, actual);
         }
     }
 }

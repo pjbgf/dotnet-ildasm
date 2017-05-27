@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using Mono.Cecil;
+using MethodDefinition = Mono.Cecil.MethodDefinition;
+using TypeDefinition = Mono.Cecil.TypeDefinition;
+using TypeReference = Mono.Cecil.TypeReference;
 
 namespace DotNet.Ildasm
 {
@@ -124,6 +131,25 @@ namespace DotNet.Ildasm
             }
 
             builder.Append(")");
+        }
+
+        public string GetImageBaseDirective(PEHeader peHeader)
+        {
+            return $".imagebase 0x{GetHexadecimal(peHeader.ImageBase)}";
+        }
+
+        public string GetHexadecimal(ulong value)
+        {
+            return value.ToString("X");
+        }
+
+        public PEHeader GetPeHeader(string assemblyPath)
+        {
+            using (var stream = File.OpenRead(assemblyPath))
+            using (var peFile = new PEReader(stream))
+            {
+                return peFile.PEHeaders.PEHeader;
+            }
         }
     }
 }

@@ -177,10 +177,11 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine("");
             _outputWriter.WriteLine($".module '{ module.Assembly.Name.Name }'");
             _outputWriter.WriteLine($"// MVID: {{{module.Mvid}}}");
-            
-            
+
+
+            var peHeader = _cilHelper.GetPeHeader(_options.FilePath);
             //TODO: Load module information #1
-            _outputWriter.WriteLine($"// .imagebase 0x000000 (Currently not supported)");
+            _outputWriter.WriteLine(_cilHelper.GetImageBaseDirective(peHeader));
             _outputWriter.WriteLine($"// .file alignment 0x000000 (Currently not supported)");
             _outputWriter.WriteLine($"// .stackreserve 0x000000 (Currently not supported)");
 
