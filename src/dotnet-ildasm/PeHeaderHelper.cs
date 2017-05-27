@@ -17,27 +17,27 @@ namespace DotNet.Ildasm
 
         public static string GetImageBaseDirective(PEHeader peHeader)
         {
-            return $".imagebase 0x{peHeader.ImageBase.ToHexadecimal()}";
+            return $".imagebase {peHeader.ImageBase.ToHexadecimal()}";
         }
 
         public static string GetFileAlignmentDirective(PEHeader peHeader)
         {
-            return $".file alignment 0x{peHeader.FileAlignment.ToHexadecimal()}";
+            return $".file alignment {peHeader.FileAlignment.ToHexadecimal()}";
         }
 
         public static string GetStackReserveDirective(PEHeader peHeader)
         {
-            return $".stackreserve 0x{peHeader.SizeOfStackReserve.ToHexadecimal()}";
+            return $".stackreserve {peHeader.SizeOfStackReserve.ToHexadecimal()}";
         }
 
         public static string GetSubsystemDirective(PEHeader peHeader)
         {
-            return $".subsystem 0x{Convert.ToUInt16(peHeader.Subsystem).ToHexadecimal()}  // {Enum.GetName(typeof(Subsystem), peHeader.Subsystem)}";
+            return $".subsystem {Convert.ToUInt16(peHeader.Subsystem).ToHexadecimal()}  // {Enum.GetName(typeof(Subsystem), peHeader.Subsystem)}";
         }
 
         public static string GetCornFlagsDirective(PEHeaders peHeaders)
         {
-            return $".corflags 0x{Convert.ToInt32(peHeaders.CorHeader.Flags).ToHexadecimal()}  // {Enum.GetName(typeof(CorFlags), peHeaders.CorHeader.Flags)}";
+            return $".corflags {Convert.ToInt32(peHeaders.CorHeader.Flags).ToHexadecimal()}  // {Enum.GetName(typeof(CorFlags), peHeaders.CorHeader.Flags)}";
         }
     }
 }
