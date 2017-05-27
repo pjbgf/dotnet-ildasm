@@ -3,6 +3,7 @@ branches:
   features?[/-]:
     mode: ContinuousDeployment
     tag: beta
-  master: {}
+  master: 
+    mode: ContinuousDeployment
 ignore:
   sha: []
