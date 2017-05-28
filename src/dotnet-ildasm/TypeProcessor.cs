@@ -7,7 +7,7 @@ using Mono.Collections.Generic;
 
 namespace DotNet.Ildasm
 {
-    public class CilHelper
+    public class TypeProcessor
     {
         public string GetTypeSignature(TypeDefinition typeDefinition)
         {
@@ -62,9 +62,5 @@ namespace DotNet.Ildasm
 
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
-
-        
-
-        
     }
 }

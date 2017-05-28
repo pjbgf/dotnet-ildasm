@@ -7,13 +7,13 @@ namespace DotNet.Ildasm.SampleTests
 {
     public class CilHelperShould
     {
-        private readonly CilHelper _cilHelper;
+        private readonly TypeProcessor _cilHelper;
         private readonly AssemblyDefinition _assemblyDefinition;
         private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.Standard.dll";
 
         public CilHelperShould()
         {
-            _cilHelper = new CilHelper();
+            _cilHelper = new TypeProcessor();
             _assemblyDefinition = Mono.Cecil.AssemblyDefinition.ReadAssembly(DotnetIldasmSampleStandardDll);
         }
 
