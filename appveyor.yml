@@ -1,4 +1,4 @@
-version: '0.1.{build}' 
+version: '{build}' 
 configuration:
 - Release
 platform: Any CPU 
@@ -12,9 +12,6 @@ init:
 
 install:
 - choco install gitversion.portable -pre -y
-
-assembly_info:
-  patch: false
 
 before_build:
 - nuget restore
