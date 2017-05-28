@@ -35,18 +35,13 @@ namespace DotNet.Ildasm
         {
             foreach (var reference in assembly.MainModule.AssemblyReferences)
             {
-                _outputWriter.WriteLine();
                 _outputWriter.WriteLine($".assembly extern { reference.Name }");
                 _outputWriter.WriteLine("{");
-                _outputWriter.WriteLine($".publickeytoken ( { ExtractValueInHex(reference.PublicKeyToken) } )");
+                _outputWriter.WriteLine($".publickeytoken ( { reference.PublicKeyToken.ToHexadecimal() } )");
                 _outputWriter.WriteLine($".ver { reference.Version.Major }:{ reference.Version.Minor }:{ reference.Version.Revision }:{ reference.Version.Build }");
                 _outputWriter.WriteLine("}");
+                _outputWriter.WriteLine();
             }
-        }
-
-        private string ExtractValueInHex(Byte[] data)
-        {
-            return BitConverter.ToString(data);
         }
 
         private void WriteAssemblyData(AssemblyDefinition assembly)
