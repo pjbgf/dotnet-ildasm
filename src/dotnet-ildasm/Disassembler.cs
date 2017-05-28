@@ -13,6 +13,7 @@ namespace DotNet.Ildasm
         private readonly CommandOptions _options;
         private readonly ItemFilter _itemFilter;
         private readonly CilHelper _cilHelper;
+        private ModuleDirectivesProcessor _moduleDirectivesProcessor;
 
         public Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
         {
@@ -20,6 +21,7 @@ namespace DotNet.Ildasm
             _options = options;
             _itemFilter = itemFilter;
             _cilHelper = cilHelper;
+            _moduleDirectivesProcessor = new ModuleDirectivesProcessor(_options.FilePath, _outputWriter);
         }
 
         public void Execute()
@@ -58,7 +60,7 @@ namespace DotNet.Ildasm
             foreach (var module in assembly.Modules)
             {
                 if (!_itemFilter.HasFilter)
-                    HandleModule(_options.FilePath, module.Mvid);
+                    WriteModuleDirectives(module.Mvid);
 
                 foreach (var type in module.Types)
                 {
@@ -133,18 +135,15 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
         }
 
-        private void HandleModule(string filePath, Guid moduleVersionId)
+        private void WriteModuleDirectives(Guid moduleVersionId)
         {
-            _outputWriter.WriteLine("");
-
-            var moduleDirectivesProcessor = new ModuleDirectivesProcessor(_options.FilePath, _outputWriter);
-            moduleDirectivesProcessor.WriteModuleDirective();
-            moduleDirectivesProcessor.WriteModuleVersionId(moduleVersionId);
-            moduleDirectivesProcessor.WriteImageBaseDirective();
-            moduleDirectivesProcessor.WriteFileAlignmentDirective();
-            moduleDirectivesProcessor.WriteStackReserveDirective();
-            moduleDirectivesProcessor.WriteSubsystemDirective();
-            moduleDirectivesProcessor.WriteCornFlagsDirective();
+            _moduleDirectivesProcessor.WriteModuleDirective();
+            _moduleDirectivesProcessor.WriteModuleVersionId(moduleVersionId);
+            _moduleDirectivesProcessor.WriteImageBaseDirective();
+            _moduleDirectivesProcessor.WriteFileAlignmentDirective();
+            _moduleDirectivesProcessor.WriteStackReserveDirective();
+            _moduleDirectivesProcessor.WriteSubsystemDirective();
+            _moduleDirectivesProcessor.WriteCornFlagsDirective();
         }
     }
 }
