@@ -7,7 +7,7 @@
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool.</Description>
-    <PackageReleaseNotes>Adding code indentation.</PackageReleaseNotes>
+    <PackageReleaseNotes>This version adds code indentation.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
     <PackageTags>dotnet-ildasm, ildasm</PackageTags>
