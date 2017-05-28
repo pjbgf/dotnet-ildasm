@@ -7,6 +7,7 @@ matrix:
       mono: none
     - dotnet: 1.0.1
       mono: latest
+      env: RUN_MONO_TESTS=1
 
 before_install:
 - chmod +x build.sh

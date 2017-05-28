@@ -6,7 +6,7 @@ dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netstandard1.5 $@
 dotnet build src/dotnet-ildasm.Sample/dotnet-ildasm.Sample.csproj -f netstandard1.6 $@
 
 
-if [ ! type "$mono" > /dev/null ] 
+if [[ -z "${RUN_MONO_TESTS}" ]];  
 then
 
     dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f net45 $@
