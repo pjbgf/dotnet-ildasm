@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using Mono.Cecil;
 
 namespace DotNet.Ildasm
@@ -14,6 +13,8 @@ namespace DotNet.Ildasm
         private readonly CilHelper _cilHelper;
         private readonly ModuleDirectivesProcessor _moduleDirectivesProcessor;
         private readonly MethodProcessor _methodProcessor;
+        private readonly AssemblySectionProcessor _assemblySectionProcessor;
+        private readonly AssemblyReferencesProcessor _assemblyReferencesProcessor;
 
         public Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
         {
@@ -23,6 +24,8 @@ namespace DotNet.Ildasm
             _cilHelper = cilHelper;
             _moduleDirectivesProcessor = new ModuleDirectivesProcessor(_options.FilePath, _outputWriter);
             _methodProcessor = new MethodProcessor(_outputWriter);
+            _assemblySectionProcessor = new AssemblySectionProcessor(_outputWriter);
+            _assemblyReferencesProcessor = new AssemblyReferencesProcessor(_outputWriter);
         }
 
         public void Execute()
@@ -34,15 +37,7 @@ namespace DotNet.Ildasm
 
         private void WriteAssemblyExternalReferences(AssemblyDefinition assembly)
         {
-            foreach (var reference in assembly.MainModule.AssemblyReferences)
-            {
-                _outputWriter.WriteLine($".assembly extern { reference.Name }");
-                _outputWriter.WriteLine("{");
-                _outputWriter.WriteLine($".publickeytoken ( { reference.PublicKeyToken.ToHexadecimal() } )");
-                _outputWriter.WriteLine($".ver { reference.Version.Major }:{ reference.Version.Minor }:{ reference.Version.Revision }:{ reference.Version.Build }");
-                _outputWriter.WriteLine("}");
-                _outputWriter.WriteLine();
-            }
+            _assemblyReferencesProcessor.Write(assembly.MainModule.AssemblyReferences);
         }
 
         private void WriteAssemblyData(AssemblyDefinition assembly)
@@ -69,27 +64,6 @@ namespace DotNet.Ildasm
             }
         }
 
-        private void WriteAssemblySection(AssemblyDefinition assembly)
-        {
-            _outputWriter.WriteLine();
-            _outputWriter.WriteLine($".assembly '{assembly.Name.Name}'");
-            _outputWriter.WriteLine("{");
-
-            foreach (var customAttribute in assembly.CustomAttributes)
-            {
-                if (String.Compare(customAttribute.AttributeType.Name, "DebuggableAttribute",
-                        StringComparison.CurrentCultureIgnoreCase) == 0)
-                    continue;
-
-                _outputWriter.WriteLine(_cilHelper.GetCustomAttribute(customAttribute));
-            }
-
-            _outputWriter.WriteLine($".hash algorithm 0x{assembly.Name.HashAlgorithm.ToString("X")}");
-            _outputWriter.WriteLine(
-                $".ver {assembly.Name.Version.Major}:{assembly.Name.Version.Minor}:{assembly.Name.Version.Revision}:{assembly.Name.Version.Build}");
-            _outputWriter.WriteLine("}");
-        }
-
         private void HandleType(TypeDefinition type)
         {
             _outputWriter.WriteLine();
@@ -104,6 +78,12 @@ namespace DotNet.Ildasm
 
             _outputWriter.WriteLine();
             _outputWriter.WriteLine($"}} // End of class {type.FullName}");
+        }
+
+        private void WriteAssemblySection(AssemblyDefinition assembly)
+        {
+            _assemblySectionProcessor.WriteAssemblyName(assembly);
+            _assemblySectionProcessor.WriteBody(assembly);
         }
 
         private void HandleMethod(MethodDefinition method)

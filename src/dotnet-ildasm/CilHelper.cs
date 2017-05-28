@@ -65,26 +65,6 @@ namespace DotNet.Ildasm
 
         
 
-        public string GetCustomAttribute(CustomAttribute customAttribute)
-        {
-            return $".custom instance void {GetFullTypeName(customAttribute.AttributeType)}::{customAttribute.Constructor.Name}" +
-                   $"{GetConstructorArguments(customAttribute)}";
-        }
-
-        private string GetConstructorArguments(CustomAttribute customAttribute)
-        {
-            StringBuilder builder = new StringBuilder();
-
-            var argument = customAttribute.ConstructorArguments.FirstOrDefault();
-
-            if (!customAttribute.HasConstructorArguments)
-                builder.Append("()");
-            else
-                builder.Append($"({argument.Type.MetadataType.ToString().ToLowerInvariant()})");
-            
-            builder.Append($" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )");
-
-            return builder.ToString();
-        }
+        
     }
 }
