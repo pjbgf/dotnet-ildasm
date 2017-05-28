@@ -5,9 +5,9 @@ dotnet: 1.0.1
 
 before_install:
 - chmod +x build.sh
+- dotnet restore
 
 install:
-- dotnet restore src
 - ./build.sh
 
 script:
