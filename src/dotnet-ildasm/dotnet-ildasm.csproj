@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFrameworks>netcoreapp1.0;netstandard1.5;net45</TargetFrameworks>
     <RootNamespace>DotNet.Ildasm</RootNamespace>
     <Version>$(GitVersion_NuGetVersion)</Version>
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool.</Description>
-    <PackageReleaseNotes>Pre-release: functional but unstable.</PackageReleaseNotes>
+    <PackageReleaseNotes>This version adds code indentation and support to structs.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
     <PackageTags>dotnet-ildasm, ildasm</PackageTags>
@@ -15,8 +15,13 @@
     <PackageProjectUrl>https://github.com/pjbgf/dotnet-ildasm</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Reflection.Metadata" Version="1.3.0.0" />
+    <PackageReference Include="System.Reflection.Metadata" Version="1.4.2.0" />
     <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 </Project>

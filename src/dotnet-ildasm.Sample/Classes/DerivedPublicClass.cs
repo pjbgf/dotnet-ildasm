@@ -1,6 +1,6 @@
 using System;
 
-namespace dotnet_ildasm.Sample.Standard.Classes
+namespace dotnet_ildasm.Sample.Classes
 {
     public class DerivedPublicClass : PublicAbstractClass
     {
