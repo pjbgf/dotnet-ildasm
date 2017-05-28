@@ -12,7 +12,8 @@ before_install:
 - dotnet restore
 
 install:
-- ./build.sh -c Release -f netcoreapp1.0
+- dotnet build src/dotnet-ildasm.Sample/dotnet-ildasm.Sample.csproj -c Release -f netstandard1.6
+- dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -c Release -f netcoreapp1.0
 
 script:
 - dotnet run --framework netcoreapp1.0 --project src\dotnet-ildasm\dotnet-ildasm.csproj src\dotnet-ildasm.Sample\bin\Debug\netstandard1.6\dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
