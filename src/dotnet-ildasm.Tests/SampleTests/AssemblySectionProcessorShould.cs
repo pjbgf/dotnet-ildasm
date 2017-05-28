@@ -9,7 +9,7 @@ namespace DotNet.Ildasm.SampleTests
     public class AssemblySectionProcessorShould
     {
         
-        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.Standard.dll";
+        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.dll";
         private readonly IOutputWriter _outputWriterMock;
         private AssemblyDefinition _assemblyDefinition;
 

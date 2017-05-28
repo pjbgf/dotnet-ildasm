@@ -22,6 +22,7 @@ build_script:
 
 test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
+- run-cross-checks.cmd
 
 after_test:
 - dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
