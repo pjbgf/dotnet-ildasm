@@ -12,7 +12,7 @@ namespace DotNet.Ildasm
             _outputWriter = outputWriter;
         }
 
-        public void Write(Collection<AssemblyNameReference> assemblyReferences)
+        public void WriteAssemblyReferences(Collection<AssemblyNameReference> assemblyReferences)
         {
             foreach (var reference in assemblyReferences)
             {

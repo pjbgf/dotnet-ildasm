@@ -34,7 +34,10 @@ namespace DotNet.Ildasm
             }
 
             var itemFilter = new ItemFilter(options.ItemFilter);
-            new Disassembler(outputWriter, options, itemFilter).Execute();
+            var assemblyDataProcessor = new AssemblyDataProcessor(options.FilePath, outputWriter);
+            var assemblyDefinitionResolver = new AssemblyDefinitionResolver();
+            
+            new Disassembler(assemblyDataProcessor, assemblyDefinitionResolver).Execute(options, itemFilter);
 
             return 0;
         }

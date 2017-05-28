@@ -1,8 +1,8 @@
 using System;
 
 namespace DotNet.Ildasm
-{
-    public interface IModuleDirectivesProcessor
+ {  
+     public interface IModuleDirectivesProcessor
     {
         void WriteModuleDirective();
         void WriteModuleVersionId(Guid moduleVersionId);
