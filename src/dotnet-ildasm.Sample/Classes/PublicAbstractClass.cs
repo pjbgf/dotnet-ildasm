@@ -1,4 +1,4 @@
-namespace dotnet_ildasm.Sample.Standard.Classes
+namespace dotnet_ildasm.Sample.Classes
 {
     public abstract class PublicAbstractClass
     {

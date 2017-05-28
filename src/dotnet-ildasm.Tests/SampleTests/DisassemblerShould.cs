@@ -7,7 +7,7 @@ namespace DotNet.Ildasm.Tests.SampleTests
 {
     public class DisassemblerShould
     {
-        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.Standard.dll";
+        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.dll";
         private IAssemblyDefinitionResolver _assemblyDefinitionResolver;
         private IAssemblyDataProcessor _assemblyProcessorMock;
 

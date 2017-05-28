@@ -6,7 +6,7 @@ namespace DotNet.Ildasm.SampleTests
 {
     public class ModuleDirectivesProcessorShould
     {
-        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.Standard.dll";
+        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.dll";
         private readonly IOutputWriter _outputWriterMock;
 
         public ModuleDirectivesProcessorShould()

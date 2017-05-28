@@ -12,7 +12,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.0-beta2-build1317" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dotnet-ildasm.Sample.Standard\dotnet-ildasm.Sample.Standard.csproj" />
+    <ProjectReference Include="..\dotnet-ildasm.Sample\dotnet-ildasm.Sample.csproj" />
     <ProjectReference Include="..\dotnet-ildasm\dotnet-ildasm.csproj" />
   </ItemGroup>
 </Project>

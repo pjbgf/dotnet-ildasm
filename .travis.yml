@@ -1,0 +1,15 @@
+language: csharp
+dist: trusty
+mono: mono
+dotnet: 1.0.1
+
+before_install:
+- chmod +x build.sh
+
+install:
+- dotnet restore src
+- ./build.sh
+
+script:
+- dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Debug/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
+- dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Debug/net45/dotnet-ildasm.Sample.dll -o netcore_net45.il
