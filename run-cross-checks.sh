@@ -13,7 +13,9 @@ if [ ! type "$mono" > /dev/null; ] then
     
     if %ERRORLEVEL% EQU 0 ECHO DONE
 
-else
+fi
+
+if [ type "$mono" > /dev/null; ] then
 
     ECHO Executing net45 ildasm.exe against netstandard1.6 library...
     ECHO mono src\dotnet-ildasm\bin\debug\net45\dotnet-ildasm.exe src\dotnet-ildasm.Sample\bin\Debug\netstandard1.6\dotnet-ildasm.Sample.dll -o net45_netcore.il
