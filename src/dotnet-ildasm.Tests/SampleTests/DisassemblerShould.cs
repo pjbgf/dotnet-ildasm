@@ -1,4 +1,3 @@
-using Castle.DynamicProxy.Generators;
 using Mono.Cecil;
 using Mono.Collections.Generic;
 using NSubstitute;
