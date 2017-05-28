@@ -5,7 +5,6 @@ matrix:
   include:
     - dotnet: 1.0.1
       mono: none
-    - mono: latest
 
 before_install:
 - chmod +x build.sh
@@ -16,4 +15,4 @@ install:
 - ./build.sh -c Release -f netcoreapp1.0
 
 script:
-- ./run-cross-checks.sh
+- dotnet run --framework netcoreapp1.0 --project src\dotnet-ildasm\dotnet-ildasm.csproj src\dotnet-ildasm.Sample\bin\Debug\netstandard1.6\dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
