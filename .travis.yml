@@ -8,8 +8,8 @@ before_install:
 - dotnet restore
 
 install:
-- ./build.sh
+- ./build.sh -c Release
 
 script:
-- dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Debug/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
-- dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Debug/net45/dotnet-ildasm.Sample.dll -o netcore_net45.il
+- dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
+- dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/net45/dotnet-ildasm.Sample.dll -o netcore_net45.il
