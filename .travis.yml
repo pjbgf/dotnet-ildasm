@@ -5,7 +5,7 @@ matrix:
   include:
     - dotnet: 1.0.1
       mono: none
-   - mono: latest
+    - mono: latest
 
 before_install:
 - chmod +x build.sh
