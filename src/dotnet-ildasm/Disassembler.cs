@@ -2,18 +2,18 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Mono.Cecil;
 
 namespace DotNet.Ildasm
 {
-    public sealed class Disassembler
+    public sealed partial class Disassembler
     {
         private readonly IOutputWriter _outputWriter;
         private readonly CommandOptions _options;
         private readonly ItemFilter _itemFilter;
         private readonly CilHelper _cilHelper;
-        private ModuleDirectivesProcessor _moduleDirectivesProcessor;
+        private readonly ModuleDirectivesProcessor _moduleDirectivesProcessor;
+        private readonly MethodProcessor _methodProcessor;
 
         public Disassembler(IOutputWriter outputWriter, CommandOptions options, ItemFilter itemFilter, CilHelper cilHelper)
         {
@@ -22,6 +22,7 @@ namespace DotNet.Ildasm
             _itemFilter = itemFilter;
             _cilHelper = cilHelper;
             _moduleDirectivesProcessor = new ModuleDirectivesProcessor(_options.FilePath, _outputWriter);
+            _methodProcessor = new MethodProcessor(_outputWriter);
         }
 
         public void Execute()
@@ -31,7 +32,7 @@ namespace DotNet.Ildasm
             WriteAssemblyData(assembly);
         }
 
-        private void WriteExterns(AssemblyDefinition assembly)
+        private void WriteAssemblyExternalReferences(AssemblyDefinition assembly)
         {
             foreach (var reference in assembly.MainModule.AssemblyReferences)
             {
@@ -48,7 +49,7 @@ namespace DotNet.Ildasm
         {
             if (!_itemFilter.HasFilter)
             {
-                WriteExterns(assembly);
+                WriteAssemblyExternalReferences(assembly);
                 WriteAssemblySection(assembly);
             }
 
@@ -107,27 +108,8 @@ namespace DotNet.Ildasm
 
         private void HandleMethod(MethodDefinition method)
         {
-            _outputWriter.WriteLine();
-            _outputWriter.WriteLine(_cilHelper.GetMethodSignature(method));
-            _outputWriter.WriteLine("{");
-
-            if (method.DeclaringType.Module.EntryPoint == method)
-                _outputWriter.WriteLine(".entrypoint");
-
-            if (method.HasBody)
-            {
-                _outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
-                _outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
-
-                var ilProcessor = method.Body.GetILProcessor();
-                foreach (var instruction in ilProcessor.Body.Instructions)
-                {
-                    //TODO: Use IL types instead of .Net types #2
-                    //TODO: External Types should always be preceded by their assembly names #6
-                    _outputWriter.WriteLine(instruction.ToString());
-                }
-            }
-            _outputWriter.WriteLine($"}}// End of method {method.FullName}");
+            _methodProcessor.WriteSignature(method);
+            _methodProcessor.WriteBody(method);
         }
 
         private void WriteModuleDirectives(Guid moduleVersionId)

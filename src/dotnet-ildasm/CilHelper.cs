@@ -63,70 +63,7 @@ namespace DotNet.Ildasm
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 
-        public string GetMethodSignature(MethodDefinition method)
-        {
-            var builder = new StringBuilder();
-            builder.Append(".method");
-
-            if (method.IsPublic)
-                builder.Append(" public");
-            else if (method.IsPrivate)
-                builder.Append(" private");
-
-            if (method.IsHideBySig)
-                builder.Append(" hidebysig");
-
-            if (method.IsNewSlot)
-                builder.Append(" newslot");
-
-            if (method.IsAbstract)
-                builder.Append(" abstract");
-
-            if (method.IsVirtual)
-                builder.Append(" virtual");
-
-            if (method.IsSpecialName)
-                builder.Append(" specialname");
-
-            if (method.IsRuntimeSpecialName)
-                builder.Append(" rtspecialname");
-
-            if (method.IsFinal)
-                builder.Append(" final");
-
-            if (!method.IsStatic)
-                builder.Append(" instance");
-
-            builder.Append($" {method.ReturnType.MetadataType.ToString().ToLowerInvariant()}");
-            builder.Append($" {method.Name}");
-
-            AppendMethodParameters(method, builder);
-
-            if (method.IsManaged)
-                builder.Append(" cil managed");
-
-            return builder.ToString();
-        }
-
-        private static void AppendMethodParameters(MethodDefinition method, StringBuilder builder)
-        {
-            builder.Append("(");
-
-            if (method.HasParameters)
-            {
-                for (int i = 0; i < method.Parameters.Count; i++)
-                {
-                    if (i > 0)
-                        builder.Append(", ");
-
-                    var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.MetadataType.ToString().ToLowerInvariant()} ");
-                    builder.Append(parameterDefinition.Name);
-                }
-            }
-
-            builder.Append(")");
-        }
+        
 
         public string GetCustomAttribute(CustomAttribute customAttribute)
         {
