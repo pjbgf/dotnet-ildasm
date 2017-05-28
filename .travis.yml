@@ -13,8 +13,7 @@ before_install:
 - dotnet restore
 
 install:
-- ./build.sh -c Release
+- ./build.sh -c Release -f netcoreapp1.0
 
 script:
-- dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
-- run-cross-checks.sh
+- ./run-cross-checks.sh
