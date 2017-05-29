@@ -1,22 +1,25 @@
+using System;
 using Mono.Cecil;
 using Mono.Collections.Generic;
 using NSubstitute;
 using Xunit;
 
-namespace DotNet.Ildasm.Tests.SampleTests
+namespace DotNet.Ildasm.Tests
 {
     public class DisassemblerShould
     {
-        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.dll";
-        private IAssemblyDefinitionResolver _assemblyDefinitionResolver;
-        private IAssemblyDataProcessor _assemblyProcessorMock;
+        private readonly IAssemblyDefinitionResolver _assemblyDefinitionResolver;
+        private readonly IAssemblyDataProcessor _assemblyProcessorMock;
 
         public DisassemblerShould()
         {
             _assemblyDefinitionResolver = Substitute.For<IAssemblyDefinitionResolver>();
             _assemblyProcessorMock = Substitute.For<IAssemblyDataProcessor>();
-            
-            var assemblyDefinition = Mono.Cecil.AssemblyDefinition.ReadAssembly(DotnetIldasmSampleStandardDll);
+
+            var assemblyDefinition = Mono.Cecil.AssemblyDefinition.CreateAssembly(
+                new AssemblyNameDefinition("test", Version.Parse("1.0.0")),
+                "Module1", ModuleKind.Dll);
+
             _assemblyDefinitionResolver.Resolve(Arg.Any<string>()).Returns(assemblyDefinition);
         }
         

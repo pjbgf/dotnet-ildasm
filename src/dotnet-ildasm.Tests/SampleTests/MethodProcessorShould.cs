@@ -21,7 +21,7 @@ namespace DotNet.Ildasm.SampleTests
         [InlineData("PublicClass", "PublicVoidMethod", ".method public hidebysig instance [System.Runtime]System.Void PublicVoidMethod() cil managed")]
         [InlineData("PublicClass", "PublicVoidMethodSingleParameter", ".method public hidebysig instance [System.Runtime]System.Void PublicVoidMethodSingleParameter([System.Runtime]System.String parameter1) cil managed")]
         [InlineData("PublicClass", "PublicVoidMethodTwoParameters", ".method public hidebysig instance [System.Runtime]System.Void PublicVoidMethodTwoParameters([System.Runtime]System.String parameter1, [System.Runtime]System.Int32 parameter2) cil managed")]
-        [InlineData("PublicClass", "PublicVoidMethodParams", ".method public hidebysig instance [System.Runtime]System.Void PublicVoidMethodParams(string[] parameters) cil managed", Skip = "Add support to params key word bug. #13")]
+        [InlineData("PublicClass", "PublicVoidMethodParams", ".method public hidebysig instance [System.Runtime]System.Void PublicVoidMethodParams([System.Runtime]System.String[] parameters) cil managed")]
         [InlineData("PublicAbstractClass", "PublicAbstractMethod", ".method public hidebysig newslot abstract virtual instance [System.Runtime]System.Void PublicAbstractMethod() cil managed")]
         [InlineData("PublicAbstractClass", "PublicImplementedMethod", ".method public hidebysig instance [System.Runtime]System.Void PublicImplementedMethod() cil managed")]
         [InlineData("DerivedPublicClass", "PublicAbstractMethod", ".method public hidebysig virtual instance [System.Runtime]System.Void PublicAbstractMethod() cil managed")]
