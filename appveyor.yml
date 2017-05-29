@@ -43,7 +43,6 @@ deploy:
     description: 'Bug fixes.'
     auth_token:
       secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
-    artifact: /.*\.nupkg/
     artifacts:
       - path: /.*\.nupkg/
         name: NuGet Package
