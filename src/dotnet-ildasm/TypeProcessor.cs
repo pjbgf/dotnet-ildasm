@@ -49,7 +49,7 @@ namespace DotNet.Ildasm
 
             if (typeDefinition.HasInterfaces)
                 builder.Append(
-                    $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.FullName))}");
+                    $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.ToILType()))}");
 
             return builder.ToString();
         }

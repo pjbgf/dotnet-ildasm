@@ -74,8 +74,10 @@ namespace DotNet.Ildasm
 
             if (!method.IsStatic)
                 builder.Append(" instance");
+            else
+                builder.Append(" static");
 
-            builder.Append($" {method.ReturnType}");
+            builder.Append($" {method.ReturnType.ToILType()}");
             builder.Append($" {method.Name}");
 
             AppendMethodParameters(method, builder);
