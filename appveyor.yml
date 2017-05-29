@@ -43,11 +43,7 @@ deploy:
     description: 'Bug fixes.'
     auth_token:
       secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
-    artifacts:
-      - path: /.*\.nupkg/
-        name: NuGet Package
-      - path: ReleaseNotes.md
-        name: Release notes
+    artifact: (/.*\.nupkg/|ReleaseNotes.md)
     draft: true
     prerelease: true
     on:
