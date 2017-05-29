@@ -7,14 +7,13 @@ namespace DotNet.Ildasm.Tests.SampleTests
 {
     public class MethodProcessorShould
     {
-        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.dll";
         private readonly IOutputWriter _outputWriterMock;
         private readonly AssemblyDefinition _assemblyDefinition;
 
         public MethodProcessorShould()
         {
             _outputWriterMock = Substitute.For<IOutputWriter>();
-            _assemblyDefinition = Mono.Cecil.AssemblyDefinition.ReadAssembly(DotnetIldasmSampleStandardDll);
+            _assemblyDefinition = DataHelper.SampleAssembly.Value;
         }
 
         [Theory]
