@@ -44,6 +44,11 @@ deploy:
     auth_token:
       secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
     artifact: /.*\.nupkg/
+    artifacts:
+      - path: /.*\.nupkg/
+        name: NuGet Package
+      - path: ReleaseNotes.md
+        name: Release notes
     draft: true
     prerelease: true
     on:
