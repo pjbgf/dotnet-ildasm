@@ -36,6 +36,16 @@ deploy:
     api_key:
       secure: Hh52nD8i4YR/X5yRRaqWNchtVaH3/IvAzl9XcGPsrfQI0DnvJB9Odeju0e5yIG4D
     artifact: /.*\.nupkg/
- 
+  - provider: GitHub
+    release: dotnet-ildasm.$(GitVersion_NuGetVersion)
+    description: 'Release description'
+    auth_token:
+      secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
+    artifact: /.*\.nupkg/
+    draft: true
+    prerelease: true
+    on:
+      appveyor_repo_tag: false        # deploy on tag push only
+
 skip_commits:
   files: '**/*.md'
