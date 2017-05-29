@@ -21,6 +21,9 @@ namespace DotNet.Ildasm.Infrastructure
         
         public static string ToHexadecimal(this byte[] value)
         {
+            if (value == null)
+                return string.Empty;
+
             return BitConverter.ToString(value).Replace('-', ' ');
         }
     }

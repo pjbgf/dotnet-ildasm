@@ -17,7 +17,7 @@ namespace DotNet.Ildasm.Configuration
         public string OutputPath {
             get
             {
-                if (!this.IsTextOutput && string.IsNullOrEmpty(_outputPath))
+                if (string.IsNullOrEmpty(_outputPath))
                     _outputPath = Path.GetFileNameWithoutExtension(this.FilePath) + ".il";
 
                 return _outputPath;
