@@ -1,6 +1,8 @@
 using System;
+using System.Reflection;
 using System.Text;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 namespace DotNet.Ildasm
 {
@@ -33,12 +35,62 @@ namespace DotNet.Ildasm
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
-                    //TODO: Use IL types instead of .Net types #2
-                    //TODO: External Types should always be preceded by their assembly names #6
-                    _outputWriter.WriteLine(instruction.ToString());
+                    _outputWriter.WriteLine(GetInstructionIL(instruction));
                 }
             }
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
+        }
+
+        private string GetInstructionIL(Instruction instruction)
+        {
+            var instructionWithouOperand = $"IL_{instruction.Offset:x4}: {instruction.OpCode.ToString()}";
+            var operand = GetOperandIL(instruction);
+
+            return $"{instructionWithouOperand}{operand}";
+        }
+
+        private string GetOperandIL(Instruction instruction)
+        {
+            if (instruction.Operand == null)
+                return string.Empty;
+
+            var builder = new StringBuilder();
+            builder.Append(' ');
+
+            switch (instruction.OpCode.OperandType)
+            {
+                //case OperandType.InlineSwitch:
+                //    var operand = (Instruction[])instruction.Operand;
+                //    for (int index = 0; index < operand.Length; ++index)
+                //    {
+                //        if (index > 0)
+                //            builder.Append(',');
+                //        Instruction.AppendLabel(builder, operand[index]);
+                //    }
+                //    break;
+                //case OperandType.ShortInlineBrTarget:
+                //case OperandType.InlineBrTarget:
+                //    Instruction.AppendLabel(builder, (Instruction)this.operand);
+                //    break;
+                case OperandType.InlineString:
+                    builder.Append('"');
+                    builder.Append(instruction.Operand);
+                    builder.Append('"');
+                    break;
+                default:
+                    var methodReference = instruction.Operand as MethodReference;
+                    if (methodReference != null)
+                    {
+                        // MAGIC HERE INSTEAD OF THE BELOW
+                        builder.Append($"{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILType()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
+                    }
+                    else
+                        builder.Append(instruction.Operand);
+
+                    break;
+            }
+
+            return builder.ToString();
         }
 
         private string GetMethodSignature(MethodDefinition method)
@@ -100,12 +152,34 @@ namespace DotNet.Ildasm
                         builder.Append(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.ToILType()} ");
+                    builder.Append($"{parameterDefinition.ParameterType.ToILType()}");
                     builder.Append(parameterDefinition.Name);
                 }
             }
 
             builder.Append(")");
+        }
+
+        private static string GetMethodCallParameters(MethodReference method)
+        {
+            var builder = new StringBuilder();
+            builder.Append("(");
+
+            if (method.HasParameters)
+            {
+                for (int i = 0; i < method.Parameters.Count; i++)
+                {
+                    if (i > 0)
+                        builder.Append(", ");
+
+                    var parameterDefinition = method.Parameters[i];
+                    builder.Append($"{parameterDefinition.ParameterType.ToILType()}");
+                    builder.Append(parameterDefinition.Name);
+                }
+            }
+
+            builder.Append(")");
+            return builder.ToString();
         }
     }
 }
