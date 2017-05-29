@@ -1,6 +1,6 @@
 namespace DotNet.Ildasm
 {
-    internal interface IOutputWriter
+    public interface IOutputWriter
     {
         void Write(string value);
         void WriteLine(string value = "");

@@ -1,0 +1,21 @@
+language: csharp
+dist: trusty
+
+matrix:
+  include:
+    - dotnet: 1.0.1
+      mono: none
+    - dotnet: 1.0.1
+      mono: latest
+      env: RUN_MONO_TESTS=1; FrameworkPathOverride=/usr/lib/mono/4.5/
+
+before_install:
+- chmod +x build.sh
+- chmod +x run-cross-checks.sh
+- dotnet restore
+
+install:
+- ./build.sh -c Release
+
+script:
+- ./run-cross-checks.sh

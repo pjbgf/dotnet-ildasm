@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using CommandLine;
+using DotNet.Ildasm.Adapters;
 
 namespace DotNet.Ildasm
 {
@@ -20,20 +21,26 @@ namespace DotNet.Ildasm
 
         private static int RunIldasm(CommandOptions options)
         {
+            var indentationProvider = new IndentationProvider();
             IOutputWriter outputWriter = null;
 
             if (options.IsTextOutput)
-                outputWriter = new ConsoleOutputWriter();
+            {
+                outputWriter = new ConsoleOutputWriter(indentationProvider);
+            }
             else
             {
                 if (string.IsNullOrEmpty(options.OutputPath))
                     options.OutputPath = Path.GetFileNameWithoutExtension(options.FilePath) + ".il";
 
-                outputWriter = new FileOutputWriter(options.OutputPath);
+                outputWriter = new FileOutputWriter(indentationProvider, options.OutputPath);
             }
 
             var itemFilter = new ItemFilter(options.ItemFilter);
-            new Disassembler(outputWriter, options, itemFilter).Execute();
+            var assemblyDataProcessor = new AssemblyDataProcessor(options.FilePath, outputWriter);
+            var assemblyDefinitionResolver = new AssemblyDefinitionResolver();
+            
+            new Disassembler(assemblyDataProcessor, assemblyDefinitionResolver).Execute(options, itemFilter);
 
             return 0;
         }

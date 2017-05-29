@@ -1,4 +1,4 @@
-version: '0.1.{build}' 
+version: '{build}' 
 configuration:
 - Release
 platform: Any CPU 
@@ -13,21 +13,19 @@ init:
 install:
 - choco install gitversion.portable -pre -y
 
-assembly_info:
-  patch: false
-
 before_build:
 - nuget restore
 - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 build_script:
-- dotnet build
+- build -c Release
 
 test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
+- run-cross-checks.cmd
 
 after_test:
-- dotnet pack
+- dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
 
 artifacts:
 - path: '**\*.nupkg'
