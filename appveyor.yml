@@ -32,6 +32,9 @@ after_test:
 artifacts:
 - path: '**\*.nupkg'
 
+- path: ReleaseNotes.md
+  name: Release notes
+
 deploy:
   - provider: NuGet
     server: 
@@ -47,13 +50,6 @@ deploy:
     prerelease: true
     on:
       appveyor_repo_tag: false        # deploy on tag push only
-
-artifacts:
-
-  - path: /.*\.nupkg/
-
-  - path: ReleaseNotes.md
-    name: Release notes
 
 skip_commits:
   files: '**/*.md'
