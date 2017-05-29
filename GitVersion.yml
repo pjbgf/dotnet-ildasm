@@ -1,6 +1,6 @@
 next-version: 0.3.1
 branches:
-  features?[/-]:
+  feature:
     mode: ContinuousDeployment
     tag: beta
   master: {}
