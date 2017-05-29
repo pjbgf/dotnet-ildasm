@@ -1,5 +1,6 @@
 using Mono.Cecil;
 using Mono.Collections.Generic;
+using DotNet.Ildasm.Infrastructure;
 
 namespace DotNet.Ildasm
 {

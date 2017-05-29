@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotNet.Ildasm
+namespace DotNet.Ildasm.Infrastructure
 {
     public static class FormatExtensions
     {
