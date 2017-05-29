@@ -43,11 +43,17 @@ deploy:
     description: 'Bug fixes.'
     auth_token:
       secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
-    artifact: /.*\.nupkg/|ReleaseNotes.md
     draft: true
     prerelease: true
     on:
       appveyor_repo_tag: false        # deploy on tag push only
+
+artifacts:
+
+  - path: /.*\.nupkg/
+
+  - path: ReleaseNotes.md
+    name: Release notes
 
 skip_commits:
   files: '**/*.md'
