@@ -22,7 +22,19 @@ namespace DotNet.Ildasm.Tests
 
             _assemblyDefinitionResolver.Resolve(Arg.Any<string>()).Returns(assemblyDefinition);
         }
-        
+
+        [Fact]
+        public void Not_Execute_If_Assembly_File_Does_Not_Exist()
+        {
+            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            _assemblyDefinitionResolver.Resolve(Arg.Any<string>()).Returns((AssemblyDefinition)null);
+
+            ExecutionResult executionResult = disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
+
+            Assert.False(executionResult.Succeeded);
+            Assert.Equal("Assembly could not be loaded, please check the path and try again.", executionResult.ErrorMessage);
+        }
+
         [Fact]
         public void Write_Assembly_ExternalReferences_then_AssemblySection()
         {
