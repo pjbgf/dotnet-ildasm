@@ -1,5 +1,6 @@
 using System.Text;
 using Mono.Cecil;
+using System.Reflection;
 
 namespace DotNet.Ildasm
 {
@@ -32,9 +33,22 @@ namespace DotNet.Ildasm
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
-                    //TODO: Use IL types instead of .Net types #2
                     //TODO: External Types should always be preceded by their assembly names #6
-                    _outputWriter.WriteLine(instruction.ToString());
+                    string output = instruction.ToString();
+                    if (instruction.Operand != null)
+                    {
+                        PropertyInfo fieldType = instruction.Operand.GetType().GetProperty("FieldType");
+                        if(fieldType == null)
+                        {
+                            fieldType = instruction.Operand.GetType().GetProperty("ReturnType");
+                        }
+                        object value = fieldType.GetValue(instruction.Operand);
+                        var fullName = (string)value.GetType().GetProperty("FullName").GetValue(value);
+                        var name = (string)value.GetType().GetProperty("Name").GetValue(value);
+                        output = output.Replace(fullName, name.ToLowerInvariant());
+                    }
+                    _outputWriter.WriteLine(output);
+
                 }
             }
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
