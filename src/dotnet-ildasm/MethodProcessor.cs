@@ -57,37 +57,20 @@ namespace DotNet.Ildasm
             var builder = new StringBuilder();
             builder.Append(' ');
 
-            switch (instruction.OpCode.OperandType)
+            if (instruction.OpCode.OperandType == OperandType.InlineString)
             {
-                //case OperandType.InlineSwitch:
-                //    var operand = (Instruction[])instruction.Operand;
-                //    for (int index = 0; index < operand.Length; ++index)
-                //    {
-                //        if (index > 0)
-                //            builder.Append(',');
-                //        Instruction.AppendLabel(builder, operand[index]);
-                //    }
-                //    break;
-                //case OperandType.ShortInlineBrTarget:
-                //case OperandType.InlineBrTarget:
-                //    Instruction.AppendLabel(builder, (Instruction)this.operand);
-                //    break;
-                case OperandType.InlineString:
-                    builder.Append('"');
+                builder.Append('"');
+                builder.Append(instruction.Operand);
+                builder.Append('"');
+            }
+            else
+            {
+                var methodReference = instruction.Operand as MethodReference;
+                if (methodReference != null)
+                    builder.Append(
+                        $"{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILType()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
+                else
                     builder.Append(instruction.Operand);
-                    builder.Append('"');
-                    break;
-                default:
-                    var methodReference = instruction.Operand as MethodReference;
-                    if (methodReference != null)
-                    {
-                        // MAGIC HERE INSTEAD OF THE BELOW
-                        builder.Append($"{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILType()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
-                    }
-                    else
-                        builder.Append(instruction.Operand);
-
-                    break;
             }
 
             return builder.ToString();
@@ -152,7 +135,7 @@ namespace DotNet.Ildasm
                         builder.Append(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.ToILType()}");
+                    builder.Append($"{parameterDefinition.ParameterType.ToILType()} ");
                     builder.Append(parameterDefinition.Name);
                 }
             }
@@ -173,7 +156,7 @@ namespace DotNet.Ildasm
                         builder.Append(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.ToILType()}");
+                    builder.Append($"{parameterDefinition.ParameterType.ToILType()} ");
                     builder.Append(parameterDefinition.Name);
                 }
             }
