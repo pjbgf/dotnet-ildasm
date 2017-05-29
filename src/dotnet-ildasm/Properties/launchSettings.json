@@ -2,7 +2,7 @@
   "profiles": {
     "dotnet-ildasm": {
       "commandName": "Project",
-      "commandLineArgs": "..\\dotnet-ildasm.Sample\\bin\\Debug\\netstandard1.6\\dotnet-ildasm.Sample.dll -t"
+      "commandLineArgs": "..\\dotnet-ildasm.Sample\\bin\\Debug\\netstandard1.6\\dotnet-ildasm.Sample.dll"
     }
   }
 }
