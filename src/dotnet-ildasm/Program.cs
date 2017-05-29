@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using CommandLine;
 using DotNet.Ildasm.Adapters;
 
@@ -32,6 +33,15 @@ namespace DotNet.Ildasm
             {
                 if (string.IsNullOrEmpty(options.OutputPath))
                     options.OutputPath = Path.GetFileNameWithoutExtension(options.FilePath) + ".il";
+
+                if (File.Exists(options.OutputPath) && !options.ForceOutputOverwrite)
+                {
+                    Console.WriteLine($"The file {options.OutputPath} already exists. Use --force to force it to be overwritten.");
+                }
+                else
+                {
+                    File.Delete(options.OutputPath);
+                }
 
                 outputWriter = new FileOutputWriter(indentationProvider, options.OutputPath);
             }
