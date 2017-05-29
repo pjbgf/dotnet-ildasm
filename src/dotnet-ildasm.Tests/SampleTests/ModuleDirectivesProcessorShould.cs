@@ -2,7 +2,7 @@ using System;
 using NSubstitute;
 using Xunit;
 
-namespace DotNet.Ildasm.SampleTests
+namespace DotNet.Ildasm.Tests.SampleTests
 {
     public class ModuleDirectivesProcessorShould
     {

@@ -3,7 +3,7 @@ using Mono.Cecil;
 using NSubstitute;
 using Xunit;
 
-namespace DotNet.Ildasm.SampleTests
+namespace DotNet.Ildasm.Tests.SampleTests
 {
     public class MethodProcessorShould
     {
