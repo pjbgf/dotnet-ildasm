@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using CommandLine;
 
-namespace DotNet.Ildasm
+namespace DotNet.Ildasm.Configuration
 {
     public class CommandOptions
     {

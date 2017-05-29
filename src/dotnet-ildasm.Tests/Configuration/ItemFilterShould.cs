@@ -1,8 +1,8 @@
 using System;
+using DotNet.Ildasm.Configuration;
 using Xunit;
-using DotNet.Ildasm;
 
-namespace DotNet.Ildasm.Tests
+namespace DotNet.Ildasm.Tests.Configuration
 {
     public class ItemFilterShould
     {

@@ -2,6 +2,7 @@
 using System.IO;
 using CommandLine;
 using DotNet.Ildasm.Adapters;
+using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
 {

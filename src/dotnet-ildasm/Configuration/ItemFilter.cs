@@ -1,6 +1,6 @@
 using System;
 
-namespace DotNet.Ildasm
+namespace DotNet.Ildasm.Configuration
 {
     public class ItemFilter
     {

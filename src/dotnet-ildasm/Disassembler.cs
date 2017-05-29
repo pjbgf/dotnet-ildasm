@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
 {

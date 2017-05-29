@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DotNet.Ildasm.Configuration;
 using Mono.Cecil;
 
 namespace DotNet.Ildasm
