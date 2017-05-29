@@ -1,8 +1,7 @@
 assembly-versioning-scheme: MajorMinorPatch
-mode: Mainline
 next-version: 0.6.1
 branches:
-  feature:
+  features?[/-]:
     mode: ContinuousDeployment
     tag: beta
   master: {}

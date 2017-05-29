@@ -11,7 +11,7 @@ init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0") 
 
 install:
-- choco install gitversion.portable -pre -y
+- choco install gitversion.portable -y
 
 before_build:
 - nuget restore
