@@ -2,14 +2,14 @@ namespace DotNet.Ildasm
 {
     public class ExecutionResult
     {
-        public ExecutionResult(bool succeeded, string errorMessage = "")
+        public ExecutionResult(bool succeeded, string message = "")
         {
             Succeeded = succeeded;
-            ErrorMessage = errorMessage;
+            Message = message;
         }
 
         public bool Succeeded { get; }
 
-        public string ErrorMessage { get; }
+        public string Message { get; }
     }
 }

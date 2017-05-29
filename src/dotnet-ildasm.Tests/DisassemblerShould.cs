@@ -32,7 +32,19 @@ namespace DotNet.Ildasm.Tests
             ExecutionResult executionResult = disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
 
             Assert.False(executionResult.Succeeded);
-            Assert.Equal("Assembly could not be loaded, please check the path and try again.", executionResult.ErrorMessage);
+            Assert.Equal("Assembly could not be loaded, please check the path and try again.", executionResult.Message);
+        }
+
+        [Fact]
+        public void Define_OutputFile_Name_If_None_Provided_In_File_Export_Mode()
+        {
+            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            var commandOptions = new CommandOptions { FilePath = "AssemblyFile.dll" };
+
+            ExecutionResult executionResult = disassembler.Execute(commandOptions, new ItemFilter(string.Empty));
+
+            Assert.True(executionResult.Succeeded);
+            Assert.Equal("Assembly IL exported to AssemblyFile.il", executionResult.Message);
         }
 
         [Fact]
