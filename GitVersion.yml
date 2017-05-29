@@ -1,7 +1,5 @@
 next-version: 0.3.1
 branches:
-  releases?[/-]:
-    tag: rc
   features?[/-]:
     mode: ContinuousDeployment
     tag: beta
