@@ -3,7 +3,7 @@ next-version: 0.6.1
 branches:
   features?[/-]:
     mode: ContinuousDeployment
-    tag: beta
+    tag: beta-build
   master: {}
 ignore:
   sha: []
