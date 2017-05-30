@@ -262,3 +262,5 @@ __pycache__/
 
 # Ignore IL files
 *.il
+
+ReleaseNotes.md
