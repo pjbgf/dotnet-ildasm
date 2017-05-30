@@ -27,7 +27,7 @@ namespace DotNet.Ildasm.Tests.SampleTests
         [Fact]
         public void Be_Able_To_Write_Literal_Integer32()
         {
-            var instruction = Instruction.Create(OpCodes.Ldc_I4_S, 356);
+            var instruction = Instruction.Create(OpCodes.Ldc_I4, 356);
             var instructionProcessor = new InstructionProcessor(_outputWriter);
 
             instructionProcessor.WriteInstruction(instruction);
