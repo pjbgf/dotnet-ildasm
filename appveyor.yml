@@ -27,7 +27,7 @@ test_script:
 
 after_test:
 - dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
-- GitReleaseNotes.exe . /OutputFile ReleaseNotes.md
+- IF ($env:APPVEYOR_REPO_BRANCH -eq "master") { GitReleaseNotes.exe . /OutputFile ReleaseNotes.md }
 
 artifacts:
 - path: '**\*.nupkg'
