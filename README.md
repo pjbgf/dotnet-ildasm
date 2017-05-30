@@ -5,7 +5,7 @@
 [![Nuget](https://img.shields.io/nuget/v/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
 
 
-# Install
+# Install (as CLI Tool)
 
 1. Install dotnet-ildasm nuget in your project.
 2. Add the following entry to the .csproj of your test project:
