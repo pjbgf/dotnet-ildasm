@@ -39,8 +39,8 @@ namespace DotNet.Ildasm
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
-                    _outputWriter.WriteLine(instruction.ToString());
-                    //_instructionProcessor.WriteInstruction(instruction);
+                    //_outputWriter.WriteLine(instruction.ToString());
+                    _instructionProcessor.WriteInstruction(instruction);
                 }
             }
 
