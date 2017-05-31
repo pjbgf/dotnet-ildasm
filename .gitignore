@@ -263,4 +263,8 @@ __pycache__/
 # Ignore IL files
 *.il
 
+# Benchmark Results
+BenchmarkDotNet.Artifacts/
+
+# Release note
 ReleaseNotes.md

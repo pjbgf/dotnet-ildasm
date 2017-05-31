@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using DotNet.Ildasm;
+using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -47,8 +48,12 @@ namespace DotNet.Ildasm
             {
                 switch (instruction.Operand)
                 {
+                    case Instruction subInstruction:
+                        builder.Append($"IL_{subInstruction.Offset:x4}");
+                        break;
                     case MethodReference methodReference:
-                        builder.Append($"{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILType()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
+                        var instanceString = methodReference.HasThis ? "instance " : string.Empty;
+                        builder.Append($"{instanceString}{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILType()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
                         break;
                     case FieldDefinition fieldDefinition:
                         builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToILType()}::{fieldDefinition.Name}");
@@ -75,8 +80,7 @@ namespace DotNet.Ildasm
                         builder.Append(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.ToILType()} ");
-                    builder.Append(parameterDefinition.Name);
+                    builder.Append($"{parameterDefinition.ParameterType.ToILType()}");
                 }
             }
 
