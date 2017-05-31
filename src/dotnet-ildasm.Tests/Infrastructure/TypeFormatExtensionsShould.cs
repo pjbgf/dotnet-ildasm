@@ -17,5 +17,29 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             Assert.Equal("void", actual);
         }
+
+        [Fact]
+        public void Return_IL_Type_For_String()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
+            var propertyDefinition = type.Properties.First(x => x.Name == "Property1");
+
+            var actual = propertyDefinition.GetMethod.ReturnType.ToILType();
+
+            Assert.Equal("string", actual);
+        }
+
+        [Fact]
+        public void Return_IL_Type_For_StringArray()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
+            var methodDefinition = type.Methods.First(x => x.Name == "PublicVoidMethodParams");
+
+            var actual = methodDefinition.Parameters.First().ParameterType.ToILType();
+
+            Assert.Equal("string[]", actual);
+        }
+
+        
     }
 }

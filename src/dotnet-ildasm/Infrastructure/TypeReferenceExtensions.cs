@@ -9,6 +9,10 @@ namespace DotNet.Ildasm.Infrastructure
         {
             if (typeReference.MetadataType == MetadataType.Void)
                 return "void";
+            if (typeReference.MetadataType == MetadataType.String)
+                return "string";
+            if (typeReference.MetadataType == MetadataType.Array)
+                return $"{typeReference.GetElementType().ToILType()}[]";
 
             if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
                     StringComparison.CurrentCultureIgnoreCase) == 0)
