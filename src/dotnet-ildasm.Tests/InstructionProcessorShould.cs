@@ -59,7 +59,7 @@ namespace DotNet.Ildasm.Tests
 
             instructionProcessor.WriteInstruction(instruction);
 
-            _outputWriter.Received(1).WriteLine("IL_0000: stfld [System.Runtime]System.Int32 dotnet_ildasm.Sample.Structs.PublicStruct::X");
+            _outputWriter.Received(1).WriteLine("IL_0000: stfld int dotnet_ildasm.Sample.Structs.PublicStruct::X");
         }
 
         [Fact]

@@ -40,6 +40,15 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             Assert.Equal("string[]", actual);
         }
 
-        
+        [Fact]
+        public void Return_IL_Type_For_Int32()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
+            var methodDefinition = type.Methods.First(x => x.Name == "UsingIF");
+
+            var actual = methodDefinition.Parameters.First().ParameterType.ToILType();
+
+            Assert.Equal("int", actual);
+        }
     }
 }

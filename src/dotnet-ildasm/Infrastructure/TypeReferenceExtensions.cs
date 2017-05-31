@@ -11,6 +11,8 @@ namespace DotNet.Ildasm.Infrastructure
                 return "void";
             if (typeReference.MetadataType == MetadataType.String)
                 return "string";
+            if (typeReference.MetadataType == MetadataType.Int32)
+                return "int";
             if (typeReference.MetadataType == MetadataType.Array)
                 return $"{typeReference.GetElementType().ToILType()}[]";
 
