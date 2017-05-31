@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Mono.Cecil;
@@ -32,6 +33,8 @@ namespace DotNet.Ildasm
                 _outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
                 _outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
 
+                WriteLocalVariablesIfNeeded(method);
+
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
@@ -40,6 +43,21 @@ namespace DotNet.Ildasm
             }
 
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
+        }
+
+        private void WriteLocalVariablesIfNeeded(MethodDefinition method)
+        {
+            if (method.Body.InitLocals)
+            {
+                if (method.Body.Variables.Count == 1)
+                    _outputWriter.WriteLine($".locals init(class {method.Body.Variables.First().VariableType.ToILType()} V_0)");
+                else
+                {
+                    int parameterIndex = 0;
+                    _outputWriter.WriteLine(
+                        $".locals init(class {(string.Join($"V_{parameterIndex}, ", method.Body.Variables.Select(x => x.VariableType.ToILType())))})");
+                }
+            }
         }
 
         private string GetMethodSignature(MethodDefinition method)
