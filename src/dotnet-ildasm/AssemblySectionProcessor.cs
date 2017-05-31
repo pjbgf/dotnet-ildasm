@@ -29,7 +29,7 @@ namespace DotNet.Ildasm
                         StringComparison.CurrentCultureIgnoreCase) == 0)
                     continue;
 
-                _outputWriter.WriteLine(GetCustomAttribute(customAttribute));
+                WriteCustomAttribute(customAttribute);
             }
 
             _outputWriter.WriteLine($".hash algorithm 0x{assembly.Name.HashAlgorithm.ToString("X")}");
@@ -38,27 +38,23 @@ namespace DotNet.Ildasm
             _outputWriter.WriteLine("}");
         }
 
-        public string GetCustomAttribute(CustomAttribute customAttribute)
+        public void WriteCustomAttribute(CustomAttribute customAttribute)
         {
-            return
-                $".custom instance void {GetFullTypeName(customAttribute.AttributeType)}::{customAttribute.Constructor.Name}" +
-                $"{GetConstructorArguments(customAttribute)}";
+            _outputWriter.Write(
+                $".custom instance void {GetFullTypeName(customAttribute.AttributeType)}::{customAttribute.Constructor.Name}");
+            WriteConstructorArguments(customAttribute);
         }
 
-        private string GetConstructorArguments(CustomAttribute customAttribute)
+        private void WriteConstructorArguments(CustomAttribute customAttribute)
         {
-            StringBuilder builder = new StringBuilder();
-
             var argument = customAttribute.ConstructorArguments.FirstOrDefault();
 
             if (!customAttribute.HasConstructorArguments)
-                builder.Append("()");
+                _outputWriter.Write("()");
             else
-                builder.Append($"({argument.Type.MetadataType.ToString().ToLowerInvariant()})");
+                _outputWriter.Write($"({argument.Type.MetadataType.ToString().ToLowerInvariant()})");
 
-            builder.Append($" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )");
-
-            return builder.ToString();
+            _outputWriter.WriteLine($"= ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )");
         }
 
         public string GetFullTypeName(TypeReference typeReference)

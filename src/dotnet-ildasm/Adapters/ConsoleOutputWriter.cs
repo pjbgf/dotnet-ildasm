@@ -20,5 +20,9 @@ namespace DotNet.Ildasm.Adapters
         {
             Console.WriteLine(_indentationProvider.Apply(value));
         }
+
+        public void Dispose()
+        {
+        }
     }
 }
