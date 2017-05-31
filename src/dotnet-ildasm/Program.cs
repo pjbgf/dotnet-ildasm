@@ -23,6 +23,8 @@ namespace DotNet.Ildasm
 
         private static int PrepareToExecute(CommandOptions options)
         {
+            DeleteOutputFileWhenForceOutputOverwriteFlagOn(options);
+
             var indentationProvider = new IndentationProvider();
             var outputWriter = GetOutputWriter(options, indentationProvider);
 
@@ -33,28 +35,29 @@ namespace DotNet.Ildasm
                 return -1;
             }
 
-            DeleteOutputFileWhenForceOutputOverwriteFlagOn(options);
-
             return ExecuteDisassembler(options, outputWriter);
         }
 
         private static int ExecuteDisassembler(CommandOptions options, IOutputWriter outputWriter)
         {
-            var assemblyDataProcessor = new AssemblyDataProcessor(options.FilePath, outputWriter);
-            var assemblyDefinitionResolver = new AssemblyDefinitionResolver();
-            var disassembler = new Disassembler(assemblyDataProcessor, assemblyDefinitionResolver);
-
-            var itemFilter = new ItemFilter(options.ItemFilter);
-            var result = disassembler.Execute(options, itemFilter);
-
-            if (result.Succeeded || !options.IsTextOutput)
+            using (outputWriter)
             {
-                Console.WriteLine(result.Message);
-                return 0;
-            }
+                var assemblyDataProcessor = new AssemblyDataProcessor(options.FilePath, outputWriter);
+                var assemblyDefinitionResolver = new AssemblyDefinitionResolver();
+                var disassembler = new Disassembler(assemblyDataProcessor, assemblyDefinitionResolver);
 
-            Console.WriteLine($"Error: {result.Message}");
-            return -1;
+                var itemFilter = new ItemFilter(options.ItemFilter);
+                var result = disassembler.Execute(options, itemFilter);
+
+                if (result.Succeeded || !options.IsTextOutput)
+                {
+                    Console.WriteLine(result.Message);
+                    return 0;
+                }
+
+                Console.WriteLine($"Error: {result.Message}");
+                return -1;
+            }
         }
 
         private static void DeleteOutputFileWhenForceOutputOverwriteFlagOn(CommandOptions options)
@@ -75,7 +78,7 @@ namespace DotNet.Ildasm
             }
             else
             {
-                outputWriter = new FileOutputWriter(indentationProvider, options.OutputPath);
+                outputWriter = new FileStreamOutputWriter(indentationProvider, options.OutputPath);
             }
             return outputWriter;
         }

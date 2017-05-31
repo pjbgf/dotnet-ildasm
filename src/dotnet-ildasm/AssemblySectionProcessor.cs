@@ -40,7 +40,7 @@ namespace DotNet.Ildasm
 
         public void WriteCustomAttribute(CustomAttribute customAttribute)
         {
-            _outputWriter.WriteLine(
+            _outputWriter.Write(
                 $".custom instance void {GetFullTypeName(customAttribute.AttributeType)}::{customAttribute.Constructor.Name}");
             WriteConstructorArguments(customAttribute);
         }
@@ -54,7 +54,7 @@ namespace DotNet.Ildasm
             else
                 _outputWriter.Write($"({argument.Type.MetadataType.ToString().ToLowerInvariant()})");
 
-            _outputWriter.Write($" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )");
+            _outputWriter.WriteLine($"= ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )");
         }
 
         public string GetFullTypeName(TypeReference typeReference)

@@ -27,9 +27,10 @@ namespace DotNet.Ildasm.Adapters
             _stringBuilder.AppendLine($"{_indentationProvider.Apply(value)}{Environment.NewLine}");
         }
 
-        public void Flush()
+        public void Dispose()
         {
             File.WriteAllText(_filePath, _stringBuilder.ToString());
+            _stringBuilder.Clear();
         }
     }
 }
