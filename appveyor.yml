@@ -11,7 +11,8 @@ init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0") 
 
 install:
-- choco install gitversion.portable -pre -y
+- choco install gitversion.portable -y
+- choco install GitReleaseNotes.Portable -y
 
 before_build:
 - nuget restore
@@ -26,9 +27,13 @@ test_script:
 
 after_test:
 - dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
+#- GitReleaseNotes.exe . /OutputFile ReleaseNotes.md
 
 artifacts:
 - path: '**\*.nupkg'
+
+- path: ReleaseNotes.md
+  name: Release notes
 
 deploy:
   - provider: NuGet
@@ -36,6 +41,14 @@ deploy:
     api_key:
       secure: Hh52nD8i4YR/X5yRRaqWNchtVaH3/IvAzl9XcGPsrfQI0DnvJB9Odeju0e5yIG4D
     artifact: /.*\.nupkg/
- 
+  - provider: GitHub
+    release: v$(GitVersion_NuGetVersion)
+    auth_token:
+      secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
+    draft: true
+    prerelease: true
+    on:
+      appveyor_repo_tag: true
+
 skip_commits:
   files: '**/*.md'

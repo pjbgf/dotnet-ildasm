@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Mono.Cecil;
 
@@ -6,10 +7,12 @@ namespace DotNet.Ildasm
     public class MethodProcessor
     {
         private readonly IOutputWriter _outputWriter;
+        private readonly InstructionProcessor _instructionProcessor;
 
         public MethodProcessor(IOutputWriter outputWriter)
         {
             _outputWriter = outputWriter;
+            _instructionProcessor = new InstructionProcessor(_outputWriter);
         }
 
         public void WriteSignature(MethodDefinition method)
@@ -32,11 +35,10 @@ namespace DotNet.Ildasm
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
-                    //TODO: Use IL types instead of .Net types #2
-                    //TODO: External Types should always be preceded by their assembly names #6
-                    _outputWriter.WriteLine(instruction.ToString());
+                    _instructionProcessor.WriteInstruction(instruction);
                 }
             }
+
             _outputWriter.WriteLine($"}}// End of method {method.FullName}");
         }
 
@@ -73,8 +75,10 @@ namespace DotNet.Ildasm
 
             if (!method.IsStatic)
                 builder.Append(" instance");
+            else
+                builder.Append(" static");
 
-            builder.Append($" {method.ReturnType.MetadataType.ToString().ToLowerInvariant()}");
+            builder.Append($" {method.ReturnType.ToILType()}");
             builder.Append($" {method.Name}");
 
             AppendMethodParameters(method, builder);
@@ -97,7 +101,7 @@ namespace DotNet.Ildasm
                         builder.Append(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.MetadataType.ToString().ToLowerInvariant()} ");
+                    builder.Append($"{parameterDefinition.ParameterType.ToILType()} ");
                     builder.Append(parameterDefinition.Name);
                 }
             }

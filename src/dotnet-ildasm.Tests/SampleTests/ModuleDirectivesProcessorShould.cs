@@ -2,7 +2,7 @@ using System;
 using NSubstitute;
 using Xunit;
 
-namespace DotNet.Ildasm.SampleTests
+namespace DotNet.Ildasm.Tests.SampleTests
 {
     public class ModuleDirectivesProcessorShould
     {
@@ -17,7 +17,7 @@ namespace DotNet.Ildasm.SampleTests
         [Fact]
         public void Write_ImageBase_Directive()
         {
-            var expected = ".imagebase 0x10000000";
+            var expected = ".imagebase 0x00400000";
             var directivesProcessor = new ModuleDirectivesProcessor(DotnetIldasmSampleStandardDll, _outputWriterMock);
             
             directivesProcessor.WriteImageBaseDirective();

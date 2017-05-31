@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection.PortableExecutable;
+using DotNet.Ildasm.Infrastructure;
 
 namespace DotNet.Ildasm
 {

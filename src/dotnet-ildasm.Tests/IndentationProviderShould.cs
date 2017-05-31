@@ -1,4 +1,3 @@
-using NSubstitute;
 using Xunit;
 
 namespace DotNet.Ildasm.Tests

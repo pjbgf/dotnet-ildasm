@@ -45,22 +45,13 @@ namespace DotNet.Ildasm
 
             if (typeDefinition.BaseType != null)
                 builder.Append(
-                    $" extends {GetFullTypeName(typeDefinition.BaseType)}");
+                    $" extends {typeDefinition.BaseType.ToILType()}");
 
             if (typeDefinition.HasInterfaces)
                 builder.Append(
-                    $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.FullName))}");
+                    $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.ToILType()))}");
 
             return builder.ToString();
-        }
-
-        public string GetFullTypeName(TypeReference typeReference)
-        {
-            if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
-                    StringComparison.CurrentCultureIgnoreCase) == 0)
-                return $"{typeReference.FullName}";
-
-            return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
     }
 }

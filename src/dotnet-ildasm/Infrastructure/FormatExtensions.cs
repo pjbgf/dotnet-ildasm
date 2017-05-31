@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotNet.Ildasm
+namespace DotNet.Ildasm.Infrastructure
 {
     public static class FormatExtensions
     {
@@ -21,7 +21,10 @@ namespace DotNet.Ildasm
         
         public static string ToHexadecimal(this byte[] value)
         {
-            return BitConverter.ToString(value);
+            if (value == null)
+                return string.Empty;
+
+            return BitConverter.ToString(value).Replace('-', ' ');
         }
     }
 }

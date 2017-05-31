@@ -1,3 +1,4 @@
+using DotNet.Ildasm.Configuration;
 using Mono.Cecil;
 using Mono.Collections.Generic;
 

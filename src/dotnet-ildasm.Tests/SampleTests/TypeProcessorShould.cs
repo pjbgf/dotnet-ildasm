@@ -3,18 +3,17 @@ using System.Linq;
 using Mono.Cecil;
 using Xunit;
 
-namespace DotNet.Ildasm.SampleTests
+namespace DotNet.Ildasm.Tests.SampleTests
 {
     public class CilHelperShould
     {
         private readonly TypeProcessor _cilHelper;
         private readonly AssemblyDefinition _assemblyDefinition;
-        private static readonly string DotnetIldasmSampleStandardDll = "dotnet-ildasm.Sample.dll";
 
         public CilHelperShould()
         {
             _cilHelper = new TypeProcessor();
-            _assemblyDefinition = Mono.Cecil.AssemblyDefinition.ReadAssembly(DotnetIldasmSampleStandardDll);
+            _assemblyDefinition = DataHelper.SampleAssembly.Value;
         }
 
         [Theory]

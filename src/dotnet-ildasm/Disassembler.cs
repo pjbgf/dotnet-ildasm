@@ -1,4 +1,4 @@
-﻿using System;
+﻿using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
 {
@@ -13,10 +13,12 @@ namespace DotNet.Ildasm
             _assemblyResolver = assemblyResolver;
         }
 
-        public void Execute(CommandOptions options, ItemFilter itemFilter)
+        public ExecutionResult Execute(CommandOptions options, ItemFilter itemFilter)
         {
             var assembly = _assemblyResolver.Resolve(options.FilePath);
-
+            if (assembly == null)
+                return new ExecutionResult(false, "Assembly could not be loaded, please check the path and try again.");
+            
             if (!itemFilter.HasFilter)
             {
                 _assemblyDataProcessor.WriteAssemblyExternalReferences(assembly);
@@ -30,6 +32,11 @@ namespace DotNet.Ildasm
                 
                 _assemblyDataProcessor.WriteModuleTypes(module.Types, itemFilter);
             }
+            
+            if (!options.IsTextOutput)
+                return new ExecutionResult(true, $"Assembly IL exported to {options.OutputPath}");
+
+            return new ExecutionResult(true);
         }
     }
 }
