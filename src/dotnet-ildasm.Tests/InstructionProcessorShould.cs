@@ -72,7 +72,7 @@ namespace DotNet.Ildasm.Tests
 
             instructionProcessor.WriteInstruction(instruction);
 
-            _outputWriter.Received(1).WriteLine("IL_0000: call instance [System.Runtime]System.Void dotnet_ildasm.Sample.Classes.PublicClass::PublicVoidMethodSingleParameter([System.Runtime]System.String)");
+            _outputWriter.Received(1).WriteLine("IL_0000: call instance void dotnet_ildasm.Sample.Classes.PublicClass::PublicVoidMethodSingleParameter([System.Runtime]System.String)");
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace DotNet.Ildasm.Tests
 
             instructionProcessor.WriteInstruction(instruction);
             
-            _outputWriter.Received(1).WriteLine("IL_0000: call [System.Runtime]System.Void dotnet_ildasm.Sample.Classes.StaticClass::Method2()");
+            _outputWriter.Received(1).WriteLine("IL_0000: call void dotnet_ildasm.Sample.Classes.StaticClass::Method2()");
         }
     }
 }

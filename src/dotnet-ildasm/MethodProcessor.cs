@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 
 namespace DotNet.Ildasm
@@ -38,8 +39,8 @@ namespace DotNet.Ildasm
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
-                    //_outputWriter.WriteLine(instruction.ToString());
-                    _instructionProcessor.WriteInstruction(instruction);
+                    _outputWriter.WriteLine(instruction.ToString());
+                    //_instructionProcessor.WriteInstruction(instruction);
                 }
             }
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Mono.Collections.Generic;
 

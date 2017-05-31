@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using DotNet.Ildasm;
+using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
