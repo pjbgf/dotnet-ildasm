@@ -48,7 +48,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             var actual = methodDefinition.Parameters.First().ParameterType.ToILType();
 
-            Assert.Equal("int", actual);
+            Assert.Equal("int32", actual);
         }
     }
 }
