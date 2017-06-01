@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp1.0;netstandard1.5;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.0;netcoreapp1.1;netstandard1.5;net45</TargetFrameworks>
     <RootNamespace>DotNet.Ildasm</RootNamespace>
     <Version>$(GitVersion_NuGetVersion)</Version>
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool.</Description>
-    <PackageReleaseNotes>This version adds code indentation and support to structs.</PackageReleaseNotes>
+    <PackageReleaseNotes>This version adds code indentation and allows files to be reassembled by MS ILASM.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
-    <PackageTags>dotnet-ildasm, ildasm</PackageTags>
+    <PackageTags>dotnet-ildasm, ildasm, cil, msil, dotnet-cli</PackageTags>
     <Authors>pjbgf</Authors>
     <PackageProjectUrl>https://github.com/pjbgf/dotnet-ildasm</PackageProjectUrl>
   </PropertyGroup>
