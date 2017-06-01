@@ -19,7 +19,7 @@ namespace DotNet.Ildasm.Infrastructure
             if(typeReference.MetadataType == MetadataType.ValueType || typeReference.MetadataType == MetadataType.Class)
                 return $"{typeReference.MetadataType.ToString().ToLowerInvariant()} {ToILNameFormatt(typeReference)}";
 
-            if (Enum.IsDefined(typeof(MetadataType), typeReference.MetadataType) && typeReference.MetadataType != MetadataType.Array)
+            if (typeReference.MetadataType != MetadataType.Array)
                 return typeReference.MetadataType.ToString().ToLowerInvariant();
 
             if (typeReference.MetadataType == MetadataType.Array)
