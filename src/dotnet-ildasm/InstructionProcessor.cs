@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using DotNet.Ildasm;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -53,10 +52,10 @@ namespace DotNet.Ildasm
                         break;
                     case MethodReference methodReference:
                         var instanceString = methodReference.HasThis ? "instance " : string.Empty;
-                        builder.Append($"{instanceString}{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILType()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
+                        builder.Append($"{instanceString}{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILNameFormatt()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
                         break;
                     case FieldDefinition fieldDefinition:
-                        builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToILType()}::{fieldDefinition.Name}");
+                        builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToILNameFormatt()}::{fieldDefinition.Name}");
                         break;
                     default:
                         builder.Append(instruction.Operand);
