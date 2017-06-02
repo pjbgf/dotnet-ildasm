@@ -46,11 +46,11 @@ namespace DotNet.Ildasm
 
             if (typeDefinition.BaseType != null)
                 builder.Append(
-                    $" extends {typeDefinition.BaseType.ToILNameFormatt()}");
+                    $" extends {typeDefinition.BaseType.ToPrefixedTypeName()}");
 
             if (typeDefinition.HasInterfaces)
                 builder.Append(
-                    $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.ToILNameFormatt()))}");
+                    $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.ToPrefixedTypeName()))}");
 
             return builder.ToString();
         }

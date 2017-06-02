@@ -52,10 +52,10 @@ namespace DotNet.Ildasm
                         break;
                     case MethodReference methodReference:
                         var instanceString = methodReference.HasThis ? "instance " : string.Empty;
-                        builder.Append($"{instanceString}{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToILNameFormatt()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
+                        builder.Append($"{instanceString}{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToPrefixedTypeName()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
                         break;
                     case FieldDefinition fieldDefinition:
-                        builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToILNameFormatt()}::{fieldDefinition.Name}");
+                        builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::{fieldDefinition.Name}");
                         break;
                     default:
                         builder.Append(instruction.Operand);
