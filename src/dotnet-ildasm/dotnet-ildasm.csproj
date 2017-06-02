@@ -10,7 +10,7 @@
     <PackageReleaseNotes>This version adds code indentation and support to structs.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
-    <PackageTags>dotnet-ildasm, ildasm, cil, msil, dotnet-cli</PackageTags>
+    <PackageTags>dotnet-ildasm, ildasm, cil, msil, dotnet-cli, disassembler, dotnet-core</PackageTags>
     <Authors>pjbgf</Authors>
     <PackageProjectUrl>https://github.com/pjbgf/dotnet-ildasm</PackageProjectUrl>
   </PropertyGroup>
