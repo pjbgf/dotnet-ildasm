@@ -121,7 +121,11 @@ namespace DotNet.Ildasm
 
                     var parameterDefinition = method.Parameters[i];
                     builder.Append($"{parameterDefinition.ParameterType.ToILType()} ");
-                    builder.Append(parameterDefinition.Name);
+
+                    if (parameterDefinition.Name == "value")
+                        builder.Append($"'{parameterDefinition.Name}'");
+                    else 
+                        builder.Append(parameterDefinition.Name);
                 }
             }
 

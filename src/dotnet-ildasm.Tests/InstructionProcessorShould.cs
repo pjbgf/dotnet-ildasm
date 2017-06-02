@@ -47,7 +47,6 @@ namespace DotNet.Ildasm.Tests
             instructionProcessor.WriteInstruction(backingFieldReferenceInstruction);
 
             _outputWriter.Received(1).WriteLine("IL_0001: ldfld string dotnet_ildasm.Sample.Classes.PublicClass::'<Property1>k__BackingField'");
-
         }
 
         [Fact]
