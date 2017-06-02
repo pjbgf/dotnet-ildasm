@@ -39,9 +39,7 @@ namespace DotNet.Ildasm
 
             if (instruction.OpCode.OperandType == OperandType.InlineString)
             {
-                builder.Append('"');
-                builder.Append(instruction.Operand);
-                builder.Append('"');
+                builder.Append($"\"{instruction.Operand}\"");
             }
             else
             {
@@ -55,7 +53,11 @@ namespace DotNet.Ildasm
                         builder.Append($"{instanceString}{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToPrefixedTypeName()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
                         break;
                     case FieldDefinition fieldDefinition:
-                        builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::{fieldDefinition.Name}");
+                        //HACK: There must be another way to identify when single quotes are required.
+                        if (fieldDefinition.Name.Contains("<"))
+                            builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::'{fieldDefinition.Name}'");
+                        else
+                            builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::{fieldDefinition.Name}");
                         break;
                     default:
                         builder.Append(instruction.Operand);

@@ -37,6 +37,20 @@ namespace DotNet.Ildasm.Tests
         }
 
         [Fact]
+        public void Be_Able_To_Write_BackingField()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
+            var methoDefinition = type.Methods.First(x => x.Name == "get_Property1");
+            var backingFieldReferenceInstruction = methoDefinition.Body.Instructions[1];
+            var instructionProcessor = new InstructionProcessor(_outputWriter);
+            
+            instructionProcessor.WriteInstruction(backingFieldReferenceInstruction);
+
+            _outputWriter.Received(1).WriteLine("IL_0001: ldfld string dotnet_ildasm.Sample.Classes.PublicClass::'<Property1>k__BackingField'");
+
+        }
+
+        [Fact]
         public void Be_Able_To_Write_IF_statement()
         {
             var instructionTarget = Instruction.Create(OpCodes.Nop);
