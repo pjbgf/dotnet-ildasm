@@ -13,7 +13,7 @@ before_install:
 - chmod +x build.sh
 - chmod +x run-cross-checks.sh
 - dotnet restore
-- sudo dpkg-query -l | grep mono-utils *
+- sudo apt-get install mono-utils
 
 install:
 - ./build.sh -c Release
