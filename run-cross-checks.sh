@@ -22,9 +22,9 @@ else
     mono src/dotnet-ildasm/bin/Release/net45/dotnet-ildasm.exe src/dotnet-ildasm.Sample/bin/Release/net45/dotnet-ildasm.Sample.exe -o net45_net45.il
     
 	echo "Reassembling .IL's onto Portable executable files again."
-	mono ilasm netcore_netstandard16.il /exe /output:netcore_netstandard16.exe
-	mono ilasm netcore_net45.il /exe /output:netcore_net45.exe
-	mono ilasm net45_netcore.il /exe /output:net45_netcore.exe
-	mono ilasm net45_net45.il /exe /output:net45_net45.exe
+	ilasm netcore_netstandard16.il /exe /output:netcore_netstandard16.exe
+	ilasm netcore_net45.il /exe /output:netcore_net45.exe
+	ilasm net45_netcore.il /exe /output:net45_netcore.exe
+	ilasm net45_net45.il /exe /output:net45_net45.exe
 
 fi
