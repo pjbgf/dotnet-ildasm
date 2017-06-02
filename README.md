@@ -3,7 +3,7 @@
 [![Linux Build](https://travis-ci.org/pjbgf/dotnet-ildasm.svg?branch=master)](https://travis-ci.org/pjbgf/dotnet-ildasm)
 [![Nuget](https://img.shields.io/nuget/dt/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
 [![Nuget](https://img.shields.io/nuget/v/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
-
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://pjbgf.mit-license.org)  
 
 # Install (as CLI Tool)
 
