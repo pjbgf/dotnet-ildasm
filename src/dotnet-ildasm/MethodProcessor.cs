@@ -39,7 +39,6 @@ namespace DotNet.Ildasm
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
-                    //_outputWriter.WriteLine(instruction.ToString());
                     _instructionProcessor.WriteInstruction(instruction);
                 }
             }
@@ -53,7 +52,7 @@ namespace DotNet.Ildasm
             {
                 if (method.Body.Variables.Count == 1)
                     _outputWriter.WriteLine($".locals init(class {method.Body.Variables.First().VariableType.ToILType()} V_0)");
-                else
+                else if(method.Body.Variables.Count > 1)
                 {
                     int parameterIndex = 0;
                     _outputWriter.WriteLine(

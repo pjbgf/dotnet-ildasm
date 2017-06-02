@@ -21,6 +21,15 @@ else
     echo "Executing net45 ildasm.exe against net45 library..."
     mono src/dotnet-ildasm/bin/Release/net45/dotnet-ildasm.exe src/dotnet-ildasm.Sample/bin/Release/net45/dotnet-ildasm.Sample.exe -o net45_net45.il
     
+fi
+
+if [[ ! -v RUN_REASSEMBLE_TESTS ]]
+then
+
+    echo "Not running reassembling tests."
+
+else
+
 	echo "Reassembling .IL's onto Portable executable files again."
 	ilasm netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
 	ilasm netcore_net45.il /exe /output:netcore_net45.exe
