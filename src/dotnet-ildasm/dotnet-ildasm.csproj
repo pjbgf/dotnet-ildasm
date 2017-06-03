@@ -7,23 +7,18 @@
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool.</Description>
-    <PackageReleaseNotes>This version adds code indentation and support to structs.</PackageReleaseNotes>
+    <PackageReleaseNotes>This version adds support to properties.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
     <PackageTags>dotnet-ildasm, ildasm, cil, msil, dotnet-cli, disassembler, dotnet-core</PackageTags>
     <Authors>pjbgf</Authors>
     <PackageProjectUrl>https://github.com/pjbgf/dotnet-ildasm</PackageProjectUrl>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="System.Reflection.Metadata" Version="1.4.2.0" />
     <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
     <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
+    <PackageReference Include="System.Reflection.Metadata" Version="1.4.2.0" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-    <PackageReference Include="CommandLineParser" Version="1.9.71" />
-    <PackageReference Include="Mono.Cecil" Version="0.9.6.4" />
-  </ItemGroup>
+  
 </Project>
