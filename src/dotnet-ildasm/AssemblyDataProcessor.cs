@@ -1,4 +1,5 @@
 using DotNet.Ildasm.Configuration;
+using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Mono.Collections.Generic;
 
@@ -9,14 +10,12 @@ namespace DotNet.Ildasm
         private readonly IOutputWriter _outputWriter;
         private readonly AssemblyReferencesProcessor _assemblyReferencesProcessor;
         private readonly ModuleDirectivesProcessor _moduleDirectivesProcessor;
-        private readonly AssemblySectionProcessor _assemblySectionProcessor;
 
         public AssemblyDataProcessor(string assemblyPath, IOutputWriter outputWriter)
         {
             _outputWriter = outputWriter;
             _moduleDirectivesProcessor = new ModuleDirectivesProcessor(assemblyPath, outputWriter);
             _assemblyReferencesProcessor = new AssemblyReferencesProcessor(outputWriter);
-            _assemblySectionProcessor = new AssemblySectionProcessor(outputWriter);
         }
         
         public void WriteAssemblyExternalReferences(AssemblyDefinition assembly)
@@ -26,8 +25,7 @@ namespace DotNet.Ildasm
 
         public void WriteAssemblySection(AssemblyDefinition assembly)
         {
-            _assemblySectionProcessor.WriteAssemblyName(assembly);
-            _assemblySectionProcessor.WriteBody(assembly);
+            assembly.WriteIL(_outputWriter);
         }
 
         public void WriteModuleSection(ModuleDefinition module)
@@ -46,7 +44,7 @@ namespace DotNet.Ildasm
             if (types?.Count > 0)
             {
                 var typesProcessor = new TypesProcessor(_outputWriter, itemFilter);
-                typesProcessor.Write(types);   
+                typesProcessor.Write(types);
             }
         }
     }
