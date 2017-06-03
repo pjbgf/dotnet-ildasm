@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Xunit;
 
-namespace DotNet.Ildasm.Tests.SampleTests
+namespace DotNet.Ildasm.Tests.Infrastructure
 {
     public class TypeDefinitionExtensions
     {

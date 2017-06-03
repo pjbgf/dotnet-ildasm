@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using DotNet.Ildasm.Infrastructure;
-using Mono.Cecil;
 using Xunit;
 
 namespace DotNet.Ildasm.Tests.Infrastructure
