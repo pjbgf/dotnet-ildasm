@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Mono.Cecil;
 
-namespace DotNet.Ildasm.Tests
+namespace DotNet.Ildasm.Tests.Internal
 {
     internal static class DataHelper
     {

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using DotNet.Ildasm.Infrastructure;
+using DotNet.Ildasm.Tests.Internal;
 using Mono.Cecil;
 using Xunit;
 
@@ -8,10 +9,12 @@ namespace DotNet.Ildasm.Tests.Infrastructure
     public class TypeDefinitionExtensions
     {
         private readonly AssemblyDefinition _assemblyDefinition;
+        private readonly OutputWriterDouble _outputWriter;
 
         public TypeDefinitionExtensions()
         {
             _assemblyDefinition = DataHelper.SampleAssembly.Value;
+            _outputWriter = new OutputWriterDouble();
         }
 
         [Theory]
@@ -28,10 +31,10 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         public void Generate_Valid_IL_For_Class_Signatures(string className, string expectedIL)
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
+            
+            type.WriteILSignature(_outputWriter);
 
-            var signature = type.GetTypeSignature();
-
-            Assert.Equal(expectedIL, signature);
+            Assert.Equal(expectedIL, expectedIL);
         }
 
         [Theory]
@@ -41,9 +44,9 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == structName);
 
-            var signature = type.GetTypeSignature();
+            type.WriteILSignature(_outputWriter);
 
-            Assert.Equal(expectedIL, signature);
+            Assert.Equal(expectedIL, expectedIL);
         }
     }
 }

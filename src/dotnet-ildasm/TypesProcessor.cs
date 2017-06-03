@@ -34,7 +34,7 @@ namespace DotNet.Ildasm
 
         private void HandleType(TypeDefinition type)
         {
-            _outputWriter.WriteLine(type.GetTypeSignature());
+            type.WriteILSignature(_outputWriter);
             _outputWriter.WriteLine("{");
 
             foreach (var method in type.Methods)

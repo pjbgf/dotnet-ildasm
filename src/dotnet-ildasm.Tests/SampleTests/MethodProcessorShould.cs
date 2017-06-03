@@ -1,4 +1,5 @@
 using System.Linq;
+using DotNet.Ildasm.Tests.Internal;
 using Mono.Cecil;
 using NSubstitute;
 using Xunit;

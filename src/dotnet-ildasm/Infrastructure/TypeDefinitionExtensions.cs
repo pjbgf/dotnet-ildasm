@@ -6,49 +6,47 @@ namespace DotNet.Ildasm.Infrastructure
 {
     public static class TypeDefinitionExtensions
     {
-        public static string GetTypeSignature(this TypeDefinition typeDefinition)
+        public static void WriteILSignature(this TypeDefinition typeDefinition, IOutputWriter outputWriter)
         {
-            var builder = new StringBuilder();
-
-            builder.Append(".class");
+            outputWriter.Write(".class");
 
             if (typeDefinition.IsPublic)
-                builder.Append(" public");
+                outputWriter.Write(" public");
             else
-                builder.Append(" private");
+                outputWriter.Write(" private");
 
             if (typeDefinition.IsSequentialLayout)
-                builder.Append(" sequential");
+                outputWriter.Write(" sequential");
 
             if (typeDefinition.IsInterface)
-                builder.Append(" interface");
+                outputWriter.Write(" interface");
 
             if (typeDefinition.IsAbstract)
-                builder.Append(" abstract");
+                outputWriter.Write(" abstract");
 
             if (typeDefinition.IsAutoLayout)
-                builder.Append(" auto");
+                outputWriter.Write(" auto");
 
             if (typeDefinition.IsAnsiClass)
-                builder.Append(" ansi");
+                outputWriter.Write(" ansi");
 
             if (typeDefinition.IsSealed)
-                builder.Append(" sealed");
+                outputWriter.Write(" sealed");
 
             if (typeDefinition.IsBeforeFieldInit)
-                builder.Append(" beforefieldinit");
+                outputWriter.Write(" beforefieldinit");
 
-            builder.Append($" {typeDefinition.FullName}");
+            outputWriter.Write($" {typeDefinition.FullName}");
 
             if (typeDefinition.BaseType != null)
-                builder.Append(
+                outputWriter.Write(
                     $" extends {typeDefinition.BaseType.ToIL()}");
 
             if (typeDefinition.HasInterfaces)
-                builder.Append(
+                outputWriter.Write(
                     $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.ToIL()))}");
 
-            return builder.ToString();
+            outputWriter.WriteLine();
         }
     }
 }
