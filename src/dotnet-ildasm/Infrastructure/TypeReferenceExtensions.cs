@@ -16,13 +16,12 @@ namespace DotNet.Ildasm.Infrastructure
 
         public static string ToIL(this TypeReference typeReference)
         {
-            if (typeReference.MetadataType == MetadataType.Class || typeReference.MetadataType == MetadataType.Object)
+            if (typeReference.MetadataType == MetadataType.Class ||
+                typeReference.MetadataType == MetadataType.Object ||
+                typeReference.MetadataType == MetadataType.ValueType)
             {
                 return ToPrefixedTypeName(typeReference);
             }
-
-            if (typeReference.MetadataType == MetadataType.ValueType)
-                return $"{ToPrefixedTypeName(typeReference)}";
 
             if (typeReference.MetadataType != MetadataType.Array)
                 return typeReference.MetadataType.ToString().ToLowerInvariant();
