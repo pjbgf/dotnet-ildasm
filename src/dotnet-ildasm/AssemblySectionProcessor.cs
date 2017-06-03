@@ -30,7 +30,7 @@ namespace DotNet.Ildasm
                         StringComparison.CurrentCultureIgnoreCase) == 0)
                     continue;
 
-                _outputWriter.Write(customAttribute.ToIL());
+                _outputWriter.WriteLine(customAttribute.ToIL());
             }
 
             _outputWriter.WriteLine($".hash algorithm 0x{assembly.Name.HashAlgorithm.ToString("X")}");
