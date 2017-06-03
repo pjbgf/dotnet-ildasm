@@ -49,7 +49,7 @@ namespace DotNet.Ildasm
 
         private void HandleMethod(MethodDefinition method)
         {
-            _methodProcessor.WriteSignature(method);
+            method.WriteILSignature(_outputWriter);
             _methodProcessor.WriteBody(method);
         }
     }

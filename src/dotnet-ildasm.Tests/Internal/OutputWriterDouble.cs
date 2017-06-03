@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace DotNet.Ildasm.Tests.Internal
 {
@@ -17,7 +18,11 @@ namespace DotNet.Ildasm.Tests.Internal
 
         public override string ToString()
         {
-            return _stringBuilder.ToString();
+            var content = _stringBuilder.ToString();
+            if (content.EndsWith(Environment.NewLine))
+                return content.Substring(0, content.Length - 4);
+
+            return content;
         }
 
         public void Write(string value)
