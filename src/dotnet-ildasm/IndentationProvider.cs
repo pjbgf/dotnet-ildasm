@@ -13,9 +13,9 @@ namespace DotNet.Ildasm
             if (code.StartsWith("}"))
             {
                 alreadyUpdatedIndentation = true;
-                UpdateIndentationLevel(code);   
+                UpdateIndentationLevel(code);
             }
-                
+            
             var totalIndentation = _currentLevel * _numSpaces;
             var indentedCode = code.PadLeft(code.Length + totalIndentation);
             

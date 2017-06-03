@@ -4,7 +4,7 @@ using Mono.Collections.Generic;
 
 namespace DotNet.Ildasm
 {
-    public interface IAssemblyDataProcessor
+    public interface IAssemblyDecompiler
     {
         void WriteAssemblyExternalReferences(AssemblyDefinition assembly);
         

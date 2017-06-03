@@ -5,13 +5,13 @@ using Mono.Collections.Generic;
 
 namespace DotNet.Ildasm
 {
-    public class AssemblyDataProcessor : IAssemblyDataProcessor
+    public class AssemblyDecompiler : IAssemblyDecompiler
     {
         private readonly IOutputWriter _outputWriter;
         private readonly AssemblyReferencesProcessor _assemblyReferencesProcessor;
         private readonly ModuleDirectivesProcessor _moduleDirectivesProcessor;
 
-        public AssemblyDataProcessor(string assemblyPath, IOutputWriter outputWriter)
+        public AssemblyDecompiler(string assemblyPath, IOutputWriter outputWriter)
         {
             _outputWriter = outputWriter;
             _moduleDirectivesProcessor = new ModuleDirectivesProcessor(assemblyPath, outputWriter);

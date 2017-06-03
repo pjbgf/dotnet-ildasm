@@ -45,7 +45,7 @@ namespace DotNet.Ildasm
 
         private static int ExecuteDisassembler(CommandOptions options, IOutputWriter outputWriter)
         {
-            var assemblyDataProcessor = new AssemblyDataProcessor(options.FilePath, outputWriter);
+            var assemblyDataProcessor = new AssemblyDecompiler(options.FilePath, outputWriter);
             var assemblyDefinitionResolver = new AssemblyDefinitionResolver();
             var disassembler = new Disassembler(assemblyDataProcessor, assemblyDefinitionResolver);
 

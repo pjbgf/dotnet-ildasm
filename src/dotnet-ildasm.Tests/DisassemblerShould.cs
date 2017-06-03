@@ -10,12 +10,12 @@ namespace DotNet.Ildasm.Tests
     public class DisassemblerShould
     {
         private readonly IAssemblyDefinitionResolver _assemblyDefinitionResolver;
-        private readonly IAssemblyDataProcessor _assemblyProcessorMock;
+        private readonly IAssemblyDecompiler _assemblyProcessorMock;
 
         public DisassemblerShould()
         {
             _assemblyDefinitionResolver = Substitute.For<IAssemblyDefinitionResolver>();
-            _assemblyProcessorMock = Substitute.For<IAssemblyDataProcessor>();
+            _assemblyProcessorMock = Substitute.For<IAssemblyDecompiler>();
 
             var assemblyDefinition = Mono.Cecil.AssemblyDefinition.CreateAssembly(
                 new AssemblyNameDefinition("test", Version.Parse("1.0.0")),

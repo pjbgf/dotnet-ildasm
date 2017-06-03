@@ -4,10 +4,10 @@ namespace DotNet.Ildasm
 {
     public sealed class Disassembler
     {
-        private readonly IAssemblyDataProcessor _assemblyDataProcessor;
+        private readonly IAssemblyDecompiler _assemblyDataProcessor;
         private readonly IAssemblyDefinitionResolver _assemblyResolver;
 
-        public Disassembler(IAssemblyDataProcessor assemblyDataProcessor, IAssemblyDefinitionResolver assemblyResolver)
+        public Disassembler(IAssemblyDecompiler assemblyDataProcessor, IAssemblyDefinitionResolver assemblyResolver)
         {
             _assemblyDataProcessor = assemblyDataProcessor;
             _assemblyResolver = assemblyResolver;
