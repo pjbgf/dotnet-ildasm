@@ -8,13 +8,11 @@ namespace DotNet.Ildasm
 {
     public class TypesProcessor
     {
-        private static MethodProcessor _methodProcessor;
         private readonly IOutputWriter _outputWriter;
         private readonly ItemFilter _itemFilter;
 
         public TypesProcessor(IOutputWriter outputWriter, ItemFilter itemFilter)
         {
-            _methodProcessor = new MethodProcessor(outputWriter);
             _outputWriter = outputWriter;
             _itemFilter = itemFilter;
         }
@@ -50,7 +48,7 @@ namespace DotNet.Ildasm
         private void HandleMethod(MethodDefinition method)
         {
             method.WriteILSignature(_outputWriter);
-            _methodProcessor.WriteBody(method);
+            method.WriteILBody(_outputWriter);
         }
     }
 }
