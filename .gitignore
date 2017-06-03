@@ -268,3 +268,6 @@ BenchmarkDotNet.Artifacts/
 
 # Release note
 ReleaseNotes.md
+
+*.exe
+*.dll
