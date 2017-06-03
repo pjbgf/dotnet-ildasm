@@ -61,7 +61,13 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             methodDefinition.WriteILBody(_outputWriterMock);
 
-            _outputWriterMock.Received(1).WriteLine(".locals init(int32 V_0, boolean V_1)");
+            _outputWriterMock.Received().WriteLine(Arg.Do((string IL_Code) =>
+            {
+                // For some reason, depending on platform/compilation the same code may generate two different ILs
+                // potentially this has to do with compiler optmisations.
+                Assert.True(IL_Code == ".locals init(int32 V_0, boolean V_1)" ||
+                            IL_Code == ".locals init(int32 V_0)");
+            }));
         }
     }
 }
