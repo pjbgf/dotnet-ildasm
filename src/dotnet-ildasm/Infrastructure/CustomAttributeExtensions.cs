@@ -6,9 +6,9 @@ namespace DotNet.Ildasm.Infrastructure
 {
     public static class CustomAttributeExtensions
     {
-        public static string ToIL(this CustomAttribute customAttribute)
+        public static void WriteIL(this CustomAttribute customAttribute, IOutputWriter outputWriter)
         {
-            return $".custom instance void {customAttribute.AttributeType.ToIL()}::{customAttribute.Constructor.Name}{GetConstructorArguments(customAttribute)}";
+            outputWriter.WriteLine($".custom instance void {customAttribute.AttributeType.ToIL()}::{customAttribute.Constructor.Name}{GetConstructorArguments(customAttribute)}");
         }
 
         private static string GetConstructorArguments(CustomAttribute customAttribute)

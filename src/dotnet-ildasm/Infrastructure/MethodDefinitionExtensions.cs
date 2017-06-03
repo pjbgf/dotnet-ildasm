@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
@@ -20,7 +21,7 @@ namespace DotNet.Ildasm
                 for (int i = 0; i < @params.Length; i++)
                 {
                     outputWriter.WriteLine($".param [{i + 1}]"); // 1-based array?
-                    outputWriter.WriteLine(@params[0].CustomAttributes.First().ToIL());
+                    @params[0].CustomAttributes.First().WriteIL(outputWriter);
                 }
 
                 outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");

@@ -25,7 +25,7 @@ namespace DotNet.Ildasm.Infrastructure
                         StringComparison.CurrentCultureIgnoreCase) == 0)
                     continue;
 
-                outputWriter.WriteLine(customAttribute.ToIL());
+                customAttribute.WriteIL(outputWriter);
             }
         }
     }
