@@ -14,16 +14,16 @@ namespace DotNet.Ildasm.Infrastructure
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 
-        public static string ToILType(this TypeReference typeReference)
+        public static string ToIL(this TypeReference typeReference)
         {
             if(typeReference.MetadataType == MetadataType.ValueType || typeReference.MetadataType == MetadataType.Class)
-                return $"{typeReference.MetadataType.ToString().ToLowerInvariant()} {ToPrefixedTypeName(typeReference)}";
+                return $"{ToPrefixedTypeName(typeReference)}";
 
             if (typeReference.MetadataType != MetadataType.Array)
                 return typeReference.MetadataType.ToString().ToLowerInvariant();
 
             if (typeReference.MetadataType == MetadataType.Array)
-                return $"{typeReference.GetElementType().ToILType()}[]";
+                return $"{typeReference.GetElementType().ToIL()}[]";
 
             throw new NotSupportedException();
         }

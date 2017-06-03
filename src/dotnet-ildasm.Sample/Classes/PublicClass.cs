@@ -23,8 +23,14 @@ namespace dotnet_ildasm.Sample.Classes
 
         public void UsingIF(int parameter)
         {
+            int localVariable = 5; 
             if (parameter > 10)
             {
+                UsingTryCatch(localVariable);
+            }
+            else
+            {
+                UsingTryCatch(localVariable * parameter);
             }
         }
 

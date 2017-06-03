@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
@@ -31,6 +30,13 @@ namespace DotNet.Ildasm
 
             if (method.HasBody)
             {
+                var @params = method.Parameters.Where(x => x.HasCustomAttributes).ToArray();
+                for (int i = 0; i < @params.Length; i++)
+                {
+                    _outputWriter.WriteLine($".param [{i + 1}]"); // 1-based array?
+                    _outputWriter.WriteLine(@params[0].CustomAttributes.First().ToIL());
+                }
+
                 _outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
                 _outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
 
@@ -51,12 +57,12 @@ namespace DotNet.Ildasm
             if (method.Body.InitLocals)
             {
                 if (method.Body.Variables.Count == 1)
-                    _outputWriter.WriteLine($".locals init(class {method.Body.Variables.First().VariableType.ToILType()} V_0)");
+                    _outputWriter.WriteLine($".locals init(class {method.Body.Variables.First().VariableType.ToIL()} V_0)");
                 else if(method.Body.Variables.Count > 1)
                 {
                     int parameterIndex = 0;
                     _outputWriter.WriteLine(
-                        $".locals init(class {(string.Join($"V_{parameterIndex}, ", method.Body.Variables.Select(x => x.VariableType.ToILType())))})");
+                        $".locals init(class {(string.Join($"V_{parameterIndex}, ", method.Body.Variables.Select(x => x.VariableType.ToIL())))})");
                 }
             }
         }
@@ -97,7 +103,7 @@ namespace DotNet.Ildasm
             else
                 builder.Append(" static");
 
-            builder.Append($" {method.ReturnType.ToILType()}");
+            builder.Append($" {method.ReturnType.ToIL()}");
             builder.Append($" {method.Name}");
 
             AppendMethodParameters(method, builder);
@@ -120,7 +126,7 @@ namespace DotNet.Ildasm
                         builder.Append(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.ToILType()} ");
+                    builder.Append($"{parameterDefinition.ParameterType.ToIL()} ");
 
                     if (parameterDefinition.Name == "value")
                         builder.Append($"'{parameterDefinition.Name}'");

@@ -50,14 +50,14 @@ namespace DotNet.Ildasm
                         break;
                     case MethodReference methodReference:
                         var instanceString = methodReference.HasThis ? "instance " : string.Empty;
-                        builder.Append($"{instanceString}{methodReference.ReturnType.ToILType()} {methodReference.DeclaringType.ToPrefixedTypeName()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
+                        builder.Append($"{instanceString}{methodReference.ReturnType.ToIL()} {methodReference.DeclaringType.ToPrefixedTypeName()}::{methodReference.Name}{GetMethodCallParameters(methodReference)}");
                         break;
                     case FieldDefinition fieldDefinition:
                         //HACK: There must be another way to identify when single quotes are required.
                         if (fieldDefinition.Name.Contains("<"))
-                            builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::'{fieldDefinition.Name}'");
+                            builder.Append($"{fieldDefinition.FieldType.ToIL()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::'{fieldDefinition.Name}'");
                         else
-                            builder.Append($"{fieldDefinition.FieldType.ToILType()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::{fieldDefinition.Name}");
+                            builder.Append($"{fieldDefinition.FieldType.ToIL()} {fieldDefinition.DeclaringType.ToPrefixedTypeName()}::{fieldDefinition.Name}");
                         break;
                     default:
                         builder.Append(instruction.Operand);
@@ -81,7 +81,7 @@ namespace DotNet.Ildasm
                         builder.Append(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    builder.Append($"{parameterDefinition.ParameterType.ToILType()}");
+                    builder.Append($"{parameterDefinition.ParameterType.ToIL()}");
                 }
             }
 
