@@ -56,14 +56,18 @@ namespace DotNet.Ildasm
         {
             if (method.Body.InitLocals)
             {
-                if (method.Body.Variables.Count == 1)
-                    _outputWriter.WriteLine($".locals init(class {method.Body.Variables.First().VariableType.ToIL()} V_0)");
-                else if(method.Body.Variables.Count > 1)
+                string variables = string.Empty;
+                int i = 0;
+
+                foreach (var variable in method.Body.Variables)
                 {
-                    int parameterIndex = 0;
-                    _outputWriter.WriteLine(
-                        $".locals init(class {(string.Join($"V_{parameterIndex}, ", method.Body.Variables.Select(x => x.VariableType.ToIL())))})");
+                    if (i > 0)
+                        variables += ", ";
+
+                    variables += $"{variable.VariableType.ToIL()} V_{i++}";
                 }
+
+                _outputWriter.WriteLine($".locals init({variables})");
             }
         }
 
