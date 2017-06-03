@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Linq;
+using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Xunit;
 
 namespace DotNet.Ildasm.Tests.SampleTests
 {
-    public class CilHelperShould
+    public class TypeDefinitionExtensions
     {
-        private readonly TypeProcessor _cilHelper;
         private readonly AssemblyDefinition _assemblyDefinition;
 
-        public CilHelperShould()
+        public TypeDefinitionExtensions()
         {
-            _cilHelper = new TypeProcessor();
             _assemblyDefinition = DataHelper.SampleAssembly.Value;
         }
 
@@ -31,7 +30,7 @@ namespace DotNet.Ildasm.Tests.SampleTests
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
 
-            var signature = _cilHelper.GetTypeSignature(type);
+            var signature = type.GetTypeSignature();
 
             Assert.Equal(expectedIL, signature);
         }
@@ -43,7 +42,7 @@ namespace DotNet.Ildasm.Tests.SampleTests
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == structName);
 
-            var signature = _cilHelper.GetTypeSignature(type);
+            var signature = type.GetTypeSignature();
 
             Assert.Equal(expectedIL, signature);
         }
