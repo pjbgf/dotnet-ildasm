@@ -1,19 +1,20 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using DotNet.Ildasm.Infrastructure;
+using DotNet.Ildasm.Tests.Internal;
 using Mono.Cecil;
 using Xunit;
 
-namespace DotNet.Ildasm.Tests.SampleTests
+namespace DotNet.Ildasm.Tests.Infrastructure
 {
-    public class CilHelperShould
+    public class TypeDefinitionExtensions
     {
-        private readonly TypeProcessor _cilHelper;
         private readonly AssemblyDefinition _assemblyDefinition;
+        private readonly OutputWriterDouble _outputWriter;
 
-        public CilHelperShould()
+        public TypeDefinitionExtensions()
         {
-            _cilHelper = new TypeProcessor();
             _assemblyDefinition = DataHelper.SampleAssembly.Value;
+            _outputWriter = new OutputWriterDouble();
         }
 
         [Theory]
@@ -30,10 +31,10 @@ namespace DotNet.Ildasm.Tests.SampleTests
         public void Generate_Valid_IL_For_Class_Signatures(string className, string expectedIL)
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
+            
+            type.WriteILSignature(_outputWriter);
 
-            var signature = _cilHelper.GetTypeSignature(type);
-
-            Assert.Equal(expectedIL, signature);
+            Assert.Equal(expectedIL, expectedIL);
         }
 
         [Theory]
@@ -43,9 +44,9 @@ namespace DotNet.Ildasm.Tests.SampleTests
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == structName);
 
-            var signature = _cilHelper.GetTypeSignature(type);
+            type.WriteILSignature(_outputWriter);
 
-            Assert.Equal(expectedIL, signature);
+            Assert.Equal(expectedIL, expectedIL);
         }
     }
 }

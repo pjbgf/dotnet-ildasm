@@ -5,7 +5,7 @@ namespace DotNet.Ildasm.Infrastructure
 {
     public static class TypeReferenceExtensions
     {
-        public static string ToILNameFormatt(this TypeReference typeReference)
+        private static string ToPrefixedTypeName(TypeReference typeReference)
         {
             if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
                     StringComparison.CurrentCultureIgnoreCase) == 0)
@@ -14,16 +14,20 @@ namespace DotNet.Ildasm.Infrastructure
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 
-        public static string ToILType(this TypeReference typeReference)
+        public static string ToIL(this TypeReference typeReference)
         {
-            if(typeReference.MetadataType == MetadataType.ValueType || typeReference.MetadataType == MetadataType.Class)
-                return $"{typeReference.MetadataType.ToString().ToLowerInvariant()} {ToILNameFormatt(typeReference)}";
+            if (typeReference.MetadataType == MetadataType.Class ||
+                typeReference.MetadataType == MetadataType.Object ||
+                typeReference.MetadataType == MetadataType.ValueType)
+            {
+                return ToPrefixedTypeName(typeReference);
+            }
 
             if (typeReference.MetadataType != MetadataType.Array)
                 return typeReference.MetadataType.ToString().ToLowerInvariant();
 
             if (typeReference.MetadataType == MetadataType.Array)
-                return $"{typeReference.GetElementType().ToILType()}[]";
+                return $"{typeReference.GetElementType().ToIL()}[]";
 
             throw new NotSupportedException();
         }

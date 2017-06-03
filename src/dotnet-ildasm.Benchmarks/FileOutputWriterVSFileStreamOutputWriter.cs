@@ -2,7 +2,6 @@
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
-using BenchmarkDotNet.Running;
 using DotNet.Ildasm;
 using DotNet.Ildasm.Adapters;
 using Mono.Cecil;
@@ -30,8 +29,7 @@ namespace dotnet_ildasm.Benchmarks
         {
             using (var fileStreamOutputWriter = new FileStreamOutputWriter(IndentationProvider, TargetILFile))
             {
-                var processor = new MethodProcessor(fileStreamOutputWriter);
-                processor.WriteBody(_methodDefinition);
+                _methodDefinition.WriteILBody(fileStreamOutputWriter);
             }
         }
 
@@ -40,8 +38,7 @@ namespace dotnet_ildasm.Benchmarks
         {
             using (var fileOutputWriter = new FileOutputWriter(IndentationProvider, TargetILFile))
             {
-                var processor = new MethodProcessor(fileOutputWriter);
-                processor.WriteBody(_methodDefinition);
+                _methodDefinition.WriteILBody(fileOutputWriter);
             }
         }
     }

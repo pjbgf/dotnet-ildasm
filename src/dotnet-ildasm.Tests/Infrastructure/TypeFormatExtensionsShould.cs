@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using DotNet.Ildasm.Infrastructure;
-using Mono.Cecil;
+using DotNet.Ildasm.Tests.Internal;
 using Xunit;
 
 namespace DotNet.Ildasm.Tests.Infrastructure
@@ -13,7 +13,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "Program");
             var methoDefinition = type.Methods.First(x => x.Name == "Main");
 
-            var actual = methoDefinition.ReturnType.ToILType();
+            var actual = methoDefinition.ReturnType.ToIL();
 
             Assert.Equal("void", actual);
         }
@@ -24,7 +24,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
             var propertyDefinition = type.Properties.First(x => x.Name == "Property1");
 
-            var actual = propertyDefinition.GetMethod.ReturnType.ToILType();
+            var actual = propertyDefinition.GetMethod.ReturnType.ToIL();
 
             Assert.Equal("string", actual);
         }
@@ -35,7 +35,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
             var methodDefinition = type.Methods.First(x => x.Name == "PublicVoidMethodParams");
 
-            var actual = methodDefinition.Parameters.First().ParameterType.ToILType();
+            var actual = methodDefinition.Parameters.First().ParameterType.ToIL();
 
             Assert.Equal("string[]", actual);
         }
@@ -46,7 +46,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
             var methodDefinition = type.Methods.First(x => x.Name == "UsingIF");
 
-            var actual = methodDefinition.Parameters.First().ParameterType.ToILType();
+            var actual = methodDefinition.Parameters.First().ParameterType.ToIL();
 
             Assert.Equal("int32", actual);
         }

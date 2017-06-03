@@ -1,23 +1,20 @@
 using System;
 using System.Collections.Generic;
 using DotNet.Ildasm.Configuration;
+using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 
 namespace DotNet.Ildasm
 {
     public class TypesProcessor
     {
-        private static MethodProcessor _methodProcessor;
         private readonly IOutputWriter _outputWriter;
         private readonly ItemFilter _itemFilter;
-        private readonly TypeProcessor _typeProcessor;
 
         public TypesProcessor(IOutputWriter outputWriter, ItemFilter itemFilter)
         {
-            _methodProcessor = new MethodProcessor(outputWriter);
             _outputWriter = outputWriter;
             _itemFilter = itemFilter;
-            _typeProcessor = new TypeProcessor();
         }
 
         public void Write(IEnumerable<TypeDefinition> types)
@@ -35,7 +32,7 @@ namespace DotNet.Ildasm
 
         private void HandleType(TypeDefinition type)
         {
-            _outputWriter.WriteLine(_typeProcessor.GetTypeSignature(type));
+            type.WriteILSignature(_outputWriter);
             _outputWriter.WriteLine("{");
 
             foreach (var method in type.Methods)
@@ -50,8 +47,8 @@ namespace DotNet.Ildasm
 
         private void HandleMethod(MethodDefinition method)
         {
-            _methodProcessor.WriteSignature(method);
-            _methodProcessor.WriteBody(method);
+            method.WriteILSignature(_outputWriter);
+            method.WriteILBody(_outputWriter);
         }
     }
 }
