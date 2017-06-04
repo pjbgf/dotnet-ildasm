@@ -24,7 +24,7 @@ namespace DotNet.Ildasm.Infrastructure
             writer.Write($"{field.FieldType.ToIL()} {EscapeIfNeeded(field.Name)}{Environment.NewLine}");
         }
 
-        static string EscapeIfNeeded(string fieldName)
+        private static string EscapeIfNeeded(string fieldName)
         {
             if (fieldName.Contains("<"))
                 return $"'{fieldName}'";

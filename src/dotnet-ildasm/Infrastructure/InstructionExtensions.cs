@@ -39,13 +39,7 @@ namespace DotNet.Ildasm
                             WriteMethodCallParameters(methodReference, writer);
                             break;
                         case FieldDefinition fieldDefinition:
-                            //HACK: There must be another way to identify when single quotes are required.
-                            if (fieldDefinition.Name.Contains("<"))
-                                writer.Write(
-                                    $"{fieldDefinition.FieldType.ToIL()} {fieldDefinition.DeclaringType.ToIL()}::'{fieldDefinition.Name}'");
-                            else
-                                writer.Write(
-                                    $"{fieldDefinition.FieldType.ToIL()} {fieldDefinition.DeclaringType.ToIL()}::{fieldDefinition.Name}");
+                            writer.Write($"{fieldDefinition.FieldType.ToIL()} {fieldDefinition.DeclaringType.ToIL()}::{EscapeIfNeeded(fieldDefinition.Name)}");
                             break;
                         default:
                             writer.Write(instruction.Operand.ToString());
@@ -72,6 +66,14 @@ namespace DotNet.Ildasm
             }
 
             writer.Write(")");
+        }
+
+        private static string EscapeIfNeeded(string fieldName)
+        {
+            if (fieldName.Contains("<"))
+                return $"'{fieldName}'";
+
+            return fieldName;
         }
     }
 }
