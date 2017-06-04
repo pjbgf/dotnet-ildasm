@@ -6,7 +6,7 @@ namespace dotnet_ildasm.Benchmarks
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<FileOutputWriterVSFileStreamOutputWriter>();
+            BenchmarkRunner.Run<AutoIndentationOverhead>();
         }
     }
 }

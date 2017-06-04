@@ -9,36 +9,36 @@ using Mono.Cecil;
 namespace dotnet_ildasm.Benchmarks
 {
     [CoreJob][ClrJob]
-    public class FileOutputWriterVSFileStreamOutputWriter
+    public class AutoIndentationOverhead
     {
         internal static readonly Lazy<AssemblyDefinition> SampleAssembly = new Lazy<AssemblyDefinition>(() =>
             Mono.Cecil.AssemblyDefinition.ReadAssembly("c:\\git\\dotnet-ildasm\\src\\dotnet-ildasm.Sample\\bin\\Debug\\net45\\dotnet-ildasm.Sample.exe"));
 
         private static MethodDefinition _methodDefinition;
-        private static readonly IndentationProvider IndentationProvider = new IndentationProvider();
         private static readonly string TargetILFile = "C:\\git\\dotnet-ildasm\\dotnet-ildasm.Sample.il";
 
-        static FileOutputWriterVSFileStreamOutputWriter()
+        static AutoIndentationOverhead()
         {
             var type = SampleAssembly.Value.MainModule.Types.FirstOrDefault(x => x.Name == "PublicClass");
             _methodDefinition = type.Methods.FirstOrDefault(x => x.Name == "UsingTryCatch");
         }
 
         [Benchmark]
-        public void FileStreamOutputWriter()
+        public void NoIndentation()
         {
-            using (var fileStreamOutputWriter = new FileStreamOutputWriter(IndentationProvider, TargetILFile))
+            using (var fileStreamOutputWriter = new FileStreamOutputWriter(TargetILFile))
             {
                 _methodDefinition.WriteILBody(fileStreamOutputWriter);
             }
         }
 
         [Benchmark]
-        public void FileOutputWriter()
+        public void AutoIndentation()
         {
-            using (var fileOutputWriter = new FileOutputWriter(IndentationProvider, TargetILFile))
+            using (var outputWriter = new FileStreamOutputWriter(TargetILFile))
+            using (var autoIndentOutputWriter = new AutoIndentOutputWriter(outputWriter))
             {
-                _methodDefinition.WriteILBody(fileOutputWriter);
+                _methodDefinition.WriteILBody(autoIndentOutputWriter);
             }
         }
     }

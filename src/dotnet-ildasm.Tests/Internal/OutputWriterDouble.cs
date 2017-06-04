@@ -5,7 +5,7 @@ namespace DotNet.Ildasm.Tests.Internal
 {
     internal class OutputWriterDouble : IOutputWriter
     {
-        private StringBuilder _stringBuilder;
+        private readonly StringBuilder _stringBuilder;
 
         public OutputWriterDouble()
         {
@@ -25,12 +25,12 @@ namespace DotNet.Ildasm.Tests.Internal
             return content;
         }
 
-        public void Write(string value, bool indentCode = false)
+        public void Write(string value)
         {
             _stringBuilder.Append(value);
         }
 
-        public void WriteLine(string value = "")
+        public void WriteLine(string value)
         {
             _stringBuilder.AppendLine(value);
         }

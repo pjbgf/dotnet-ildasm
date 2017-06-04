@@ -4,21 +4,14 @@ namespace DotNet.Ildasm.Adapters
 {
     internal sealed class ConsoleOutputWriter : IOutputWriter
     {
-        private readonly IndentationProvider _indentationProvider;
-
-        public ConsoleOutputWriter(IndentationProvider indentationProvider)
+        public void Write(string value)
         {
-            _indentationProvider = indentationProvider;
-        }
-        
-        public void Write(string value, bool indentCode = false)
-        {
-            Console.Write(indentCode ? $"{_indentationProvider.Apply(value)}" : value);
+            Console.Write(value);
         }
 
         public void WriteLine(string value)
         {
-            Console.WriteLine(_indentationProvider.Apply(value));
+            Console.WriteLine(value);
         }
 
         public void Dispose()

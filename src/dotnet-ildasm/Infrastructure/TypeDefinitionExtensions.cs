@@ -9,7 +9,7 @@ namespace DotNet.Ildasm.Infrastructure
     {
         public static void WriteILSignature(this TypeDefinition typeDefinition, IOutputWriter outputWriter)
         {
-            outputWriter.Write(".class", true);
+            outputWriter.Write(".class");
 
             if (typeDefinition.IsPublic)
                 outputWriter.Write(" public");

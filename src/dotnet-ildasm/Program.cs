@@ -23,8 +23,6 @@ namespace DotNet.Ildasm
 
         private static int PrepareToExecute(CommandOptions options)
         {
-            var indentationProvider = new IndentationProvider();
-
             Console.WriteLine();
             if (File.Exists(options.OutputPath) && !options.IsTextOutput)
             {
@@ -38,7 +36,7 @@ namespace DotNet.Ildasm
                 File.Delete(options.OutputPath);
             }
 
-            var outputWriter = GetOutputWriter(options, indentationProvider);
+            var outputWriter = GetOutputWriter(options);
 
             return ExecuteDisassembler(options, outputWriter);
         }
@@ -63,18 +61,19 @@ namespace DotNet.Ildasm
             return -1;
         }
 
-        private static IOutputWriter GetOutputWriter(CommandOptions options, IndentationProvider indentationProvider)
+        private static IOutputWriter GetOutputWriter(CommandOptions options)
         {
             IOutputWriter outputWriter = null;
 
             if (options.IsTextOutput)
             {
-                outputWriter = new ConsoleOutputWriter(indentationProvider);
+                outputWriter = new ConsoleOutputWriter();
             }
             else
             {
-                outputWriter = new FileStreamOutputWriter(indentationProvider, options.OutputPath);
+                outputWriter = new FileStreamOutputWriter(options.OutputPath);
             }
+
             return outputWriter;
         }
     }

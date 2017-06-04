@@ -7,12 +7,10 @@ namespace DotNet.Ildasm.Adapters
     internal sealed class FileStreamOutputWriter : IOutputWriter, IDisposable
     {
         FileStream stream;
-        private readonly IndentationProvider _indentationProvider;
 
-        public FileStreamOutputWriter(IndentationProvider indentationProvider, string filePath)
+        public FileStreamOutputWriter(string filePath)
         {
             stream = File.Open(filePath, FileMode.OpenOrCreate);
-            _indentationProvider = indentationProvider;
         }
 
         public void Dispose()
@@ -20,16 +18,15 @@ namespace DotNet.Ildasm.Adapters
             stream?.Dispose();
         }
 
-        public void Write(string value, bool indentCode = false)
+        public void Write(string value)
         {
-            var valueWithIndentation = indentCode ? $"{_indentationProvider.Apply(value)}" : value;
-            byte[] bytes = Encoding.ASCII.GetBytes(valueWithIndentation);
+            byte[] bytes = Encoding.ASCII.GetBytes(value);
             stream.Write(bytes, 0, bytes.Length);
         }
 
-        public void WriteLine(string value = "")
+        public void WriteLine(string value)
         {
-            byte[] bytes = Encoding.ASCII.GetBytes($"{_indentationProvider.Apply(value)}{Environment.NewLine}");
+            byte[] bytes = Encoding.ASCII.GetBytes(value);
             stream.Write(bytes, 0, bytes.Length);
         }
     }

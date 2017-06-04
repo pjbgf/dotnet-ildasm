@@ -7,7 +7,7 @@ namespace DotNet.Ildasm.Infrastructure
     {
         public static void WriteIL(this FieldDefinition field, IOutputWriter writer)
         {
-            writer.Write(".field ", true);
+            writer.Write(".field ");
             
             if (field.IsPublic)
                 writer.Write("public ");

@@ -10,7 +10,7 @@ namespace DotNet.Ildasm
     {
         public static void WriteIL(this Instruction instruction, IOutputWriter outputWriter)
         {
-            outputWriter.Write($"IL_{instruction.Offset:x4}: {instruction.OpCode.ToString()}", true);
+            outputWriter.Write($"IL_{instruction.Offset:x4}: {instruction.OpCode.ToString()}");
             WriteOperandIL(instruction, outputWriter);
             outputWriter.Write(Environment.NewLine);
         }
