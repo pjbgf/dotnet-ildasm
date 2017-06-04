@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DotNet.Ildasm.Adapters
 {
-    public sealed class FileOutputWriter : IOutputWriter
+    internal sealed class FileOutputWriter : IOutputWriter
     {
         private readonly StringBuilder _stringBuilder;
         private readonly IndentationProvider _indentationProvider;

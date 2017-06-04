@@ -2,7 +2,7 @@ using System;
 
 namespace DotNet.Ildasm.Adapters
 {
-    public sealed class ConsoleOutputWriter : IOutputWriter
+    internal sealed class ConsoleOutputWriter : IOutputWriter
     {
         private readonly IndentationProvider _indentationProvider;
 

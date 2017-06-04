@@ -3,7 +3,7 @@ using Mono.Cecil;
 
 namespace DotNet.Ildasm
 {
-    public class AssemblyDefinitionResolver : IAssemblyDefinitionResolver
+    internal class AssemblyDefinitionResolver : IAssemblyDefinitionResolver
     {
         public AssemblyDefinition Resolve(string assemblyPath)
         {

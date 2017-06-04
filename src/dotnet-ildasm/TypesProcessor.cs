@@ -6,7 +6,7 @@ using Mono.Cecil;
 
 namespace DotNet.Ildasm
 {
-    public class TypesProcessor
+    internal sealed class TypesProcessor
     {
         private readonly IOutputWriter _outputWriter;
         private readonly ItemFilter _itemFilter;
