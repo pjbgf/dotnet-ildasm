@@ -11,9 +11,9 @@ namespace DotNet.Ildasm.Adapters
             _indentationProvider = indentationProvider;
         }
         
-        public void Write(string value)
+        public void Write(string value, bool indentCode = false)
         {
-            Console.Write(value);
+            Console.Write(indentCode ? $"{_indentationProvider.Apply(value)}" : value);
         }
 
         public void WriteLine(string value)

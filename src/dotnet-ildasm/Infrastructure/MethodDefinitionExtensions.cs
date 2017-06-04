@@ -60,7 +60,7 @@ namespace DotNet.Ildasm
         
         public static void WriteILSignature(this MethodDefinition method, IOutputWriter writer)
         {
-            writer.Write(".method");
+            writer.Write(".method", true);
 
             if (method.IsPublic)
                 writer.Write(" public");

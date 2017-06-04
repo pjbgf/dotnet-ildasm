@@ -25,7 +25,7 @@ namespace DotNet.Ildasm.Tests.Internal
             return content;
         }
 
-        public void Write(string value)
+        public void Write(string value, bool indentCode = false)
         {
             _stringBuilder.Append(value);
         }

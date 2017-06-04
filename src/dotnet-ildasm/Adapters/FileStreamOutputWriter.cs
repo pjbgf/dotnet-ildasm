@@ -20,9 +20,10 @@ namespace DotNet.Ildasm.Adapters
             stream?.Dispose();
         }
 
-        public void Write(string value)
+        public void Write(string value, bool indentCode = false)
         {
-            byte[] bytes = Encoding.ASCII.GetBytes(value);
+            var valueWithIndentation = indentCode ? $"{_indentationProvider.Apply(value)}" : value;
+            byte[] bytes = Encoding.ASCII.GetBytes(valueWithIndentation);
             stream.Write(bytes, 0, bytes.Length);
         }
 

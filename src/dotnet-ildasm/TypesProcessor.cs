@@ -35,14 +35,39 @@ namespace DotNet.Ildasm
             type.WriteILSignature(_outputWriter);
             _outputWriter.WriteLine("{");
 
+            WriteFields(type);
+            WriteMethods(type);
+            WriteCustomAttributes(type);
+
+            _outputWriter.WriteLine($"}} // End of class {type.FullName}");
+        }
+
+        private void WriteCustomAttributes(TypeDefinition type)
+        {
+            if (type.HasCustomAttributes)
+            {
+                foreach (var customAttribute in type.CustomAttributes)
+                    customAttribute.WriteIL(_outputWriter);
+            }
+        }
+
+        private void WriteMethods(TypeDefinition type)
+        {
             foreach (var method in type.Methods)
             {
                 if (string.IsNullOrEmpty(_itemFilter.Method) ||
                     string.Compare(method.Name, _itemFilter.Method, StringComparison.CurrentCulture) == 0)
                     HandleMethod(method);
             }
+        }
 
-            _outputWriter.WriteLine($"}} // End of class {type.FullName}");
+        private void WriteFields(TypeDefinition type)
+        {
+            if (type.HasFields)
+            {
+                foreach (var field in type.Fields)
+                    field.WriteIL(_outputWriter);
+            }
         }
 
         private void HandleMethod(MethodDefinition method)

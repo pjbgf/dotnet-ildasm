@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using Mono.Cecil;
 
@@ -8,7 +9,7 @@ namespace DotNet.Ildasm.Infrastructure
     {
         public static void WriteILSignature(this TypeDefinition typeDefinition, IOutputWriter outputWriter)
         {
-            outputWriter.Write(".class");
+            outputWriter.Write(".class", true);
 
             if (typeDefinition.IsPublic)
                 outputWriter.Write(" public");
@@ -46,7 +47,7 @@ namespace DotNet.Ildasm.Infrastructure
                 outputWriter.Write(
                     $" implements {string.Join(", ", typeDefinition.Interfaces.Select(x => x.InterfaceType.ToIL()))}");
 
-            outputWriter.WriteLine();
+            outputWriter.Write(Environment.NewLine);
         }
     }
 }

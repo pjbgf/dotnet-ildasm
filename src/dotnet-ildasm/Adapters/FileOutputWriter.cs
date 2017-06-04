@@ -17,9 +17,9 @@ namespace DotNet.Ildasm.Adapters
             this._filePath = filePath;
         }
 
-        public void Write(string value)
+        public void Write(string value, bool indentCode = false)
         {
-            _stringBuilder.Append(value);
+            _stringBuilder.Append(indentCode ? $"{_indentationProvider.Apply(value)}" : value);
         }
 
         public void WriteLine(string value = "")
