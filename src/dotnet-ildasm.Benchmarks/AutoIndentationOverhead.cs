@@ -12,10 +12,11 @@ namespace dotnet_ildasm.Benchmarks
     public class AutoIndentationOverhead
     {
         internal static readonly Lazy<AssemblyDefinition> SampleAssembly = new Lazy<AssemblyDefinition>(() =>
-            Mono.Cecil.AssemblyDefinition.ReadAssembly("c:\\git\\dotnet-ildasm\\src\\dotnet-ildasm.Sample\\bin\\Debug\\net45\\dotnet-ildasm.Sample.exe"));
+            Mono.Cecil.AssemblyDefinition.ReadAssembly(SourceExeFile));
 
-        private static MethodDefinition _methodDefinition;
-        private static readonly string TargetILFile = "C:\\git\\dotnet-ildasm\\dotnet-ildasm.Sample.il";
+        private static readonly MethodDefinition _methodDefinition;
+        private const string TargetILFile = "C:\\git\\dotnet-ildasm\\dotnet-ildasm.Sample.il";
+        private const string SourceExeFile = "C:\\git\\dotnet-ildasm\\src\\dotnet-ildasm.Sample\\bin\\Debug\\net45\\dotnet-ildasm.Sample.exe";
 
         static AutoIndentationOverhead()
         {
