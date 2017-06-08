@@ -4,32 +4,30 @@ using System.Text;
 
 namespace DotNet.Ildasm.Adapters
 {
-    public sealed class FileStreamOutputWriter : IOutputWriter, IDisposable
+    internal sealed class FileStreamOutputWriter : IOutputWriter, IDisposable
     {
-        FileStream stream;
-        private readonly IndentationProvider _indentationProvider;
+        private readonly FileStream _stream;
 
-        public FileStreamOutputWriter(IndentationProvider indentationProvider, string filePath)
+        public FileStreamOutputWriter(string filePath)
         {
-            stream = File.Open(filePath, FileMode.OpenOrCreate);
-            _indentationProvider = indentationProvider;
+            _stream = File.Open(filePath, FileMode.OpenOrCreate);
         }
 
         public void Dispose()
         {
-            stream?.Dispose();
+            _stream?.Dispose();
         }
 
         public void Write(string value)
         {
             byte[] bytes = Encoding.ASCII.GetBytes(value);
-            stream.Write(bytes, 0, bytes.Length);
+            _stream.Write(bytes, 0, bytes.Length);
         }
 
-        public void WriteLine(string value = "")
+        public void WriteLine(string value)
         {
-            byte[] bytes = Encoding.ASCII.GetBytes($"{_indentationProvider.Apply(value)}{Environment.NewLine}");
-            stream.Write(bytes, 0, bytes.Length);
+            byte[] bytes = Encoding.ASCII.GetBytes(value);
+            _stream.Write(bytes, 0, bytes.Length);
         }
     }
 }

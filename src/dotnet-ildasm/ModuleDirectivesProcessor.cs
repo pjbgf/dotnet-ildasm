@@ -5,7 +5,7 @@ using DotNet.Ildasm.Infrastructure;
 
 namespace DotNet.Ildasm
 {
-    public class ModuleDirectivesProcessor : IModuleDirectivesProcessor
+    internal class ModuleDirectivesProcessor : IModuleDirectivesProcessor
     {
         private readonly IOutputWriter _outputWriter;
         private readonly PEHeaders _peHeaders;

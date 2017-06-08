@@ -4,6 +4,10 @@ namespace dotnet_ildasm.Sample.Classes
 {
     public class PublicClass
     {
+        public static readonly string StaticReadonlyField = "Something Static";
+        public readonly string ReadonlyField = "Something 2";
+        public readonly string Field = "Something 2";
+
         public void PublicVoidMethod()
         {
             PublicVoidMethodSingleParameter(null);
