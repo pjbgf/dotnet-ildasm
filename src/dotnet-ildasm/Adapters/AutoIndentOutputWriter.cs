@@ -16,6 +16,7 @@ namespace DotNet.Ildasm
 
         public void Dispose()
         {
+            _writer?.Dispose();
         }
 
         public void Write(string value)
@@ -26,16 +27,15 @@ namespace DotNet.Ildasm
         public void WriteLine(string value)
         {
             Apply(value);
-            _writer.WriteLine(string.Empty);
+            _writer.Write(Environment.NewLine);
         }
 
         public void Apply(string code)
         {
             var alreadyUpdatedIndentation = false;
-            if (code.StartsWith(".method") || code.StartsWith(".class") || code.StartsWith(".assembly") || code.StartsWith(".module"))
-            {
+
+            if (IsBreakLineRequired(code))
                 _writer.WriteLine(string.Empty);
-            }
 
             if (code.StartsWith("}"))
             {
@@ -44,13 +44,25 @@ namespace DotNet.Ildasm
             }
 
             var totalIndentation = _currentLevel * _numSpaces;
-            if (code.StartsWith("IL") || code.StartsWith(".") || code.StartsWith("//") || code.StartsWith("{") || code.StartsWith("}"))
+            if (IsIndentationRequired(code))
                 _writer.Write(code.PadLeft(code.Length + totalIndentation));
             else
                 _writer.Write(code);
 
             if (!alreadyUpdatedIndentation)
                 UpdateIndentationLevel(code);
+        }
+
+        private static bool IsBreakLineRequired(string code)
+        {
+            return Regex.IsMatch(code, "^(.method|.class|.assembly|.module){1}",
+                RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline);
+        }
+
+        private static bool IsIndentationRequired(string code)
+        {
+            return Regex.IsMatch(code, "^(IL|\\.|//|{){1}",
+                RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline);
         }
 
         private void UpdateIndentationLevel(string code)
