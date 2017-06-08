@@ -7,7 +7,7 @@ namespace DotNet.Ildasm.Tests
     public class IndentationProviderShould
     {
         private readonly OutputWriterDouble _outputWriterDouble;
-        private IOutputWriter _outputWriterMock;
+        private readonly IOutputWriter _outputWriterMock;
 
         public IndentationProviderShould()
         {
@@ -50,17 +50,17 @@ namespace DotNet.Ildasm.Tests
             Assert.Equal("public static MethodName \r\n{", _outputWriterDouble.ToString());
         }
 
-        //[Fact]
-        //public void Remove_Indentation_In_Same_Line_When_Closing_Bracket()
-        //{
-        //    var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
+        [Fact]
+        public void Remove_Indentation_In_Same_Line_When_Closing_Bracket()
+        {
+            var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterMock);
 
-        //    autoIndentWriter.Apply(".method public {");
-        //    autoIndentWriter.Apply(".maxstack 8");
-        //    autoIndentWriter.Apply("}");
-
-        //    Assert.Equal("}\r\n", _outputWriterDouble.ToString());
-        //}
+            autoIndentWriter.Apply(".method public {");
+            autoIndentWriter.Apply(".maxstack 8");
+            autoIndentWriter.Apply("}");
+            
+            _outputWriterMock.Received().Write("}");
+        }
 
         [Fact]
         public void Add_Two_Spaces_Within_First_Open_Brackets()
@@ -73,29 +73,42 @@ namespace DotNet.Ildasm.Tests
             _outputWriterMock.Received().Write("  .maxstack 8");
         }
 
-        //[Fact]
-        //public void Remove_Spaces_Once_Brackets_Are_Closed()
-        //{
-        //    var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
+        [Fact]
+        public void Remove_Spaces_Once_Brackets_Are_Closed()
+        {
+            var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterMock);
 
-        //    autoIndentWriter.Apply(".method public {");
-        //    autoIndentWriter.Apply(".maxstack 8");
-        //    autoIndentWriter.Apply("}");
-        //    autoIndentWriter.Apply(".method private");
+            autoIndentWriter.Apply(".method public {");
+            autoIndentWriter.Apply(".maxstack 8");
+            autoIndentWriter.Apply("}");
+            autoIndentWriter.Apply(".method private");
+            
+            _outputWriterMock.Received().Write(".method private");
+        }
 
-        //    Assert.Equal(".method private", _outputWriterDouble.ToString());
-        //}
+        [Fact]
+        public void Ignore_Orphan_Closing_Brackets()
+        {
+            var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterMock);
 
-        //[Fact]
-        //public void Ignore_Orphan_Closing_Brackets()
-        //{
-        //    var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
+            autoIndentWriter.Apply("{}}");
+            autoIndentWriter.Apply(".method private {");
+            autoIndentWriter.Apply(".maxstack 8");
+            
+            _outputWriterMock.Received().Write("  .maxstack 8");
+        }
 
-        //    autoIndentWriter.Apply("{}}");
-        //    autoIndentWriter.Apply(".method private {");
-        //    autoIndentWriter.Apply(".maxstack 8");
+        [Fact]
+        public void Not_Apply_Indentation_In_Between_Signature_Keywords()
+        {
+            var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
 
-        //    Assert.Equal("  .maxstack 8", _outputWriterDouble.ToString());
-        //}
+            autoIndentWriter.Apply("{");
+            autoIndentWriter.Apply(".method ");
+            autoIndentWriter.Apply("public ");
+            autoIndentWriter.Apply("hidebysig ");
+
+            Assert.Equal("\r\n{\r\n  .method public hidebysig ", _outputWriterDouble.ToString());
+        }
     }
 }

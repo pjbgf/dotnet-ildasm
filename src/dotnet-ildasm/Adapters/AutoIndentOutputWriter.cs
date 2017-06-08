@@ -46,8 +46,11 @@ namespace DotNet.Ildasm
             code = code.Replace("{", Environment.NewLine + "{");
 
             var totalIndentation = _currentLevel * _numSpaces;
-            _writer.Write(code.PadLeft(code.Length + totalIndentation));
-            
+            if (code.StartsWith("IL") || code.StartsWith("."))
+                _writer.Write(code.PadLeft(code.Length + totalIndentation));
+            else
+                _writer.Write(code);
+
             if (!alreadyUpdatedIndentation)
                 UpdateIndentationLevel(code);
         }
