@@ -1,3 +1,5 @@
-﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("dotnet-ildasm.Tests")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("dotnet-ildasm.Tests")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("dotnet-ildasm.Benchmarks")]
+﻿using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("dotnet-ildasm.Tests")]
+[assembly: InternalsVisibleTo("dotnet-ildasm.Tests")]
+[assembly: InternalsVisibleTo("dotnet-ildasm.Benchmarks")]

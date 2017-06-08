@@ -31,9 +31,8 @@ namespace DotNet.Ildasm
 
         public void Apply(string code)
         {
-            //TODO: Refactor / Optimise
             var alreadyUpdatedIndentation = false;
-            if (code.StartsWith(".method") || code.StartsWith(".field") || code.StartsWith(".class") || code.StartsWith(".assembly") || code.StartsWith(".module"))
+            if (code.StartsWith(".method") || code.StartsWith(".class") || code.StartsWith(".assembly") || code.StartsWith(".module"))
             {
                 _writer.WriteLine(string.Empty);
             }
@@ -43,10 +42,9 @@ namespace DotNet.Ildasm
                 alreadyUpdatedIndentation = true;
                 UpdateIndentationLevel(code);
             }
-            code = code.Replace("{", Environment.NewLine + "{");
 
             var totalIndentation = _currentLevel * _numSpaces;
-            if (code.StartsWith("IL") || code.StartsWith("."))
+            if (code.StartsWith("IL") || code.StartsWith(".") || code.StartsWith("//") || code.StartsWith("{") || code.StartsWith("}"))
                 _writer.Write(code.PadLeft(code.Length + totalIndentation));
             else
                 _writer.Write(code);

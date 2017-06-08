@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -10,6 +11,7 @@ namespace DotNet.Ildasm
     {
         public static void WriteILBody(this MethodDefinition method, IOutputWriter outputWriter)
         {
+            outputWriter.WriteLine(String.Empty);
             outputWriter.WriteLine("{");
 
             if (method.DeclaringType.Module.EntryPoint == method)
@@ -36,7 +38,7 @@ namespace DotNet.Ildasm
                 }
             }
 
-            outputWriter.WriteLine($"}}// End of method {method.FullName}");
+            outputWriter.WriteLine($"}} // End of method {method.FullName}");
         }
 
         private static void WriteLocalVariablesIfNeeded(MethodDefinition method, IOutputWriter outputWriter)
