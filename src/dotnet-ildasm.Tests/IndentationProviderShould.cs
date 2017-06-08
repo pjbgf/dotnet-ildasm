@@ -1,4 +1,5 @@
 using DotNet.Ildasm.Tests.Internal;
+using NSubstitute;
 using Xunit;
 
 namespace DotNet.Ildasm.Tests
@@ -6,10 +7,12 @@ namespace DotNet.Ildasm.Tests
     public class IndentationProviderShould
     {
         private readonly OutputWriterDouble _outputWriterDouble;
+        private IOutputWriter _outputWriterMock;
 
         public IndentationProviderShould()
         {
             _outputWriterDouble = new OutputWriterDouble();
+            _outputWriterMock = Substitute.For<IOutputWriter>();
         }
 
         [Theory]
@@ -59,16 +62,16 @@ namespace DotNet.Ildasm.Tests
         //    Assert.Equal("}\r\n", _outputWriterDouble.ToString());
         //}
 
-        //[Fact]
-        //public void Add_Two_Spaces_Within_First_Open_Brackets()
-        //{
-        //    var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
+        [Fact]
+        public void Add_Two_Spaces_Within_First_Open_Brackets()
+        {
+            var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterMock);
 
-        //    autoIndentWriter.Apply(".method public {");
-        //    autoIndentWriter.Apply(".maxstack 8");
+            autoIndentWriter.Apply(".method public {");
+            autoIndentWriter.Apply(".maxstack 8");
 
-        //    Assert.Equal("  .maxstack 8", _outputWriterDouble.ToString());
-        //}
+            _outputWriterMock.Received().Write("  .maxstack 8");
+        }
 
         //[Fact]
         //public void Remove_Spaces_Once_Brackets_Are_Closed()

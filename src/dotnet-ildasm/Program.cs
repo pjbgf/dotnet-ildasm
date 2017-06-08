@@ -74,7 +74,7 @@ namespace DotNet.Ildasm
                 outputWriter = new FileStreamOutputWriter(options.OutputPath);
             }
 
-            return outputWriter;
+            return new AutoIndentOutputWriter(outputWriter);
         }
     }
 }

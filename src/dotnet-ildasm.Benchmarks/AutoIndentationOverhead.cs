@@ -14,14 +14,14 @@ namespace dotnet_ildasm.Benchmarks
         internal static readonly Lazy<AssemblyDefinition> SampleAssembly = new Lazy<AssemblyDefinition>(() =>
             Mono.Cecil.AssemblyDefinition.ReadAssembly(SourceExeFile));
 
-        private static readonly MethodDefinition _methodDefinition;
+        private static readonly MethodDefinition MethodDefinition;
         private const string TargetILFile = "C:\\git\\dotnet-ildasm\\dotnet-ildasm.Sample.il";
         private const string SourceExeFile = "C:\\git\\dotnet-ildasm\\src\\dotnet-ildasm.Sample\\bin\\Debug\\net45\\dotnet-ildasm.Sample.exe";
 
         static AutoIndentationOverhead()
         {
             var type = SampleAssembly.Value.MainModule.Types.FirstOrDefault(x => x.Name == "PublicClass");
-            _methodDefinition = type.Methods.FirstOrDefault(x => x.Name == "UsingTryCatch");
+            MethodDefinition = type.Methods.FirstOrDefault(x => x.Name == "UsingTryCatch");
         }
 
         [Benchmark]
@@ -29,7 +29,7 @@ namespace dotnet_ildasm.Benchmarks
         {
             using (var fileStreamOutputWriter = new FileStreamOutputWriter(TargetILFile))
             {
-                _methodDefinition.WriteILBody(fileStreamOutputWriter);
+                MethodDefinition.WriteILBody(fileStreamOutputWriter);
             }
         }
 
@@ -39,7 +39,7 @@ namespace dotnet_ildasm.Benchmarks
             using (var outputWriter = new FileStreamOutputWriter(TargetILFile))
             using (var autoIndentOutputWriter = new AutoIndentOutputWriter(outputWriter))
             {
-                _methodDefinition.WriteILBody(autoIndentOutputWriter);
+                MethodDefinition.WriteILBody(autoIndentOutputWriter);
             }
         }
     }
