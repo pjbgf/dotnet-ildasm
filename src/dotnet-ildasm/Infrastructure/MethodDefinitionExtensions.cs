@@ -55,7 +55,7 @@ namespace DotNet.Ildasm
                         instruction.Offset == bodyExceptionHandler.HandlerStart.Offset)
                     {
                         if (instruction.Offset == bodyExceptionHandler.TryStart.Offset)
-                            outputWriter.WriteLine("try");
+                            outputWriter.WriteLine(".try");
 
                         if (instruction.Offset == bodyExceptionHandler.HandlerStart.Offset)
                         {
