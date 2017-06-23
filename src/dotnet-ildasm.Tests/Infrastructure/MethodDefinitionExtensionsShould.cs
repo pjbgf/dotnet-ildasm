@@ -10,7 +10,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
     {
         private readonly OutputWriterDouble _outputWriter;
         private readonly AssemblyDefinition _assemblyDefinition;
-        private IOutputWriter _outputWriterMock;
+        private readonly IOutputWriter _outputWriterMock;
 
 
         public MethodDefinitionExtensionsShould()
@@ -64,7 +64,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             _outputWriterMock.Received().WriteLine(Arg.Do((string IL_Code) =>
             {
                 // For some reason, depending on platform/compilation the same code may generate two different ILs
-                // potentially this has to do with compiler optmisations.
+                // potentially due to compiler optmisations.
                 Assert.True(IL_Code == ".locals init(int32 V_0, boolean V_1)" ||
                             IL_Code == ".locals init(int32 V_0)");
             }));
