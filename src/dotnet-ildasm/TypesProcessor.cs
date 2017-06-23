@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotNet.Ildasm.Configuration;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
@@ -24,10 +25,26 @@ namespace DotNet.Ildasm
                 if (string.Compare(type.Name, "<Module>", StringComparison.CurrentCulture) == 0)
                     continue;
 
-                if (string.IsNullOrEmpty(_itemFilter.Class) ||
-                    string.Compare(type.Name, _itemFilter.Class, StringComparison.CurrentCulture) == 0)
+                if (!IsFilterSet() ||
+                    DoesTypeMatchFilter(type) || 
+                    DoesTypeContainMethodMatchingFilter(type))
                     HandleType(type);
             }
+        }
+
+        private bool DoesTypeMatchFilter(TypeDefinition type)
+        {
+            return string.Compare(type.Name, _itemFilter.Class, StringComparison.CurrentCulture) == 0;
+        }
+
+        private bool DoesTypeContainMethodMatchingFilter(TypeDefinition type)
+        {
+            return (!string.IsNullOrEmpty(_itemFilter.Method) && type.Methods.Any(x => string.Compare(x.Name, _itemFilter.Method, StringComparison.CurrentCulture) == 0));
+        }
+
+        private bool IsFilterSet()
+        {
+            return _itemFilter.HasFilter;
         }
 
         private void HandleType(TypeDefinition type)
