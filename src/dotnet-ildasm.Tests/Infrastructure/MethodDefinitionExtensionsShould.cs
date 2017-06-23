@@ -69,5 +69,22 @@ namespace DotNet.Ildasm.Tests.Infrastructure
                             IL_Code == ".locals init(int32 V_0)");
             }));
         }
+
+        [Fact]
+        public void Be_Able_To_Support_Try_Catch()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
+            var methodDefinition = type.Methods.First(x => x.Name == "UsingTryCatch");
+
+            methodDefinition.WriteILBody(_outputWriterMock);
+
+            _outputWriterMock.Received().WriteLine(Arg.Do((string IL_Code) =>
+            {
+                // For some reason, depending on platform/compilation the same code may generate two different ILs
+                // potentially due to compiler optmisations.
+                Assert.True(IL_Code == ".locals init(int32 V_0, boolean V_1)" ||
+                            IL_Code == ".locals init(int32 V_0)");
+            }));
+        }
     }
 }

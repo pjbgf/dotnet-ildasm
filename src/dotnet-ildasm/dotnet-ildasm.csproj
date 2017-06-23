@@ -7,7 +7,7 @@
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool.</Description>
-    <PackageReleaseNotes>This version adds support to properties, params keyword and IL local variable init.</PackageReleaseNotes>
+    <PackageReleaseNotes>This version adds support to try catchs, properties, params keyword and IL local variable init.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
     <PackageTags>dotnet-ildasm, ildasm, cil, msil, dotnet-cli, disassembler, dotnet-core</PackageTags>
