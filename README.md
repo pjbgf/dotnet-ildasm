@@ -10,7 +10,7 @@
 1. Install dotnet-ildasm nuget in your project.
 2. Add the following entry to the .csproj of your test project:
 
-```
+```xml
 <ItemGroup>
   <DotNetCliToolReference Include="dotnet-ildasm" Version="*" />
 </ItemGroup>
