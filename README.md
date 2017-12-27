@@ -40,3 +40,7 @@ Defining a file name to output:
 ```
 dotnet ildasm myassembly.dll -o disassembledAssembly.il
 ```
+
+
+# Powered by
+This tool was developed and is maintained with JetBrains Rider: the cross-platform and lightweight .NET/C# IDE which comes with ReSharper integrated. For more information check [JetBrains' website](https://www.jetbrains.com/rider).
