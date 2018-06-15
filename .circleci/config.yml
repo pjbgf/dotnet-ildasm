@@ -19,11 +19,15 @@ jobs:
 
       - run:
           name: Build ildasm project
-          command: dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp1.1 -c Release
+          command: |
+            dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp1.0 -c Release
+            dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp1.1 -c Release
 
       - run:
           name: Executing dotnet core ildasm against netstandard1.6 library
-          command: dotnet run --framework netcoreapp1.1 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o /root/project/netcore_netstandard16.il
+          command: | 
+            dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o /root/project/netcore_netstandard16.il
+            dotnet run --framework netcoreapp1.1 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o /root/project/netcore_netstandard16.il
 
       - run:
           name: Reassemble library based on IL
