@@ -55,13 +55,13 @@ jobs:
 
       - run:
           name: Executing dotnet core ildasm against netstandard1.6 library
-          command: dotnet run --framework netcoreapp2.1 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
+          command: dotnet run --framework netcoreapp2.1 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o /root/project/netcore_netstandard16.il
 
       - run:
           name: Reassemble library based on IL
           command: |
             cd /usr/lib/mono/4.5/
-            ilasm netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
+            ilasm /root/project/netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
 
 workflows:
   version: 2
