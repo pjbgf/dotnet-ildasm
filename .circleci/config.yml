@@ -37,41 +37,32 @@ jobs:
     docker:
       - image: microsoft/dotnet:2.1-sdk
     environment:
-      BUILD_NETCORE_21: 1
-      RUN_MONO_TESTS: 1
-      RUN_REASSEMBLE_TESTS: 1
       FrameworkPathOverride: '/usr/lib/mono/4.5/'
     steps:
       - checkout
+
       - run: |
-          chmod +x build.sh
-          chmod +x run-cross-checks.sh
-          dotnet restore
           apt-get update
           apt-get install mono-devel mono-utils -y
 
-      - run: ./build.sh -c Release
-      - run: ./run-cross-checks.sh
-
-  netcore2_1:
-    docker:
-      - image: microsoft/dotnet:2.1-sdk
-    steps:
-      - checkout
       - run: |
           dotnet restore
           dotnet build src/dotnet-ildasm.Sample/dotnet-ildasm.Sample.csproj -f netstandard1.6 -c Release
 
-      - run: |
-          echo "Build ildasm project..."
-          dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp2.1 -c Release
+      - run:
+          name: Build ildasm project
+          command: dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp2.1 -c Release
 
-      - run: |
-          echo "Executing dotnet core ildasm against netstandard1.6 library..."
-          dotnet run --framework netcoreapp2.1 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
-    
+      - run:
+          name: Executing dotnet core ildasm against netstandard1.6 library
+          command: dotnet run --framework netcoreapp2.1 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
+
+      - run:
+          name: Reassemble library based on IL
+          command: ilasm.exe netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
+
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - netcore2_1
+      - netcore2_1_with_tests
