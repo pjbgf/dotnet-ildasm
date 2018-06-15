@@ -1,23 +1,9 @@
 version: 2
 jobs:
-
-  netcore2_1:
-    docker:
-      - image: microsoft/dotnet:2.1-sdk
-    steps:
-      - checkout
-      - run: |
-          chmod +x build.sh
-          chmod +x run-cross-checks.sh
-          dotnet restore
-
-      - run: ./build.sh -c Release
-
-      - run: ./run-cross-checks.sh
   
-  mono4_5:
+  netcore1_1_with_tests:
     docker:
-      - image: microsoft/dotnet:2.1-sdk
+      - image: microsoft/dotnet:1.1-sdk
     environment:
       RUN_MONO_TESTS: 1
       RUN_REASSEMBLE_TESTS: 1
@@ -32,12 +18,34 @@ jobs:
           apt-get install mono-utils -y
 
       - run: ./build.sh -c Release
-
       - run: ./run-cross-checks.sh
+
+  netcore2_0:
+    docker:
+      - image: microsoft/dotnet:2.0-sdk
+    steps:
+      - checkout
+      - run: |
+          chmod +x build.sh
+          dotnet restore
+
+      - run: ./build.sh -c Release
+
+  netcore2_1:
+    docker:
+      - image: microsoft/dotnet:2.1-sdk
+    steps:
+      - checkout
+      - run: |
+          chmod +x build.sh
+          dotnet restore
+
+      - run: ./build.sh -c Release
 
 workflows:
   version: 2
   build_and_test:
     jobs:
+      - netcore1_1_with_tests
+      - netcore2_0
       - netcore2_1
-      - mono4_5
