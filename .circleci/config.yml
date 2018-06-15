@@ -33,7 +33,7 @@ jobs:
 
       - run: ./build.sh -c Release
 
-  netcore2_1:
+  netcore2_1_with_tests:
     docker:
       - image: microsoft/dotnet:2.1-sdk
     environment:
