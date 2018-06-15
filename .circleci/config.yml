@@ -41,7 +41,7 @@ jobs:
 
       - run: |
           apt-get update
-          apt-get install mono-devel mono-utils -y
+          apt-get install mono-utils -y
 
       - run: |
           dotnet restore
@@ -57,7 +57,7 @@ jobs:
 
       - run:
           name: Reassemble library based on IL
-          command: /usr/lib/mono/4.5/ilasm.exe netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
+          command: cd /usr/lib/mono/4.5/ && ilasm.exe netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
 
 workflows:
   version: 2
