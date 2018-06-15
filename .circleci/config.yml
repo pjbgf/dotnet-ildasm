@@ -29,7 +29,7 @@ jobs:
           chmod +x run-cross-checks.sh
           dotnet restore
           apt-get update
-          apt-get install mono-utils
+          apt-get install mono-utils -y
 
       - run: ./build.sh -c Release
 
