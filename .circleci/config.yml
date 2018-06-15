@@ -10,7 +10,6 @@ jobs:
           chmod +x build.sh
           chmod +x run-cross-checks.sh
           dotnet restore
-          sudo apt-get install mono-utils
 
       - run: ./build.sh -c Release
 
@@ -18,7 +17,7 @@ jobs:
   
   mono4_5:
     docker:
-      - image: amd64/mono:latest
+      - image: microsoft/dotnet:2.1-sdk
     environment:
       RUN_MONO_TESTS: 1
       RUN_REASSEMBLE_TESTS: 1
@@ -29,7 +28,7 @@ jobs:
           chmod +x build.sh
           chmod +x run-cross-checks.sh
           dotnet restore
-          sudo apt-get install mono-utils
+          apt-get install mono-utils
 
       - run: ./build.sh -c Release
 
