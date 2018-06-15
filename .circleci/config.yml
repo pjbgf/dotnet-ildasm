@@ -1,0 +1,43 @@
+version: 2
+jobs:
+
+  netcore2_1:
+    docker:
+      - image: microsoft/dotnet:2.1-sdk
+    steps:
+      - checkout
+      - run: |
+          chmod +x build.sh
+          chmod +x run-cross-checks.sh
+          dotnet restore
+          sudo apt-get install mono-utils
+
+      - run: ./build.sh -c Release
+
+      - run: ./run-cross-checks.sh
+  
+  mono4_5:
+    docker:
+      - image: mono
+    environment:
+      RUN_MONO_TESTS: 1
+      RUN_REASSEMBLE_TESTS: 1
+      FrameworkPathOverride: "/usr/lib/mono/4.5/"
+    steps:
+      - checkout
+      - run: |
+          chmod +x build.sh
+          chmod +x run-cross-checks.sh
+          dotnet restore
+          sudo apt-get install mono-utils
+
+      - run: ./build.sh -c Release
+
+      - run: ./run-cross-checks.sh
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - netcore2_1
+      - mono4_5
