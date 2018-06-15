@@ -23,6 +23,8 @@ jobs:
   netcore2_0:
     docker:
       - image: microsoft/dotnet:2.0-sdk
+    environment:
+      BUILD_NETCORE_20: 1
     steps:
       - checkout
       - run: |
@@ -34,18 +36,26 @@ jobs:
   netcore2_1:
     docker:
       - image: microsoft/dotnet:2.1-sdk
+    environment:
+      BUILD_NETCORE_21: 1
+      RUN_MONO_TESTS: 1
+      RUN_REASSEMBLE_TESTS: 1
+      FrameworkPathOverride: "/usr/lib/mono/4.5/"
     steps:
       - checkout
       - run: |
           chmod +x build.sh
+          chmod +x run-cross-checks.sh
           dotnet restore
+          apt-get update
+          apt-get install mono-utils -y
+          ls /usr/lib/mono
 
       - run: ./build.sh -c Release
+      - run: ./run-cross-checks.sh
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - netcore1_1_with_tests
-      - netcore2_0
-      - netcore2_1
+      - netcore2_1_with_tests
