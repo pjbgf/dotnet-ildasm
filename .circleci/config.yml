@@ -18,7 +18,7 @@ jobs:
   
   mono4_5:
     docker:
-      - image: mono
+      - image: amd64/mono:latest
     environment:
       RUN_MONO_TESTS: 1
       RUN_REASSEMBLE_TESTS: 1
