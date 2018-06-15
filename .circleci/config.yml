@@ -47,8 +47,7 @@ jobs:
           chmod +x run-cross-checks.sh
           dotnet restore
           apt-get update
-          apt-get install mono-utils -y
-          ls /usr/lib/mono/4.5
+          apt-get install mono-devel mono-utils -y
       
       - run:
           name: Update PATH and Define Environment Variable at Runtime
