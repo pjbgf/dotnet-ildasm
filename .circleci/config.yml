@@ -40,7 +40,6 @@ jobs:
       BUILD_NETCORE_21: 1
       RUN_MONO_TESTS: 1
       RUN_REASSEMBLE_TESTS: 1
-      FrameworkPathOverride: "/usr/lib/mono/4.5/"
     steps:
       - checkout
       - run: |
@@ -49,7 +48,13 @@ jobs:
           dotnet restore
           apt-get update
           apt-get install mono-utils -y
-          ls /usr/lib/mono
+          ls /usr/lib/mono/4.5
+      
+      - run:
+          name: Update PATH and Define Environment Variable at Runtime
+          command: |
+            echo 'export PATH=/usr/lib/mono/4.5/:$PATH' >> $BASH_ENV
+            source $BASH_ENV
 
       - run: ./build.sh -c Release
       - run: ./run-cross-checks.sh
