@@ -3,9 +3,9 @@ dist: trusty
 
 matrix:
   include:
-    - dotnet: 1.0.1
+    - dotnet: 2.1.0
       mono: none
-    - dotnet: 1.0.1
+    - dotnet: 2.1.0
       mono: latest
       env: RUN_MONO_TESTS=1; RUN_REASSEMBLE_TESTS=1; FrameworkPathOverride=/usr/lib/mono/4.5/
 
