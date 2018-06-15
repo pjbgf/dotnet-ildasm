@@ -59,7 +59,7 @@ jobs:
           name: Reassemble library based on IL
           command: |
             cd /usr/lib/mono/4.5/
-            ilasm.exe netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
+            ilasm netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
 
 workflows:
   version: 2
