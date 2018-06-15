@@ -36,8 +36,6 @@ jobs:
   netcore2_1_with_tests:
     docker:
       - image: microsoft/dotnet:2.1-sdk
-    environment:
-      FrameworkPathOverride: '/usr/lib/mono/4.5/'
     steps:
       - checkout
 
@@ -59,7 +57,7 @@ jobs:
 
       - run:
           name: Reassemble library based on IL
-          command: ilasm.exe netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
+          command: /usr/lib/mono/4.5/ilasm.exe netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
 
 workflows:
   version: 2
