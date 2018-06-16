@@ -89,7 +89,7 @@ namespace DotNet.Ildasm.Tests
                 _assemblyProcessorMock.WriteModuleTypes(Arg.Any<Collection<TypeDefinition>>(), Arg.Any<ItemFilter>());
             });
         }
-        
+
         [Fact]
         public void Write_Nothing_But_ModuleTypes_When_Filter_Is_Set()
         {

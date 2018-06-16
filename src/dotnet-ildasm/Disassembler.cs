@@ -4,12 +4,12 @@ namespace DotNet.Ildasm
 {
     public sealed class Disassembler
     {
-        private readonly IAssemblyDecompiler _assemblyDataProcessor;
+        private readonly IAssemblyDecompiler _assemblyDecompiler;
         private readonly IAssemblyDefinitionResolver _assemblyResolver;
 
         public Disassembler(IAssemblyDecompiler assemblyDataProcessor, IAssemblyDefinitionResolver assemblyResolver)
         {
-            _assemblyDataProcessor = assemblyDataProcessor;
+            _assemblyDecompiler = assemblyDataProcessor;
             _assemblyResolver = assemblyResolver;
         }
 
@@ -21,16 +21,16 @@ namespace DotNet.Ildasm
             
             if (!itemFilter.HasFilter)
             {
-                _assemblyDataProcessor.WriteAssemblyExternalReferences(assembly);
-                _assemblyDataProcessor.WriteAssemblySection(assembly);
+                _assemblyDecompiler.WriteAssemblyExternalReferences(assembly);
+                _assemblyDecompiler.WriteAssemblySection(assembly);
             }
             
             foreach (var module in assembly.Modules)
             {
                 if (!itemFilter.HasFilter)
-                    _assemblyDataProcessor.WriteModuleSection(module);
+                    _assemblyDecompiler.WriteModuleSection(module);
                 
-                _assemblyDataProcessor.WriteModuleTypes(module.Types, itemFilter);
+                _assemblyDecompiler.WriteModuleTypes(module.Types, itemFilter);
             }
             
             if (!options.IsTextOutput)

@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 
 namespace DotNet.Ildasm
 {
@@ -34,11 +33,45 @@ namespace DotNet.Ildasm
                 var ilProcessor = method.Body.GetILProcessor();
                 foreach (var instruction in ilProcessor.Body.Instructions)
                 {
+                    WriteExceptionHandler(method, instruction, outputWriter);
                     instruction.WriteIL(outputWriter);
                 }
             }
 
             outputWriter.WriteLine($"}} // End of method {method.FullName}");
+        }
+
+        private static void WriteExceptionHandler(MethodDefinition method, Instruction instruction, IOutputWriter outputWriter)
+        {
+            if (method.Body.HasExceptionHandlers)
+            {
+                foreach (var bodyExceptionHandler in method.Body.ExceptionHandlers)
+                {
+                    //TODO: Support other handler types. #28
+                    if (bodyExceptionHandler.HandlerType != ExceptionHandlerType.Catch)
+                        return;
+
+                    if (instruction.Offset == bodyExceptionHandler.TryStart.Offset ||
+                        instruction.Offset == bodyExceptionHandler.HandlerStart.Offset)
+                    {
+                        if (instruction.Offset == bodyExceptionHandler.TryStart.Offset)
+                            outputWriter.WriteLine(".try");
+
+                        if (instruction.Offset == bodyExceptionHandler.HandlerStart.Offset)
+                        {
+                            outputWriter.WriteLine("}");
+                            outputWriter.WriteLine($"catch {bodyExceptionHandler.CatchType.ToIL()}");
+                        }
+
+                        outputWriter.WriteLine("{");
+                    }
+
+                    if (instruction.Offset == bodyExceptionHandler.HandlerEnd.Offset)
+                    {
+                        outputWriter.WriteLine("}");
+                    }
+                }
+            }
         }
 
         private static void WriteLocalVariablesIfNeeded(MethodDefinition method, IOutputWriter outputWriter)
@@ -59,7 +92,7 @@ namespace DotNet.Ildasm
                 outputWriter.WriteLine($".locals init({variables})");
             }
         }
-        
+
         public static void WriteILSignature(this MethodDefinition method, IOutputWriter writer)
         {
             writer.Write(".method");

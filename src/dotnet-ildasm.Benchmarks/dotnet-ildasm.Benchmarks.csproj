@@ -1,17 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp1.1;net46</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net46</TargetFrameworks>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.10.6" />
-    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta6" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.10.14" />
+    <PackageReference Include="Mono.Cecil" Version="0.10.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\dotnet-ildasm\dotnet-ildasm.csproj" />
   </ItemGroup>
-
 </Project>
