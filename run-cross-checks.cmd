@@ -35,13 +35,4 @@ ECHO Executing net45 ildasm.exe against net45 library...
 if %ERRORLEVEL% EQU 0 ECHO DONE
 
 
-<<<<<<< HEAD
-REM ECHO "Reassembling .IL's onto Portable executable files again."
-REM ilasm netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
-REM ilasm netcore_net45.il /exe /output:netcore_net45.exe
-REM ilasm net45_netcore.il /exe /output:net45_netcore.exe
-REM ilasm net45_net45.il /exe /output:net45_net45.exe
-
-=======
->>>>>>> release/0.8.0-mess
 ENDLOCAL
