@@ -1,5 +1,6 @@
 #!/bin/bash
 
+<<<<<<< HEAD
 
 
 if [[ ! -v BUILD_NETCORE_10 ]]
@@ -26,6 +27,11 @@ then
 
 fi
 
+=======
+echo "Executing dotnet core ildasm against netstandard1.6 library..."
+dotnet run --framework netcoreapp1.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o netcore_netstandard16.il
+   
+>>>>>>> release/0.8.0-mess
 
 if [[ ! -v RUN_MONO_TESTS ]]
 then
