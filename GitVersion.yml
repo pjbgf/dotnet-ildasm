@@ -1,6 +1,9 @@
 branches:
   features?[/-]:
     mode: ContinuousDeployment
+    tag: beta-build-
+  release?[/-]:
+    mode: ContinuousDeployment
     tag: preview-
   master: {}
 ignore:
