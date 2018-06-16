@@ -39,7 +39,7 @@ deploy:
   - provider: NuGet
     server: 
     api_key:
-      secure: Hh52nD8i4YR/X5yRRaqWNchtVaH3/IvAzl9XcGPsrfQI0DnvJB9Odeju0e5yIG4D
+      secure: /ndfcg+DPzrEghZNXPELdI/mGYbglaBEZy4ZGpCyJ+1rYqHF1csEDDhH3sYteOJg
     artifact: /.*\.nupkg/
   - provider: GitHub
     release: v$(GitVersion_NuGetVersion)
