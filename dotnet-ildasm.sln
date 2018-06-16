@@ -7,8 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm", "src\dotnet
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{98ACE31A-8E21-4953-A55E-E62C6E10921B}"
 	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
+		.circleci\config.yml = .circleci\config.yml
 		GitVersion.yml = GitVersion.yml
 		README.md = README.md
 	EndProjectSection
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm.Tests", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm.Sample", "src\dotnet-ildasm.Sample\dotnet-ildasm.Sample.csproj", "{AAEC7394-13DC-4FD3-96C3-3B2A6E481D2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-ildasm.Benchmarks", "src\dotnet-ildasm.Benchmarks\dotnet-ildasm.Benchmarks.csproj", "{A05E1F00-989B-47C3-BB4D-0EAF53AF959E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-ildasm.Benchmarks", "src\dotnet-ildasm.Benchmarks\dotnet-ildasm.Benchmarks.csproj", "{A05E1F00-989B-47C3-BB4D-0EAF53AF959E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D1C9CF65-526E-422A-BAC4-9DC53D557985}"
 	ProjectSection(SolutionItems) = preProject
@@ -52,5 +52,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E60E6E7-BFA4-4CE4-A284-CFD4B1B3A72D}
 	EndGlobalSection
 EndGlobal
