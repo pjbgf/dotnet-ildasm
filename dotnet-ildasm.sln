@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D1C9CF
 	ProjectSection(SolutionItems) = preProject
 		build.cmd = build.cmd
 		build.sh = build.sh
+		generate-sample-files.cmd = generate-sample-files.cmd
+		src\dotnet-ildasm.Benchmarks\Sample\generate-sample.cmd = src\dotnet-ildasm.Benchmarks\Sample\generate-sample.cmd
 		run-cross-checks.cmd = run-cross-checks.cmd
 		run-cross-checks.sh = run-cross-checks.sh
 	EndProjectSection
