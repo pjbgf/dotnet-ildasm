@@ -24,7 +24,7 @@ namespace DotNet.Ildasm
         private static int PrepareToExecute(CommandOptions options)
         {
             Console.WriteLine();
-            if (File.Exists(options.OutputPath) && !options.IsTextOutput)
+            if (!string.IsNullOrEmpty(options.OutputPath) && File.Exists(options.OutputPath))
             {
                 if (!options.ForceOutputOverwrite)
                 {
@@ -51,7 +51,7 @@ namespace DotNet.Ildasm
             var result = disassembler.Execute(options, itemFilter);
             outputWriter.Dispose();
 
-            if (result.Succeeded || !options.IsTextOutput)
+            if (result.Succeeded || string.IsNullOrEmpty(options.OutputPath))
             {
                 Console.WriteLine(result.Message);
                 return 0;
@@ -65,13 +65,13 @@ namespace DotNet.Ildasm
         {
             IOutputWriter outputWriter = null;
 
-            if (options.IsTextOutput)
+            if (string.IsNullOrEmpty(options.OutputPath))
             {
-                outputWriter = new ConsoleOutputWriter();
+                outputWriter = new FileStreamOutputWriter(options.OutputPath);
             }
             else
             {
-                outputWriter = new FileStreamOutputWriter(options.OutputPath);
+                outputWriter = new ConsoleOutputWriter();
             }
 
             return new AutoIndentOutputWriter(outputWriter);

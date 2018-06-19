@@ -33,7 +33,7 @@ namespace DotNet.Ildasm
                 _assemblyDecompiler.WriteModuleTypes(module.Types, itemFilter);
             }
             
-            if (!options.IsTextOutput)
+            if (!string.IsNullOrEmpty(options.OutputPath))
                 return new ExecutionResult(true, $"Assembly IL exported to {options.OutputPath}");
 
             return new ExecutionResult(true);

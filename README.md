@@ -5,44 +5,44 @@
 [![Nuget](https://img.shields.io/nuget/v/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://pjbgf.mit-license.org)  
 
-# How to Install?
-The project was created as a global CLI tool, therefore you can install with a single commad:  
+# Description
+The `dotnet ildasm` provides a command-line IL dissassembler. Simply send the assembly path as a parameter and as a result you will get the IL contents of that assembly.
+
+# Setup
+The project was created as a global CLI tool, therefore you can install with a single command:  
 
 `dotnet tool install -g dotnet-ildasm`
 
+Conversely, to update to the latest version you are a command away:
+
+`dotnet tool update -g dotnet-ildasm`
 
 # Syntax
 ```
-dotnet ildasm <ASSEMBLY_PATH> <-t|--text>
+dotnet ildasm <ASSEMBLY_PATH>
 dotnet ildasm <ASSEMBLY_PATH> <-o|--output>
 dotnet ildasm <ASSEMBLY_PATH> <-i|--item>
 dotnet ildasm <-h|--help>
 ```
 
-# Description
-The `dotnet ildasm` provides a command-line IL dissassembler. Simply send the assembly path as a parameter and as a result a file of the same name will be created.
-
 # Options
-`-t`  
-Output results to the command line.
-
 `-i`  
 Filter results by method and/or classes to be disassembled.
 
 `-o`  
-Define the file to be created with the IL.
+Define the output file to be created with the assembly's IL.
 
 # Examples
 Output results to the command line:
 ```
-dotnet ildasm myassembly.dll -t
+dotnet ildasm myassembly.dll
 ```
 
 Filter results by method and/or classes to be disassembled:
 ```
-dotnet ildasm myassembly.dll -t -i ClassName
-dotnet ildasm myassembly.dll -t -i ::MethodName
-dotnet ildasm myassembly.dll -t -i ClassName::MethodName
+dotnet ildasm myassembly.dll -i ClassName
+dotnet ildasm myassembly.dll -i ::MethodName
+dotnet ildasm myassembly.dll -i ClassName::MethodName
 ```
 
 Define the file to be created with the output: 

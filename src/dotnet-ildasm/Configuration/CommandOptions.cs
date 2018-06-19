@@ -10,9 +10,6 @@ namespace DotNet.Ildasm.Configuration
         [Option("force", Required = false, HelpText = "Force an existing output file to be overwritten.")]
         public bool ForceOutputOverwrite { get; set; }
 
-        [Option('t', "text", Required = false, HelpText = "Output results to the console.")]
-        public bool IsTextOutput { get; set; }
-
         [Option('o', "output", Required = false, HelpText = "File path to be used as output.")]
         public string OutputPath {
             get
