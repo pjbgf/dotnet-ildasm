@@ -11,19 +11,7 @@ namespace DotNet.Ildasm.Configuration
         public bool ForceOutputOverwrite { get; set; }
 
         [Option('o', "output", Required = false, HelpText = "File path to be used as output.")]
-        public string OutputPath {
-            get
-            {
-                if (string.IsNullOrEmpty(_outputPath))
-                    _outputPath = Path.GetFileNameWithoutExtension(this.FilePath) + ".il";
-
-                return _outputPath;
-            }
-            set
-            {
-                _outputPath = value;
-            }
-        }
+        public string OutputPath { get; set; }
 
         [Option('i', "item", Required = false, HelpText = "Filter to define which item(s) will be processed.")]
         public string ItemFilter { get; set; }
