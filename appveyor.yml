@@ -46,7 +46,7 @@ deploy:
     skip_symbols: true
     prerelease: true
     on:
-      branch: /release.*/
+      branch: /feature.*/
 
   - provider: NuGet
     name: Preview releases
@@ -57,7 +57,7 @@ deploy:
     skip_symbols: true
     prerelease: true
     on:
-      branch: __release*
+      branch: /release.*/
       appveyor_repo_tag: true
       
   - provider: NuGet
