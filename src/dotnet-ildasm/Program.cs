@@ -67,11 +67,11 @@ namespace DotNet.Ildasm
 
             if (string.IsNullOrEmpty(options.OutputPath))
             {
-                outputWriter = new FileStreamOutputWriter(options.OutputPath);
+                outputWriter = new ConsoleOutputWriter();
             }
             else
             {
-                outputWriter = new ConsoleOutputWriter();
+                outputWriter = new FileStreamOutputWriter(options.OutputPath);
             }
 
             return new AutoIndentOutputWriter(outputWriter);

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>DotNet.Ildasm</RootNamespace>
     <Version>$(GitVersion_NuGetVersion)</Version>
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
