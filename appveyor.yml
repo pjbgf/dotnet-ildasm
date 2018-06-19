@@ -46,7 +46,7 @@ deploy:
     skip_symbols: true
     prerelease: true
     on:
-      branch: release*
+      branch: /release.*/
 
   - provider: NuGet
     name: Preview releases
