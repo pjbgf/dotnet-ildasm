@@ -38,7 +38,7 @@ artifacts:
 deploy:
   - provider: NuGet
     name: Unstable releases
-    server: https://www.myget.org/F/pjbgf/api/v3/index.json
+    server: https://www.myget.org/F/pjbgf/api/v2/package
     api_key:
       secure: jnSpdhFvTcq+3qoOA1HJmGoo6hwyFJdU/ryAYF6umUYMzpzq6bjvs/oe+Wrsob6m
     artifact: /.*\.nupkg/
