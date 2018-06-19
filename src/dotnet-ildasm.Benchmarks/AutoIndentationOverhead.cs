@@ -40,7 +40,7 @@ namespace dotnet_ildasm.Benchmarks
         [Benchmark]
         public void NoIndentation()
         {
-            using (var fileStreamOutputWriter = new FileStreamOutputWriter(Path.GetRandomFileName()))
+            using (var fileStreamOutputWriter = new FileStreamOutputWriter(Path.GetTempFileName()))
             {
                 MethodDefinition.WriteILBody(fileStreamOutputWriter);
             }
@@ -49,7 +49,7 @@ namespace dotnet_ildasm.Benchmarks
         [Benchmark]
         public void AutoIndentation()
         {
-            using (var outputWriter = new FileStreamOutputWriter(Path.GetRandomFileName()))
+            using (var outputWriter = new FileStreamOutputWriter(Path.GetTempFileName()))
             using (var autoIndentOutputWriter = new AutoIndentOutputWriter(outputWriter))
             {
                 MethodDefinition.WriteILBody(autoIndentOutputWriter);
