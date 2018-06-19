@@ -13,7 +13,7 @@ The project was created as a global CLI tool, therefore you can install with a s
 
 `dotnet tool install -g dotnet-ildasm`
 
-Conversely, to update to the latest version you are a command away:
+Conversely, to update to the latest version you are one command away:
 
 `dotnet tool update -g dotnet-ildasm`
 
@@ -33,12 +33,12 @@ Filter results by method and/or classes to be disassembled.
 Define the output file to be created with the assembly's IL.
 
 # Examples
-Output results to the command line:
+Output IL to the command line:
 ```
 dotnet ildasm myassembly.dll
 ```
 
-Filter results by method and/or classes to be disassembled:
+Filter results by method and/or classes to be disassembled, showing the result in the command line:
 ```
 dotnet ildasm myassembly.dll -i ClassName
 dotnet ildasm myassembly.dll -i ::MethodName
@@ -50,12 +50,10 @@ Define the file to be created with the output:
 dotnet ildasm myassembly.dll -o disassembledAssembly.il
 ```
   
-# Supported .Net Versions
-The CLI application current supports:
+# Breaking Changes
 
-* .Net Core App 1.0, 1.1, 2.0, 2.1
-* .Net Standard 1.5
-* .Net Framework 4.5
+* .Net Core 2.1 only support: In order to support the .Net Core CLI Tool model, all the other target frameworks were removed. Please note that you still can download the source code and target it to .Net Core 1, 1.1, 2.0 and net45.
+* Default execution now outputs to console, instead of creating an IL file.
 
 # Powered by
 This tool was developed and is maintained with JetBrains Rider: the cross-platform and lightweight .NET/C# IDE which comes with ReSharper integrated. For more information check [JetBrains' website](https://www.jetbrains.com/rider).
