@@ -37,18 +37,43 @@ artifacts:
 
 deploy:
   - provider: NuGet
+    name: Unstable releases
+    server: https://www.myget.org/F/pjbgf/api/v2/package
+    api_key:
+      secure: jnSpdhFvTcq+3qoOA1HJmGoo6hwyFJdU/ryAYF6umUYMzpzq6bjvs/oe+Wrsob6m
+    artifact: /.*\.nupkg/
+    skip_symbols: true
+    prerelease: true
+    on:
+      branch: /feature.*/
+
+  - provider: NuGet
+    name: Preview releases
     server: 
     api_key:
       secure: /ndfcg+DPzrEghZNXPELdI/mGYbglaBEZy4ZGpCyJ+1rYqHF1csEDDhH3sYteOJg
     artifact: /.*\.nupkg/
+    skip_symbols: true
+    prerelease: true
+    on:
+      branch: /release.*/
+      
+  - provider: NuGet
+    name: Stable releases
+    server: 
+    api_key:
+      secure: /ndfcg+DPzrEghZNXPELdI/mGYbglaBEZy4ZGpCyJ+1rYqHF1csEDDhH3sYteOJg
+    artifact: /.*\.nupkg/
+    on:
+      branch: master
+
   - provider: GitHub
     release: v$(GitVersion_NuGetVersion)
     auth_token:
       secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
     draft: true
-    prerelease: true
     on:
-      appveyor_repo_tag: true
+      branch: master
 
 skip_commits:
   files: '**/*.md'

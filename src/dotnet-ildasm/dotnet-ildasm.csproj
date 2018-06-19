@@ -1,18 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp1.1;netcoreapp2.0;netcoreapp2.1;netstandard1.5;net45</TargetFrameworks>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>DotNet.Ildasm</RootNamespace>
     <Version>$(GitVersion_NuGetVersion)</Version>
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
-    <Description>Light-weight cross platform IL disassembler tool.</Description>
+    <Description>Light-weight cross platform IL disassembler tool built in C#.</Description>
+    <PackAsTool>true</PackAsTool>
     <PackageReleaseNotes>This version adds support to try catchs, properties, params keyword and IL local variable init.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>
     <PackageTags>dotnet-ildasm, ildasm, cil, msil, dotnet-cli, disassembler, dotnet-core</PackageTags>
     <Authors>pjbgf</Authors>
     <PackageProjectUrl>https://github.com/pjbgf/dotnet-ildasm</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/pjbgf/dotnet-ildasm</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />

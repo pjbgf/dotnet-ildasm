@@ -10,7 +10,7 @@ namespace DotNet.Ildasm.Tests.Configuration
         {
             var options = new CommandOptions { FilePath = "MyAssembly.dll" };
 
-            Assert.Equal("MyAssembly.il", options.OutputPath);
+            Assert.Null(options.OutputPath);
         }
 
         [Fact]
