@@ -37,10 +37,10 @@ namespace DotNet.Ildasm.Tests
         }
 
         [Fact]
-        public void Define_OutputFile_Name_If_None_Provided_In_File_Export_Mode()
+        public void Show_OutputFile_In_Success_Message()
         {
             var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
-            var commandOptions = new CommandOptions { FilePath = "AssemblyFile.dll" };
+            var commandOptions = new CommandOptions { FilePath = "AssemblyFile.dll", OutputPath = "AssemblyFile.il" };
 
             ExecutionResult executionResult = disassembler.Execute(commandOptions, new ItemFilter(string.Empty));
 

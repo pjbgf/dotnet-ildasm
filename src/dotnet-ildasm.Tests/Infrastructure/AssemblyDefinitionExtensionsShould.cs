@@ -1,4 +1,4 @@
-﻿using DotNet.Ildasm.Infrastructure;
+using DotNet.Ildasm.Infrastructure;
 using DotNet.Ildasm.Tests.Internal;
 using NSubstitute;
 using Xunit;
@@ -22,7 +22,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             
             //TODO: Investigate: In netcore 2.1 the line below seems to no longer be exported.
             // outputWriter.Received(1).WriteLine(".custom instance void [System.Runtime]System.Reflection.AssemblyDescriptionAttribute::.ctor(string) = ( 01 00 13 50 61 63 6B 61 67 65 20 44 65 73 63 72 69 70 74 69 6F 6E 00 00 )");
-            
+
             outputWriter.Received(1).WriteLine(".custom instance void [System.Runtime]System.Reflection.AssemblyFileVersionAttribute::.ctor(string) = ( 01 00 07 31 2E 30 2E 30 2E 30 00 00 )");
             outputWriter.Received(1).WriteLine(".custom instance void [System.Runtime]System.Reflection.AssemblyInformationalVersionAttribute::.ctor(string) = ( 01 00 05 31 2E 30 2E 30 00 00 )");
             outputWriter.Received(1).WriteLine(".custom instance void [System.Runtime]System.Reflection.AssemblyProductAttribute::.ctor(string) = ( 01 00 14 64 6F 74 6E 65 74 2D 69 6C 64 61 73 6D 2E 53 61 6D 70 6C 65 00 00 )");

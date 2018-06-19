@@ -1,22 +1,35 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Toolchains.CsProj;
 using DotNet.Ildasm;
 using DotNet.Ildasm.Adapters;
 using Mono.Cecil;
 
 namespace dotnet_ildasm.Benchmarks
 {
-    [CoreJob][ClrJob]
+    public class MultipleRuntimes : ManualConfig
+    {
+        public MultipleRuntimes()
+        {
+            Add(Job.Default.With(CsProjCoreToolchain.NetCoreApp21));
+            Add(Job.Default.With(CsProjClassicNetToolchain.Net461));
+        }
+    }
+    
+    [Config(typeof(MultipleRuntimes))]
     public class AutoIndentationOverhead
     {
         internal static readonly Lazy<AssemblyDefinition> SampleAssembly = new Lazy<AssemblyDefinition>(() =>
-            Mono.Cecil.AssemblyDefinition.ReadAssembly(SourceExeFile));
+            Mono.Cecil.AssemblyDefinition.ReadAssembly(
+                typeof(Program).Assembly.GetManifestResourceStream(
+                    "dotnet-ildasm.Benchmarks.Sample.dotnet-ildasm.Sample.exe")));
 
         private static readonly MethodDefinition MethodDefinition;
-        private const string TargetILFile = "C:\\git\\dotnet-ildasm\\dotnet-ildasm.Sample.il";
-        private const string SourceExeFile = "C:\\git\\dotnet-ildasm\\src\\dotnet-ildasm.Sample\\bin\\Debug\\net45\\dotnet-ildasm.Sample.exe";
 
         static AutoIndentationOverhead()
         {
@@ -27,7 +40,7 @@ namespace dotnet_ildasm.Benchmarks
         [Benchmark]
         public void NoIndentation()
         {
-            using (var fileStreamOutputWriter = new FileStreamOutputWriter(TargetILFile))
+            using (var fileStreamOutputWriter = new FileStreamOutputWriter(Path.GetTempFileName()))
             {
                 MethodDefinition.WriteILBody(fileStreamOutputWriter);
             }
@@ -36,7 +49,7 @@ namespace dotnet_ildasm.Benchmarks
         [Benchmark]
         public void AutoIndentation()
         {
-            using (var outputWriter = new FileStreamOutputWriter(TargetILFile))
+            using (var outputWriter = new FileStreamOutputWriter(Path.GetTempFileName()))
             using (var autoIndentOutputWriter = new AutoIndentOutputWriter(outputWriter))
             {
                 MethodDefinition.WriteILBody(autoIndentOutputWriter);
