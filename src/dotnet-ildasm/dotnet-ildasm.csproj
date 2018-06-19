@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp1.0;netcoreapp1.1;netcoreapp2.0;netcoreapp2.1;netstandard1.5;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
     <RootNamespace>DotNet.Ildasm</RootNamespace>
     <Version>$(GitVersion_NuGetVersion)</Version>
     <AssemblyVersion>$(GitVersion_AssemblySemVer)</AssemblyVersion>
     <FileVersion>$(GitVersion_AssemblySemVer)</FileVersion>
     <Description>Light-weight cross platform IL disassembler tool built in C#.</Description>
-    <PackageType>DotnetCliTool</PackageType>
+    <PackAsTool>true</PackAsTool>
     <PackageReleaseNotes>This version adds support to try catchs, properties, params keyword and IL local variable init.</PackageReleaseNotes>
     <PackageLicenseUrl>https://pjbgf.mit-license.org/</PackageLicenseUrl>
     <PackageId>dotnet-ildasm</PackageId>

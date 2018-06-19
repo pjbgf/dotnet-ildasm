@@ -5,8 +5,6 @@ namespace DotNet.Ildasm.Configuration
 {
     public class CommandOptions
     {
-        private string _outputPath;
-
         [Option("force", Required = false, HelpText = "Force an existing output file to be overwritten.")]
         public bool ForceOutputOverwrite { get; set; }
 
