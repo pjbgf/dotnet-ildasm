@@ -46,8 +46,20 @@ deploy:
     skip_symbols: true
     prerelease: true
     on:
-      branch: release/*
+      branch: release*
 
+  - provider: NuGet
+    name: Preview releases
+    server: 
+    api_key:
+      secure: /ndfcg+DPzrEghZNXPELdI/mGYbglaBEZy4ZGpCyJ+1rYqHF1csEDDhH3sYteOJg
+    artifact: /.*\.nupkg/
+    skip_symbols: true
+    prerelease: true
+    on:
+      branch: __release*
+      appveyor_repo_tag: true
+      
   - provider: NuGet
     name: Stable releases
     server: 
@@ -56,14 +68,15 @@ deploy:
     artifact: /.*\.nupkg/
     on:
       branch: master
+      appveyor_repo_tag: true
 
   - provider: GitHub
     release: v$(GitVersion_NuGetVersion)
     auth_token:
       secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
-    skip_symbols: true
     on:
       branch: master
+      appveyor_repo_tag: true
 
 skip_commits:
   files: '**/*.md'
