@@ -1,4 +1,4 @@
-﻿using DotNet.Ildasm.Infrastructure;
+using DotNet.Ildasm.Infrastructure;
 using DotNet.Ildasm.Tests.Internal;
 using NSubstitute;
 using Xunit;

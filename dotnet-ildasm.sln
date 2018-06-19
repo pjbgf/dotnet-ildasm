@@ -28,6 +28,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D1C9CF
 		run-cross-checks.sh = run-cross-checks.sh
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D1C9CF65-526E-422A-BAC4-9DC53D557985}"
+	ProjectSection(SolutionItems) = preProject
+		build.cmd = build.cmd
+		build.sh = build.sh
+		run-cross-checks.cmd = run-cross-checks.cmd
+		run-cross-checks.sh = run-cross-checks.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
