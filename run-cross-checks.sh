@@ -12,8 +12,5 @@ else
 
 	echo "Reassembling .IL's onto Portable executable files again."
 	ilasm netcore_netstandard16.il /dll /output:netcore_netstandard16.dll
-	ilasm netcore_net45.il /exe /output:netcore_net45.exe
-	ilasm net45_netcore.il /exe /output:net45_netcore.exe
-	ilasm net45_net45.il /exe /output:net45_net45.exe
 
 fi
