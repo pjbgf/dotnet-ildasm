@@ -9,29 +9,7 @@ namespace dotnet_ildasm.Benchmarks
     {
         static void Main(string[] args)
         {
-            ExportEmbeddedResources();
-
             BenchmarkRunner.Run<AutoIndentationOverhead>();
-        }
-
-        private static void ExportEmbeddedResources()
-        {
-            var assembly = typeof(Program).Assembly;
-            var resourceNames = assembly.GetManifestResourceNames();
-
-            foreach (var resourceName in resourceNames)
-            {
-                var fileName = Path.GetFileName(resourceName);
-                Stream resource = assembly.GetManifestResourceStream(resourceName);
-
-                if (!File.Exists(fileName))
-                {
-                    var fs = File.Create(fileName, (int)resource.Length);
-                    var bytesInStream = new byte[resource.Length];
-                    resource.Read(bytesInStream, 0, bytesInStream.Length);
-                    fs.Write(bytesInStream, 0, bytesInStream.Length);
-                }
-            }
         }
     }
 }

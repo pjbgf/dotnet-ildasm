@@ -4,17 +4,30 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Attributes.Jobs;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Toolchains.CsProj;
 using DotNet.Ildasm;
 using DotNet.Ildasm.Adapters;
 using Mono.Cecil;
 
 namespace dotnet_ildasm.Benchmarks
 {
-    [CoreJob]
+    public class MultipleRuntimes : ManualConfig
+    {
+        public MultipleRuntimes()
+        {
+            Add(Job.Default.With(CsProjCoreToolchain.NetCoreApp21));
+            Add(Job.Default.With(CsProjClassicNetToolchain.Net461));
+        }
+    }
+    
+    [Config(typeof(MultipleRuntimes))]
     public class AutoIndentationOverhead
     {
         internal static readonly Lazy<AssemblyDefinition> SampleAssembly = new Lazy<AssemblyDefinition>(() =>
-            Mono.Cecil.AssemblyDefinition.ReadAssembly("..\\..\\..\\..\\dotnet-ildasm.Benchmarks.Sample.dotnet-ildasm.Sample.dll"));
+            Mono.Cecil.AssemblyDefinition.ReadAssembly(
+                typeof(Program).Assembly.GetManifestResourceStream(
+                    "dotnet-ildasm.Benchmarks.Sample.dotnet-ildasm.Sample.exe")));
 
         private static readonly MethodDefinition MethodDefinition;
 
