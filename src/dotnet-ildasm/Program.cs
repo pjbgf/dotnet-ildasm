@@ -6,12 +6,12 @@ using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
 {
-    class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        public static int Main(string[] args)
         {
             var result = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-            result.MapResult(
+            return result.MapResult(
                 PrepareToExecute,
                 _ => OnError());
         }
