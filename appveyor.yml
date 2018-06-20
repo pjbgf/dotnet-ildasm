@@ -27,7 +27,7 @@ build_script:
 test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
 - run-cross-checks.cmd
-- snyk auth {snyk_api_key}
+- snyk auth %snyk_api_key%
 - snyk monitor --file=src\dotnet-ildasm\dotnet-ildasm.csproj --project-name=dotnet-ildasm
 
 after_test:
