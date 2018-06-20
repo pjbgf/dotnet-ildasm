@@ -16,5 +16,7 @@ namespace DotNet.Ildasm.Configuration
 
         [Value(index: 0, Required = true, MetaName = "filepath", HelpText = "Path to the Portable Executable to be disassembled.")]
         public string FilePath { get; set; }
+
+        public bool HasOutputPathSet => OutputPath?.Length > 0;
     }
 }

@@ -7,12 +7,12 @@ using Xunit;
 
 namespace DotNet.Ildasm.Tests
 {
-    public class DisassemblerShould
+    public class FileOutputDisassemblerShould
     {
         private readonly IAssemblyDefinitionResolver _assemblyDefinitionResolver;
         private readonly IAssemblyDecompiler _assemblyProcessorMock;
 
-        public DisassemblerShould()
+        public FileOutputDisassemblerShould()
         {
             _assemblyDefinitionResolver = Substitute.For<IAssemblyDefinitionResolver>();
             _assemblyProcessorMock = Substitute.For<IAssemblyDecompiler>();
@@ -27,19 +27,19 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Not_Execute_If_Assembly_File_Does_Not_Exist()
         {
-            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             _assemblyDefinitionResolver.Resolve(Arg.Any<string>()).Returns((AssemblyDefinition)null);
 
             ExecutionResult executionResult = disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
 
             Assert.False(executionResult.Succeeded);
-            Assert.Equal("Assembly could not be loaded, please check the path and try again.", executionResult.Message);
+            Assert.Equal("Error: Assembly could not be loaded, please check the path and try again.", executionResult.Message);
         }
 
         [Fact]
         public void Show_OutputFile_In_Success_Message()
         {
-            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            var disassembler = new FileOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             var commandOptions = new CommandOptions { FilePath = "AssemblyFile.dll", OutputPath = "AssemblyFile.il" };
 
             ExecutionResult executionResult = disassembler.Execute(commandOptions, new ItemFilter(string.Empty));
@@ -51,7 +51,7 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Write_Assembly_ExternalReferences_then_AssemblySection()
         {
-            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
             disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
 
@@ -65,7 +65,7 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Write_AssemblySection_then_ModuleSection()
         {
-            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
             disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
 
@@ -79,7 +79,7 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Write_ModuleSection_then_ModuleTypes()
         {
-            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
             disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
 
@@ -93,7 +93,7 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Write_Nothing_But_ModuleTypes_When_Filter_Is_Set()
         {
-            var disassembler = new Disassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
+            var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
             disassembler.Execute(new CommandOptions(), new ItemFilter("PublicClass::PublicVoidMethod"));
 
