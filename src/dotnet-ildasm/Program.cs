@@ -6,9 +6,14 @@ using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
 {
-    public class Program
+    internal class Program
     {
-        public static int Main(string[] args)
+        static int Main(string[] args)
+        {
+            return new Program().Execute(args);
+        }
+        
+        internal int Execute(string[] args)
         {
             var result = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
             return result.MapResult(
@@ -16,12 +21,12 @@ namespace DotNet.Ildasm
                 _ => OnError());
         }
 
-        private static int OnError()
+        private int OnError()
         {
             return -1;
         }
 
-        private static int PrepareToExecute(CommandOptions options)
+        private int PrepareToExecute(CommandOptions options)
         {
             Console.WriteLine();
             if (!string.IsNullOrEmpty(options.OutputPath) && File.Exists(options.OutputPath))
@@ -41,7 +46,7 @@ namespace DotNet.Ildasm
             return ExecuteDisassembler(options, outputWriter);
         }
 
-        private static int ExecuteDisassembler(CommandOptions options, IOutputWriter outputWriter)
+        private int ExecuteDisassembler(CommandOptions options, IOutputWriter outputWriter)
         {
             var assemblyDataProcessor = new AssemblyDecompiler(options.FilePath, outputWriter);
             var assemblyDefinitionResolver = new AssemblyDefinitionResolver();
@@ -61,7 +66,7 @@ namespace DotNet.Ildasm
             return -1;
         }
 
-        private static IOutputWriter GetOutputWriter(CommandOptions options)
+        private IOutputWriter GetOutputWriter(CommandOptions options)
         {
             IOutputWriter outputWriter = null;
 

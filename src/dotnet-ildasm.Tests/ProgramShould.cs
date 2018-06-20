@@ -10,7 +10,8 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Abort_If_No_Parameters_Are_Sent()
         {
-            var returnCode = Program.Main(new string[0]);
+            var program = new Program();
+            var returnCode = program.Execute(new string[0]);
 
             Assert.Equal(-1, returnCode);
         }
