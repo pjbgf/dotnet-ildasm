@@ -14,7 +14,6 @@ init:
 
 install:
 - choco install gitversion.portable -y
-- choco install GitReleaseNotes.Portable -y
 - npm install -g snyk
 
 before_build:
@@ -28,17 +27,17 @@ test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
 - run-cross-checks.cmd
 - snyk auth %snyk_api_key%
-- snyk monitor --file=src\dotnet-ildasm\dotnet-ildasm.csproj --project-name=dotnet-ildasm
+- snyk test --file=src\dotnet-ildasm\obj\project.assets.json --project-name=dotnet-ildasm
 
 after_test:
 - dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
-#- GitReleaseNotes.exe . /OutputFile ReleaseNotes.md
+
+on_success:
+  - snyk monitor --file=src\dotnet-ildasm\obj\project.assets.json --project-name=dotnet-ildasm
 
 artifacts:
 - path: '**\*.nupkg'
 
-- path: ReleaseNotes.md
-  name: Release notes
 
 deploy:
   - provider: NuGet
@@ -77,6 +76,7 @@ deploy:
     auth_token:
       secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
     draft: true
+    skip_symbols: false
     on:
       branch: master
 
