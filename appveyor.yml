@@ -5,8 +5,10 @@ platform: Any CPU
 image: Visual Studio 2017
 
 environment: 
- DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  snyk_api_key:
+    secure: Z3y1Dvxw5oyXnJyeXuiiHuVTg6O8fa3jbvlF7p0mQntPHg/osIEsVpzWUvOlp4Z2
+  
 init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0") 
 
@@ -25,6 +27,7 @@ build_script:
 test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
 - run-cross-checks.cmd
+- snyk auth {snyk_api_key}
 - snyk monitor --file=src\dotnet-ildasm\dotnet-ildasm.csproj --project-name=dotnet-ildasm
 
 after_test:
