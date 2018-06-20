@@ -1,9 +1,8 @@
 # Dot Net IL Disassembler  
 [![Windows Build](https://ci.appveyor.com/api/projects/status/is3qcb0gnf018vx6/branch/master?svg=true)](https://ci.appveyor.com/project/pjbgf/dotnet-ildasm/branch/master) 
-[![CircleCI](https://circleci.com/gh/pjbgf/dotnet-ildasm.svg?style=shield)](https://circleci.com/gh/pjbgf/dotnet-ildasm)
+[![CircleCI](https://circleci.com/gh/pjbgf/dotnet-ildasm.svg?style=shield)](https://circleci.com/gh/pjbgf/dotnet-ildasm)  
 [![Nuget](https://img.shields.io/nuget/dt/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
 [![Nuget](https://img.shields.io/nuget/v/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
-[![Known Vulnerabilities](https://snyk.io/test/github/pjbgf/dotnet-ildasm/badge.svg?targetFile=src\dotnet-ildasm\obj\project.assets.json)](https://snyk.io/test/github/pjbgf/dotnet-ildasm)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://pjbgf.mit-license.org)  
 
 # Description
