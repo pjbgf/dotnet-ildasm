@@ -1,8 +1,9 @@
 # Dot Net IL Disassembler  
 [![Windows Build](https://ci.appveyor.com/api/projects/status/is3qcb0gnf018vx6/branch/master?svg=true)](https://ci.appveyor.com/project/pjbgf/dotnet-ildasm/branch/master) 
-[![CircleCI](https://circleci.com/gh/pjbgf/dotnet-ildasm.svg?style=svg)](https://circleci.com/gh/pjbgf/dotnet-ildasm)
+[![CircleCI](https://circleci.com/gh/pjbgf/dotnet-ildasm.svg?style=shield)](https://circleci.com/gh/pjbgf/dotnet-ildasm)
 [![Nuget](https://img.shields.io/nuget/dt/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
 [![Nuget](https://img.shields.io/nuget/v/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
+[![Known Vulnerabilities](https://snyk.io/test/github/pjbgf/dotnet-ildasm/badge.svg?targetFile=src\dotnet-ildasm\obj\project.assets.json)](https://snyk.io/test/github/pjbgf/dotnet-ildasm)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://pjbgf.mit-license.org)  
 
 # Description
@@ -13,9 +14,7 @@ The project was created as a global CLI tool, therefore you can install with a s
 
 `dotnet tool install -g dotnet-ildasm`
 
-Conversely, to update to the latest version you are one command away:
-
-`dotnet tool update -g dotnet-ildasm`
+Notice that for the command above to work, you need .NET Core SDK 2.1.300 or above installed in your machine.
 
 # Syntax
 ```

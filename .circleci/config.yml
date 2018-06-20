@@ -2,6 +2,7 @@ version: 2
 jobs:
   
   netcore2_1_with_tests:
+    parallelism: 4
     docker:
       - image: microsoft/dotnet:2.1-sdk
     environment:
