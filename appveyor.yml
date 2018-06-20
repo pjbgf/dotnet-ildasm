@@ -13,6 +13,7 @@ init:
 install:
 - choco install gitversion.portable -y
 - choco install GitReleaseNotes.Portable -y
+- npm install -g snyk
 
 before_build:
 - nuget restore
@@ -24,6 +25,7 @@ build_script:
 test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
 - run-cross-checks.cmd
+- snyk monitor --file=src\dotnet-ildasm\dotnet-ildasm.csproj --project-name=dotnet-ildasm
 
 after_test:
 - dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
