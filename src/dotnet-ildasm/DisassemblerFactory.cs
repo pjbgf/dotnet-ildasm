@@ -1,4 +1,6 @@
-﻿using DotNet.Ildasm.Adapters;
+﻿using System;
+using System.IO;
+using DotNet.Ildasm.Adapters;
 using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
@@ -36,8 +38,19 @@ namespace DotNet.Ildasm
         private IOutputWriter GetOutputWriter(CommandOptions options)
         {
             if (options.HasOutputPathSet)
+            {
+                if (File.Exists(options.OutputPath))
+                {
+                    if (!options.ForceOutputOverwrite)
+                        throw new InvalidOperationException($"Error: The file {options.OutputPath} already exists. Use --force to force it to be overwritten.");
+                    
+                    File.Delete(options.OutputPath);
+                }
+
+                
                 return new AutoIndentOutputWriter(new FileStreamOutputWriter(options.OutputPath));
-            
+            }
+
             return new AutoIndentOutputWriter(new ConsoleOutputWriter());            
         }
     }

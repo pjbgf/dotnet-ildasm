@@ -23,10 +23,19 @@ namespace DotNet.Ildasm
 
         private int ExecuteDisassembler(CommandOptions options)
         {
-            var disassembler = factory.Create(options);
-            var itemFilter = new ItemFilter(options.ItemFilter);
-
-            var executionResult = disassembler.Execute(options, itemFilter);
+            ExecutionResult executionResult;
+            
+            try
+            {
+                var disassembler = factory.Create(options);
+                var itemFilter = new ItemFilter(options.ItemFilter);
+                
+                executionResult = disassembler.Execute(options, itemFilter);
+            }
+            catch (Exception e)
+            {
+                executionResult = new ExecutionResult(false, e.Message);
+            }
             
             if (executionResult.Message?.Length > 0)
                 Console.WriteLine(executionResult.Message);
