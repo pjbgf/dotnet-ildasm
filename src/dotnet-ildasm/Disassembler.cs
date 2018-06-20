@@ -2,22 +2,22 @@
 
 namespace DotNet.Ildasm
 {
-    public sealed class Disassembler
+    public abstract class Disassembler
     {
         private readonly IAssemblyDecompiler _assemblyDecompiler;
         private readonly IAssemblyDefinitionResolver _assemblyResolver;
 
-        public Disassembler(IAssemblyDecompiler assemblyDataProcessor, IAssemblyDefinitionResolver assemblyResolver)
+        protected Disassembler(IAssemblyDecompiler assemblyDataProcessor, IAssemblyDefinitionResolver assemblyResolver)
         {
             _assemblyDecompiler = assemblyDataProcessor;
             _assemblyResolver = assemblyResolver;
         }
 
-        public ExecutionResult Execute(CommandOptions options, ItemFilter itemFilter)
+        public virtual ExecutionResult Execute(CommandOptions options, ItemFilter itemFilter)
         {
             var assembly = _assemblyResolver.Resolve(options.FilePath);
             if (assembly == null)
-                return new ExecutionResult(false, "Assembly could not be loaded, please check the path and try again.");
+                return new ExecutionResult(false, "Error: Assembly could not be loaded, please check the path and try again.");
             
             if (!itemFilter.HasFilter)
             {
@@ -32,9 +32,6 @@ namespace DotNet.Ildasm
                 
                 _assemblyDecompiler.WriteModuleTypes(module.Types, itemFilter);
             }
-            
-            if (!string.IsNullOrEmpty(options.OutputPath))
-                return new ExecutionResult(true, $"Assembly IL exported to {options.OutputPath}");
 
             return new ExecutionResult(true);
         }

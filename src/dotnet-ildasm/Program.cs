@@ -1,80 +1,51 @@
 ﻿using System;
-using System.IO;
 using CommandLine;
-using DotNet.Ildasm.Adapters;
 using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
 {
-    class Program
+    internal class Program
     {
-        private static void Main(string[] args)
+        IDisassemblerFactory factory = new DisassemblerFactory(new AssemblyDefinitionResolver());
+        
+        static int Main(string[] args)
+        {
+            return new Program().Execute(args);
+        }
+        
+        internal int Execute(string[] args)
         {
             var result = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-            result.MapResult(
-                PrepareToExecute,
+            return result.MapResult(
+                ExecuteDisassembler,
                 _ => OnError());
         }
 
-        private static int OnError()
+        private int ExecuteDisassembler(CommandOptions options)
+        {
+            ExecutionResult executionResult;
+            
+            try
+            {
+                var disassembler = factory.Create(options);
+                var itemFilter = new ItemFilter(options.ItemFilter);
+                
+                executionResult = disassembler.Execute(options, itemFilter);
+            }
+            catch (Exception e)
+            {
+                executionResult = new ExecutionResult(false, e.Message);
+            }
+            
+            if (executionResult.Message?.Length > 0)
+                Console.WriteLine(executionResult.Message);
+            
+            return executionResult.Succeeded ? 0 : -1;
+        }
+
+        private int OnError()
         {
             return -1;
-        }
-
-        private static int PrepareToExecute(CommandOptions options)
-        {
-            Console.WriteLine();
-            if (!string.IsNullOrEmpty(options.OutputPath) && File.Exists(options.OutputPath))
-            {
-                if (!options.ForceOutputOverwrite)
-                {
-                    Console.WriteLine(
-                        $"Error: The file {options.OutputPath} already exists. Use --force to force it to be overwritten.");
-                    return -1;
-                }
-
-                File.Delete(options.OutputPath);
-            }
-
-            var outputWriter = GetOutputWriter(options);
-
-            return ExecuteDisassembler(options, outputWriter);
-        }
-
-        private static int ExecuteDisassembler(CommandOptions options, IOutputWriter outputWriter)
-        {
-            var assemblyDataProcessor = new AssemblyDecompiler(options.FilePath, outputWriter);
-            var assemblyDefinitionResolver = new AssemblyDefinitionResolver();
-            var disassembler = new Disassembler(assemblyDataProcessor, assemblyDefinitionResolver);
-
-            var itemFilter = new ItemFilter(options.ItemFilter);
-            var result = disassembler.Execute(options, itemFilter);
-            outputWriter.Dispose();
-
-            if (result.Succeeded || string.IsNullOrEmpty(options.OutputPath))
-            {
-                Console.WriteLine(result.Message);
-                return 0;
-            }
-
-            Console.WriteLine($"Error: {result.Message}");
-            return -1;
-        }
-
-        private static IOutputWriter GetOutputWriter(CommandOptions options)
-        {
-            IOutputWriter outputWriter = null;
-
-            if (string.IsNullOrEmpty(options.OutputPath))
-            {
-                outputWriter = new ConsoleOutputWriter();
-            }
-            else
-            {
-                outputWriter = new FileStreamOutputWriter(options.OutputPath);
-            }
-
-            return new AutoIndentOutputWriter(outputWriter);
         }
     }
 }
