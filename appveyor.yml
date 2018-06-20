@@ -27,13 +27,13 @@ test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
 - run-cross-checks.cmd
 - snyk auth %snyk_api_key%
-- snyk test --file=src\dotnet-ildasm\obj\project.assets.json --project-name=dotnet-ildasm
+- snyk test --file=src\dotnet-ildasm\obj\project.assets.json --org=pjbgf
 
 after_test:
 - dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
 
 on_success:
-  - snyk monitor --file=src\dotnet-ildasm\obj\project.assets.json --project-name=dotnet-ildasm
+  - snyk monitor --file=src\dotnet-ildasm\obj\project.assets.json --project-name=dotnet-ildasm --org=pjbgf
 
 artifacts:
 - path: '**\*.nupkg'
