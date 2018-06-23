@@ -3,7 +3,6 @@
 [![CircleCI](https://circleci.com/gh/pjbgf/dotnet-ildasm.svg?style=shield)](https://circleci.com/gh/pjbgf/dotnet-ildasm)
 [![Nuget](https://img.shields.io/nuget/dt/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
 [![Nuget](https://img.shields.io/nuget/v/dotnet-ildasm.svg)](http://nuget.org/packages/dotnet-ildasm) 
-[![Known Vulnerabilities](https://snyk.io/test/github/pjbgf/dotnet-ildasm/badge.svg?targetFile=src\dotnet-ildasm\obj\project.assets.json)](https://snyk.io/test/github/pjbgf/dotnet-ildasm)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://pjbgf.mit-license.org)  
 
 # Description
