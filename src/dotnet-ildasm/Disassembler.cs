@@ -1,8 +1,9 @@
-﻿using DotNet.Ildasm.Configuration;
+﻿using System;
+using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
 {
-    public abstract class Disassembler
+    public abstract class Disassembler : IDisposable
     {
         private readonly IAssemblyDecompiler _assemblyDecompiler;
         private readonly IAssemblyDefinitionResolver _assemblyResolver;
@@ -13,9 +14,9 @@ namespace DotNet.Ildasm
             _assemblyResolver = assemblyResolver;
         }
 
-        public virtual ExecutionResult Execute(CommandOptions options, ItemFilter itemFilter)
+        public virtual ExecutionResult Execute(CommandArgument argument, ItemFilter itemFilter)
         {
-            var assembly = _assemblyResolver.Resolve(options.FilePath);
+            var assembly = _assemblyResolver.Resolve(argument.Assembly);
             if (assembly == null)
                 return new ExecutionResult(false, "Error: Assembly could not be loaded, please check the path and try again.");
             
@@ -34,6 +35,22 @@ namespace DotNet.Ildasm
             }
 
             return new ExecutionResult(true);
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            _assemblyDecompiler?.Dispose();
+        }
+
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
+        }
+
+        ~Disassembler()
+        {
+            ReleaseUnmanagedResources();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using CommandLine;
 using DotNet.Ildasm.Configuration;
 
 namespace DotNet.Ildasm
@@ -15,22 +14,23 @@ namespace DotNet.Ildasm
         
         internal int Execute(string[] args)
         {
-            var result = CommandLine.Parser.Default.ParseArguments<CommandOptions>(args);
-            return result.MapResult(
-                ExecuteDisassembler,
-                _ => OnError());
+            var handler = new CommandHandler(ExecuteDisassembler);
+            
+            return handler.Handle(args);
         }
 
-        private int ExecuteDisassembler(CommandOptions options)
+        private int ExecuteDisassembler(CommandArgument argument)
         {
             ExecutionResult executionResult;
             
             try
             {
-                var disassembler = factory.Create(options);
-                var itemFilter = new ItemFilter(options.ItemFilter);
-                
-                executionResult = disassembler.Execute(options, itemFilter);
+                using (var disassembler = factory.Create(argument))
+                {
+                    var itemFilter = new ItemFilter(argument.Item);
+
+                    executionResult = disassembler.Execute(argument, itemFilter);
+                }
             }
             catch (Exception e)
             {
@@ -41,11 +41,6 @@ namespace DotNet.Ildasm
                 Console.WriteLine(executionResult.Message);
             
             return executionResult.Succeeded ? 0 : -1;
-        }
-
-        private int OnError()
-        {
-            return -1;
         }
     }
 }

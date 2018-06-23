@@ -21,34 +21,34 @@ namespace DotNet.Ildasm
             _assemblyDecompiler = assemblyDecompiler;
         }
 
-        public Disassembler Create(CommandOptions options)
+        public Disassembler Create(CommandArgument argument)
         {
-            var outputWriter = GetOutputWriter(options);
+            var outputWriter = GetOutputWriter(argument);
             
             //HACK: Next step for refactoring.
             if (_assemblyDecompiler == null)
-                _assemblyDecompiler = new AssemblyDecompiler(options.FilePath, outputWriter);
+                _assemblyDecompiler = new AssemblyDecompiler(argument.Assembly, outputWriter);
             
-            if (options.HasOutputPathSet)
+            if (argument.HasOutputPathSet)
                 return new FileOutputDisassembler(_assemblyDecompiler, _assemblyDefinitionResolver);
             
             return new ConsoleOutputDisassembler(_assemblyDecompiler, _assemblyDefinitionResolver);
         }
         
-        private IOutputWriter GetOutputWriter(CommandOptions options)
+        private IOutputWriter GetOutputWriter(CommandArgument argument)
         {
-            if (options.HasOutputPathSet)
+            if (argument.HasOutputPathSet)
             {
-                if (File.Exists(options.OutputPath))
+                if (File.Exists(argument.OutputFile))
                 {
-                    if (!options.ForceOutputOverwrite)
-                        throw new InvalidOperationException($"Error: The file {options.OutputPath} already exists. Use --force to force it to be overwritten.");
+                    if (!argument.ForceOverwrite)
+                        throw new InvalidOperationException($"Error: The file {argument.OutputFile} already exists. Use --force to force it to be overwritten.");
                     
-                    File.Delete(options.OutputPath);
+                    File.Delete(argument.OutputFile);
                 }
 
                 
-                return new AutoIndentOutputWriter(new FileStreamOutputWriter(options.OutputPath));
+                return new AutoIndentOutputWriter(new FileStreamOutputWriter(argument.OutputFile));
             }
 
             return new AutoIndentOutputWriter(new ConsoleOutputWriter());            

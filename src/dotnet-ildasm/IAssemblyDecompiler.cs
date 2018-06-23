@@ -1,10 +1,11 @@
+using System;
 using DotNet.Ildasm.Configuration;
 using Mono.Cecil;
 using Mono.Collections.Generic;
 
 namespace DotNet.Ildasm
 {
-    public interface IAssemblyDecompiler
+    public interface IAssemblyDecompiler : IDisposable
     {
         void WriteAssemblyExternalReferences(AssemblyDefinition assembly);
         

@@ -30,7 +30,7 @@ namespace DotNet.Ildasm.Tests
             var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             _assemblyDefinitionResolver.Resolve(Arg.Any<string>()).Returns((AssemblyDefinition)null);
 
-            ExecutionResult executionResult = disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
+            ExecutionResult executionResult = disassembler.Execute(new CommandArgument(), new ItemFilter(string.Empty));
 
             Assert.False(executionResult.Succeeded);
             Assert.Equal("Error: Assembly could not be loaded, please check the path and try again.", executionResult.Message);
@@ -40,7 +40,7 @@ namespace DotNet.Ildasm.Tests
         public void Show_OutputFile_In_Success_Message()
         {
             var disassembler = new FileOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
-            var commandOptions = new CommandOptions { FilePath = "AssemblyFile.dll", OutputPath = "AssemblyFile.il" };
+            var commandOptions = new CommandArgument { Assembly = "AssemblyFile.dll", OutputFile = "AssemblyFile.il" };
 
             ExecutionResult executionResult = disassembler.Execute(commandOptions, new ItemFilter(string.Empty));
 
@@ -53,7 +53,7 @@ namespace DotNet.Ildasm.Tests
         {
             var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
-            disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
+            disassembler.Execute(new CommandArgument(), new ItemFilter(string.Empty));
 
             Received.InOrder(() =>
             {
@@ -67,7 +67,7 @@ namespace DotNet.Ildasm.Tests
         {
             var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
-            disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
+            disassembler.Execute(new CommandArgument(), new ItemFilter(string.Empty));
 
             Received.InOrder(() =>
             {
@@ -81,7 +81,7 @@ namespace DotNet.Ildasm.Tests
         {
             var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
-            disassembler.Execute(new CommandOptions(), new ItemFilter(string.Empty));
+            disassembler.Execute(new CommandArgument(), new ItemFilter(string.Empty));
 
             Received.InOrder(() =>
             {
@@ -95,7 +95,7 @@ namespace DotNet.Ildasm.Tests
         {
             var disassembler = new ConsoleOutputDisassembler(_assemblyProcessorMock, _assemblyDefinitionResolver);
             
-            disassembler.Execute(new CommandOptions(), new ItemFilter("PublicClass::PublicVoidMethod"));
+            disassembler.Execute(new CommandArgument(), new ItemFilter("PublicClass::PublicVoidMethod"));
 
             _assemblyProcessorMock.Received(0).WriteAssemblyExternalReferences(Arg.Any<AssemblyDefinition>());
             _assemblyProcessorMock.Received(0).WriteAssemblySection(Arg.Any<AssemblyDefinition>());

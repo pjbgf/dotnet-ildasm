@@ -20,9 +20,9 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Create_ConsoleOutputDisassembler_When_Output_Has_Not_Been_Set()
         {
-            var options = new CommandOptions();
+            var options = new CommandArgument();
 
-            options.FilePath = "assembly.dll";
+            options.Assembly = "assembly.dll";
             
             var disassembler = _disassemblerFactory.Create(options);
 
@@ -32,10 +32,11 @@ namespace DotNet.Ildasm.Tests
         [Fact]
         public void Create_FileOutputDisassembler_When_Output_Has_Been_Set()
         {
-            var options = new CommandOptions();
+            var options = new CommandArgument();
 
-            options.FilePath = "assembly.dll";
-            options.OutputPath = "output.il";
+            options.Assembly = "assembly.dll";
+            options.OutputFile = "output.il";
+            options.ForceOverwrite = true;
             
             var disassembler = _disassemblerFactory.Create(options);
 
