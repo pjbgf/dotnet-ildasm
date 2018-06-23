@@ -15,7 +15,6 @@ namespace DotNet.Ildasm.Adapters
 
         public void Dispose()
         {
-            _stream?.Flush();
             _stream?.Dispose();
         }
 
