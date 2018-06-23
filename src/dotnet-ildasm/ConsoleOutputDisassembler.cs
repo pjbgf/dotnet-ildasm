@@ -8,9 +8,9 @@ namespace DotNet.Ildasm
         {
         }
         
-        public override ExecutionResult Execute(CommandOptions options, ItemFilter itemFilter)
+        public override ExecutionResult Execute(CommandArgument argument, ItemFilter itemFilter)
         {
-            var result = base.Execute(options, itemFilter);
+            var result = base.Execute(argument, itemFilter);
             return result;
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using DotNet.Ildasm.Configuration;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
@@ -47,6 +48,31 @@ namespace DotNet.Ildasm
                 var typesProcessor = new TypesProcessor(_outputWriter, itemFilter);
                 typesProcessor.Write(types);
             }
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            _outputWriter?.Dispose();
+        }
+
+        private void Dispose(bool disposing)
+        {
+            ReleaseUnmanagedResources();
+            if (disposing)
+            {
+                _outputWriter?.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        ~AssemblyDecompiler()
+        {
+            Dispose(false);
         }
     }
 }

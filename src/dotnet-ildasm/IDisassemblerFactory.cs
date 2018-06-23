@@ -4,6 +4,6 @@ namespace DotNet.Ildasm
 {
     public interface IDisassemblerFactory
     {
-        Disassembler Create(CommandOptions options);
+        Disassembler Create(CommandArgument argument);
     }
 }
