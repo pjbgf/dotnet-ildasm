@@ -25,6 +25,8 @@ namespace DotNet.Ildasm
             _commandLineApplication.Name = "dotnet ildasm";
             _commandLineApplication.Description = "Compare the IL difference between two .NET assemblies.";
             _commandLineApplication.HelpOption("-?|-h|--help");
+            _commandLineApplication.VersionOption("--version", () => 
+                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             var assembly = _commandLineApplication.Argument("assembly1", "Assembly file path.", false);
             
@@ -33,7 +35,7 @@ namespace DotNet.Ildasm
                 CommandOptionType.SingleValue);
             
             var item = _commandLineApplication.Option("-i|--item",
-                "Select a method or class to be compared.",
+                "Only disassembly a method or class. Usage: -i MyClass::Method",
                 CommandOptionType.SingleValue);
             
             var force = _commandLineApplication.Option("-f|--force",
@@ -56,8 +58,7 @@ namespace DotNet.Ildasm
                     if (force.HasValue())
                         arguments.ForceOverwrite = true;
                     
-                    _executor.Invoke(arguments);
-                    return 0;
+                    return _executor.Invoke(arguments);
                 }
 
                 _showHelp?.Invoke();
