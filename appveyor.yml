@@ -21,7 +21,7 @@ before_build:
 - ps: gitversion /l console /output buildserver /updateAssemblyInfo
 
 build_script:
-- dotnet build -c Release
+- build.cmd -c Release
 
 test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
