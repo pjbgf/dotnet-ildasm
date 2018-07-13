@@ -25,7 +25,7 @@ namespace DotNet.Ildasm
             _commandLineApplication.Name = "dotnet ildasm";
             _commandLineApplication.Description = "Compare the IL difference between two .NET assemblies.";
             _commandLineApplication.HelpOption("-?|-h|--help");
-            _commandLineApplication.VersionOption("-v|--version", () => 
+            _commandLineApplication.VersionOption("--version", () => 
                 System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             var assembly = _commandLineApplication.Argument("assembly1", "Assembly file path.", false);
@@ -58,8 +58,7 @@ namespace DotNet.Ildasm
                     if (force.HasValue())
                         arguments.ForceOverwrite = true;
                     
-                    _executor.Invoke(arguments);
-                    return 0;
+                    return _executor.Invoke(arguments);
                 }
 
                 _showHelp?.Invoke();
