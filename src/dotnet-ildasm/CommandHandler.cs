@@ -35,7 +35,7 @@ namespace DotNet.Ildasm
                 CommandOptionType.SingleValue);
             
             var item = _commandLineApplication.Option("-i|--item",
-                "Select a method or class to be compared.",
+                "Only disassembly a method or class. Usage: -i MyClass::Method",
                 CommandOptionType.SingleValue);
             
             var force = _commandLineApplication.Option("-f|--force",
