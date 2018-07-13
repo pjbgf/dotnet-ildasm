@@ -25,6 +25,8 @@ namespace DotNet.Ildasm
             _commandLineApplication.Name = "dotnet ildasm";
             _commandLineApplication.Description = "Compare the IL difference between two .NET assemblies.";
             _commandLineApplication.HelpOption("-?|-h|--help");
+            _commandLineApplication.VersionOption("-v|--version", () => 
+                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
             var assembly = _commandLineApplication.Argument("assembly1", "Assembly file path.", false);
             
