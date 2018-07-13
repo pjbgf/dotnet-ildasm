@@ -13,7 +13,7 @@ The project was created as a global CLI tool, therefore you can install with a s
 
 `dotnet tool install -g dotnet-ildasm`
 
-Notice that for the command above to work, you need .NET Core SDK 2.1.300 or above installed in your machine.
+Note that for the command above to work, you need .NET Core SDK 2.1.300 or above installed in your machine.
 
 # Syntax
 ```
