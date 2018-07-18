@@ -13,9 +13,17 @@ namespace DotNet.Ildasm.Infrastructure
 
         private static string GetConstructorArguments(CustomAttribute customAttribute)
         {
-            var argument = customAttribute.ConstructorArguments.FirstOrDefault();
+            CustomAttributeArgument? argument = null;
 
-            return $"({(!customAttribute.HasConstructorArguments ? "" : argument.Type.ToIL())})" +
+            try
+            {
+                argument = customAttribute.ConstructorArguments.FirstOrDefault();
+            }
+            catch
+            {
+            }
+
+            return $"({((argument == null || !customAttribute.HasConstructorArguments) ? "" : argument.Value.Type.ToIL())})" +
                    $" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )";
         }
     }
