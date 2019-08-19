@@ -11,8 +11,8 @@ IF NOT EXIST %ANYCPU_PATH% (
 
 ECHO Using target folder: %TARGET_RELEASE_FOLDER%
 
-ECHO Executing dotnet core ildasm against netstandard1.6 library... 
-dotnet run --project src\dotnet-ildasm\dotnet-ildasm.csproj "src\dotnet-ildasm.Sample\bin\%TARGET_RELEASE_FOLDER%\netstandard1.6\dotnet-ildasm.Sample.dll" -o netcore_netstandard16.il
+ECHO Executing dotnet core ildasm against netstandard2.0 library... 
+dotnet run --project src\dotnet-ildasm\dotnet-ildasm.csproj "src\dotnet-ildasm.Sample\bin\%TARGET_RELEASE_FOLDER%\netstandard2.0\dotnet-ildasm.Sample.dll" -o netcore_netstandard20.il
 
 if %ERRORLEVEL% EQU 0 ECHO DONE
 
