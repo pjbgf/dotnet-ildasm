@@ -38,21 +38,14 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         }
 
         [Theory]
-        [InlineData("NestedClass",
+        [InlineData("ParentClass", "NestedClass",
             ".class nested public auto ansi beforefieldinit NestedClass extends [System.Runtime]System.Object")]
-        public void Generate_Valid_IL_For_NestedClasses_Signatures(string className, string expectedIL)
+        public void Generate_Valid_IL_For_NestedClasses_Signatures(string parentClassName, string nestedClassName, string expectedIL)
         {
-            var allTypes = _assemblyDefinition.MainModule.Types;
-            
-            foreach (var type in allTypes)
-            {
-                var nestedType = type.NestedTypes.FirstOrDefault(x => x.Name == className);
-                if (nestedType != null) 
-                {
-                    nestedType.WriteILSignature(_outputWriter);
-                    break;
-                }
-            }
+            var parentType = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == parentClassName);
+            var nestedType = parentType.NestedTypes.FirstOrDefault(x => x.Name == nestedClassName);
+    
+            nestedType.WriteILSignature(_outputWriter);
 
             Assert.Equal(expectedIL, expectedIL);
         }
