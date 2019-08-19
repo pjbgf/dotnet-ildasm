@@ -66,7 +66,7 @@ deploy:
   - provider: GitHub
     release: v$(GitVersion_NuGetVersion)
     auth_token:
-      secure: RG/QNz1gYC7yCa+7vaTNGw+V4oB+/PynMDGryqWz+Tzf7pAEMyiXfQH5h6m3/VdL
+      secure: u49tBZNEJOvuVO6kk2k+lcZLuNfIZbe1f1dPrZMQMJb86HINgnRVj9Oh4PbGFiid
     draft: true
     skip_symbols: false
     on:
