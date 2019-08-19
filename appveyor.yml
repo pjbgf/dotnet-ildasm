@@ -58,7 +58,7 @@ deploy:
     name: Stable releases
     server: 
     api_key:
-      secure: /ndfcg+DPzrEghZNXPELdI/mGYbglaBEZy4ZGpCyJ+1rYqHF1csEDDhH3sYteOJg
+      secure: sEuDj+L3zfAaK4bBIl2X0HU+zM7OjklVP9sv1rK6+sLTMFwlvzyAe9/ke4Mws30z
     artifact: /.*\.nupkg/
     on:
       branch: master
