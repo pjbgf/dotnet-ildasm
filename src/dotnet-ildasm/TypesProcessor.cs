@@ -56,6 +56,9 @@ namespace DotNet.Ildasm
             WriteMethods(type);
             WriteCustomAttributes(type);
 
+            foreach (var nestedType in type.NestedTypes)
+                HandleType(nestedType);
+                
             _outputWriter.WriteLine($"}} // End of class {type.FullName}");
         }
 

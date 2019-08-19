@@ -35,7 +35,10 @@ namespace DotNet.Ildasm
             var alreadyUpdatedIndentation = false;
 
             if (IsBreakLineRequired(code))
+            {
                 _writer.WriteLine(string.Empty);
+                _writer.Write(Environment.NewLine);
+            }
 
             if (code.StartsWith("}"))
             {
@@ -61,7 +64,7 @@ namespace DotNet.Ildasm
 
         private static bool IsIndentationRequired(string code)
         {
-            return Regex.IsMatch(code, "^(IL|\\.|//|{){1}",
+            return Regex.IsMatch(code, "^(catch|IL|\\.|//|{|}){1}",
                 RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline);
         }
 
