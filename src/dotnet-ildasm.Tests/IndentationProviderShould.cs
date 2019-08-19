@@ -27,8 +27,9 @@ namespace DotNet.Ildasm.Tests
             string expectedIL = $"{Environment.NewLine}{inputIL}";
 
             indentation.Write(inputIL);
+            var actualIL = _outputWriterDouble.ToString();
 
-            Assert.Equal(expectedIL, _outputWriterDouble.ToString());
+            Assert.Equal(expectedIL, actualIL);
         }
 
         [Fact]
@@ -37,8 +38,9 @@ namespace DotNet.Ildasm.Tests
             var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
 
             autoIndentWriter.Write("public static");
+            var actualIL = _outputWriterDouble.ToString();
 
-            Assert.Equal("public static", _outputWriterDouble.ToString());
+            Assert.Equal("public static", actualIL);
         }
 
         [Fact]
