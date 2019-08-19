@@ -1,3 +1,4 @@
+using System;
 using DotNet.Ildasm.Tests.Internal;
 using NSubstitute;
 using Xunit;
@@ -16,13 +17,14 @@ namespace DotNet.Ildasm.Tests
         }
 
         [Theory]
-        [InlineData(".method public", "\r\n.method public")]
-        [InlineData(".assembly", "\r\n.assembly")]
-        [InlineData(".module", "\r\n.module")]
-        [InlineData(".class", "\r\n.class")]
-        public void Breakline_Before_Specific_Keywords(string inputIL, string expectedIL)
+        [InlineData(".method public")]
+        [InlineData(".assembly")]
+        [InlineData(".module")]
+        [InlineData(".class")]
+        public void Breakline_Before_Specific_Keywords(string inputIL)
         {
             var indentation = new AutoIndentOutputWriter(_outputWriterDouble);
+            string expectedIL = $"{Environment.NewLine}{inputIL}";
 
             indentation.Write(inputIL);
 
@@ -60,22 +62,11 @@ namespace DotNet.Ildasm.Tests
             autoIndentWriter.Apply(".method public ");
             autoIndentWriter.Apply("{");
             autoIndentWriter.Apply(".maxstack 8");
+            
+            var actualIL = _outputWriterDouble.ToString();
+            var expectedIL = $"{Environment.NewLine}.class {{{Environment.NewLine}  .method public   {{    .maxstack 8";
 
-            Assert.Equal("\r\n.class {\r\n  .method public   {    .maxstack 8", _outputWriterDouble.ToString());
-        }
-
-        [Fact]
-        public void Keep_Two_Spaces_In_Same_Line_As_Second_Brackets_Closes()
-        {
-            var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
-
-            autoIndentWriter.Apply(".class ");
-            autoIndentWriter.Apply("{");
-            autoIndentWriter.Apply(".method public ");
-            autoIndentWriter.Apply("{");
-            autoIndentWriter.Apply(".maxstack 8");
-
-            Assert.Equal("\r\n.class {\r\n  .method public   {    .maxstack 8", _outputWriterDouble.ToString());
+            Assert.Equal(expectedIL, actualIL);
         }
 
         [Fact]
@@ -113,7 +104,10 @@ namespace DotNet.Ildasm.Tests
             autoIndentWriter.Apply("public ");
             autoIndentWriter.Apply("hidebysig ");
 
-            Assert.Equal("{\r\n  .method public hidebysig ", _outputWriterDouble.ToString());
+            var actualIL = _outputWriterDouble.ToString();
+            var expectedIL = $"{{{Environment.NewLine}  .method public hidebysig ";
+
+            Assert.Equal(expectedIL, actualIL);
         }
     }
 }

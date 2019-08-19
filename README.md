@@ -52,6 +52,3 @@ dotnet ildasm myassembly.dll -o disassembledAssembly.il
 
 * .Net Core 2.1 only support: In order to support the .Net Core CLI Tool model, all the other target frameworks were removed. Please note that you still can download the source code and target it to .Net Core 1, 1.1, 2.0 and net45.
 * Default execution now outputs to console, instead of creating an IL file.
-
-# Powered by
-This tool was developed and is maintained with JetBrains Rider: the cross-platform and lightweight .NET/C# IDE which comes with ReSharper integrated. For more information check [JetBrains' website](https://www.jetbrains.com/rider).

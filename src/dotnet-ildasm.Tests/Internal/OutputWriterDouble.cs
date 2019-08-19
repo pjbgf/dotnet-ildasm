@@ -20,7 +20,7 @@ namespace DotNet.Ildasm.Tests.Internal
         {
             var content = _stringBuilder.ToString();
             if (content.EndsWith(Environment.NewLine))
-                return content.Substring(0, content.Length - 2);
+                return content.Substring(0, content.Length - Environment.NewLine.Length);
 
             return content;
         }
