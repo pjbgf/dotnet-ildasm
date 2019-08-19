@@ -38,6 +38,26 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         }
 
         [Theory]
+        [InlineData("NestedClass",
+            ".class nested public auto ansi beforefieldinit NestedClass extends [System.Runtime]System.Object")]
+        public void Generate_Valid_IL_For_NestedClasses_Signatures(string className, string expectedIL)
+        {
+            var allTypes = _assemblyDefinition.MainModule.Types;
+            
+            foreach (var type in allTypes)
+            {
+                var nestedType = type.NestedTypes.FirstOrDefault(x => x.Name == className);
+                if (nestedType != null) 
+                {
+                    nestedType.WriteILSignature(_outputWriter);
+                    break;
+                }
+            }
+
+            Assert.Equal(expectedIL, expectedIL);
+        }
+
+        [Theory]
         [InlineData("PublicStruct",
             ".class public sequential ansi sealed beforefieldinit dotnet_ildasm.Sample.Structs.PublicStruct extends [System.Runtime]System.ValueType")]
         public void Generate_Valid_IL_For_Struct_Signatures(string structName, string expectedIL)
