@@ -6,15 +6,12 @@ image: Visual Studio 2017
 
 environment: 
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
-  snyk_api_key:
-    secure: dhOct3u5uznasV/aAIHQXSI+y7TA9iNy0FZ21b2k+UNtri7x18Haq27kV2N6CGhs
   
 init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0") 
 
 install:
 - choco install gitversion.portable -y
-- npm install -g snyk
 
 before_build:
 - nuget restore
@@ -26,14 +23,9 @@ build_script:
 test_script:
 - dotnet test src\dotnet-ildasm.tests\dotnet-ildasm.tests.csproj
 - run-cross-checks.cmd
-- snyk auth %snyk_api_key%
-- snyk test --file=src\dotnet-ildasm\obj\project.assets.json --org=pjbgf
 
 after_test:
 - dotnet pack src\dotnet-ildasm\dotnet-ildasm.csproj
-
-on_success:
-  - snyk monitor --file=src\dotnet-ildasm\obj\project.assets.json --project-name=dotnet-ildasm --org=pjbgf
 
 artifacts:
 - path: '**\*.nupkg'
