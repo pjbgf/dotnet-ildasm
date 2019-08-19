@@ -18,9 +18,9 @@ jobs:
       - run: dotnet restore
       
       - run:
-          name: Build Sample project against netstandard1.6
+          name: Build Sample project against netstandard2.0
           command: |
-            dotnet build src/dotnet-ildasm.Sample/dotnet-ildasm.Sample.csproj -f netstandard1.6 -c Release
+            dotnet build src/dotnet-ildasm.Sample/dotnet-ildasm.Sample.csproj -f netstandard2.0 -c Release
             dotnet build src/dotnet-ildasm.Sample/dotnet-ildasm.Sample.csproj -f net45 -c Release
 
       - run:
@@ -29,15 +29,15 @@ jobs:
             dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp2.2 -c Release
 
       - run:
-          name: Executing dotnet core ildasm against netstandard1.6 library
+          name: Executing dotnet core ildasm against netstandard2.0 library
           command: |
-            dotnet run --framework netcoreapp2.2 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard1.6/dotnet-ildasm.Sample.dll -o /root/project/netcore22_netstandard16.il
+            dotnet run --framework netcoreapp2.2 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore22_netstandard20.il
 
       - run:
           name: Reassemble library based from IL
           command: |
             cd /usr/lib/mono/4.5/
-            ilasm /root/project/netcore22_netstandard16.il /dll /output:netcore_netstandard16.dll
+            ilasm /root/project/netcore22_netstandard20.il /dll /output:netcore_netstandard20.dll
 
 workflows:
   version: 2
