@@ -1,7 +1,7 @@
 version: 2
 jobs:
   
-  netcore2_2_with_tests:
+  netcore2_with_tests:
     parallelism: 4
     docker:
       - image: microsoft/dotnet:2.2-sdk
@@ -29,6 +29,11 @@ jobs:
             dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp2.2 -c Release
 
       - run:
+          name: Build ildasm project for netcore 2.1
+          command: |
+            dotnet build src/dotnet-ildasm/dotnet-ildasm.csproj -f netcoreapp2.1 -c Release
+
+      - run:
           name: Executing dotnet core ildasm against netstandard2.0 library
           command: |
             dotnet run --framework netcoreapp2.2 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore22_netstandard20.il
@@ -43,4 +48,4 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - netcore2_2_with_tests
+      - netcore2_with_tests
