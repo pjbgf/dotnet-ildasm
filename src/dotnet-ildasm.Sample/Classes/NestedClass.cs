@@ -8,7 +8,7 @@ namespace dotnet_ildasm.Sample.Classes
 			public string SomeMethod() { return "aaaaa"; }
 		}
 
-		public NestedClass MakeFooBar() {
+		public NestedClass CreateNestedClass() {
 			return new NestedClass();
 		}
 	}

@@ -11,10 +11,18 @@ namespace DotNet.Ildasm.Infrastructure
         {
             outputWriter.Write(".class");
 
-            if (typeDefinition.IsPublic)
-                outputWriter.Write(" public");
-            else
-                outputWriter.Write(" private");
+            if (typeDefinition.IsNested)
+            {
+                if (typeDefinition.IsNestedPublic)
+                    outputWriter.Write(" nested public");
+                if (typeDefinition.IsNestedPrivate)
+                    outputWriter.Write(" nested private");
+            } else {
+                if (typeDefinition.IsPublic)
+                    outputWriter.Write(" public");
+                else
+                    outputWriter.Write(" private");
+            }
 
             if (typeDefinition.IsSequentialLayout)
                 outputWriter.Write(" sequential");
@@ -37,7 +45,10 @@ namespace DotNet.Ildasm.Infrastructure
             if (typeDefinition.IsBeforeFieldInit)
                 outputWriter.Write(" beforefieldinit");
 
-            outputWriter.Write($" {typeDefinition.FullName}");
+            if (typeDefinition.IsNested)
+                outputWriter.Write($" {typeDefinition.Name}");
+            else
+                outputWriter.Write($" {typeDefinition.FullName}");
 
             if (typeDefinition.BaseType != null)
                 outputWriter.Write(
