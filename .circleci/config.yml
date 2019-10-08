@@ -38,7 +38,7 @@ jobs:
       - run:
           name: Executing dotnet core ildasm against netstandard2.0 library
           command: |
-            dotnet src/dotnet-ildasm/bin/Release/netcoreapp2.2/dotnet-ildasm.dll src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore22_netstandard20.il
+            dotnet /root/project/src/dotnet-ildasm/bin/Release/netcoreapp2.2/dotnet-ildasm2.dll /root/project/src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore22_netstandard20.il
 
       - run:
           name: Reassemble library based from IL
