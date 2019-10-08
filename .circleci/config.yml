@@ -16,7 +16,7 @@ jobs:
           apt-get install mono-devel mono-utils -y
 
       - run: |
-          rm src/dotnet-ildasm/dotnet-ildasm.csproj
+          cat src/dotnet-ildasm/dotnet-ildasm2.csproj > src/dotnet-ildasm/dotnet-ildasm.csproj
           dotnet restore
       
       - run:
