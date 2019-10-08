@@ -4,7 +4,7 @@ jobs:
   netcore2_with_tests:
     parallelism: 4
     docker:
-      - image: microsoft/dotnet:2.2-sdk
+      - image: microsoft/dotnet:3.0-sdk
     environment:
         FrameworkPathOverride: '/usr/lib/mono/4.5/'
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -36,13 +36,13 @@ jobs:
       - run:
           name: Executing dotnet core ildasm against netstandard2.0 library
           command: |
-            dotnet run --framework netcoreapp2.2 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o netcore22_netstandard20.il
+            dotnet run --framework netcoreapp2.2 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore22_netstandard20.il
 
       - run:
           name: Reassemble library based from IL
           command: |
             cd /usr/lib/mono/4.5/
-            ilasm netcore22_netstandard20.il /dll /output:netcore2_netstandard20.dll
+            ilasm /root/project/netcore22_netstandard20.il /dll /output:netcore2_netstandard20.dll
   
 
 
@@ -75,13 +75,13 @@ jobs:
       - run:
           name: Executing dotnet core ildasm against netstandard3.0 library
           command: |
-            dotnet run --framework netcoreapp3.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o netcore3_netstandard20.il
+            dotnet run --framework netcoreapp3.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj /root/project/src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore3_netstandard20.il
 
       - run:
           name: Reassemble library based from IL
           command: |
             cd /usr/lib/mono/4.5/
-            ilasm netcore3_netstandard20.il /dll /output:netcore3_netstandard20.dll
+            ilasm /root/project/netcore3_netstandard20.il /dll /output:netcore3_netstandard20.dll
 
 
 
