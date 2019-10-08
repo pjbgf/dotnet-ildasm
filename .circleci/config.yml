@@ -15,7 +15,9 @@ jobs:
           apt-get update
           apt-get install mono-devel mono-utils -y
 
-      - run: dotnet restore
+      - run: |
+          rm src/dotnet-ildasm/dotnet-ildasm.csproj
+          dotnet restore
       
       - run:
           name: Build Sample project against netstandard2.0
