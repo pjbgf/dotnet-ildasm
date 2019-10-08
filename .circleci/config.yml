@@ -1,7 +1,7 @@
 version: 2
 jobs:
   
-  netcore2_with_tests:
+  netcore3_with_tests:
     parallelism: 4
     docker:
       - image: microsoft/dotnet:3.0-sdk
@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Executing dotnet core ildasm against netstandard3.0 library
           command: |
-            dotnet run --framework netcoreapp3.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore22_netstandard20.il
+            dotnet run --framework netcoreapp3.0 --project src/dotnet-ildasm/dotnet-ildasm.csproj src/dotnet-ildasm.Sample/bin/Release/netstandard2.0/dotnet-ildasm.Sample.dll -o /root/project/netcore3_netstandard20.il
 
       - run:
           name: Executing dotnet core ildasm against netstandard2.0 library
@@ -52,7 +52,8 @@ jobs:
           name: Reassemble library based from IL
           command: |
             cd /usr/lib/mono/4.5/
-            ilasm /root/project/netcore22_netstandard20.il /dll /output:netcore_netstandard20.dll
+            ilasm /root/project/netcore3_netstandard20.il /dll /output:netcore3_netstandard20.dll
+            ilasm /root/project/netcore22_netstandard20.il /dll /output:netcore2_netstandard20.dll
 
 workflows:
   version: 2
