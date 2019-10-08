@@ -2,7 +2,7 @@ version: '{build}'
 configuration:
 - Release
 platform: Any CPU 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 environment: 
   DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -11,7 +11,7 @@ init:
 - ps: $Env:LABEL = "CI" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0") 
 
 install:
-- choco install gitversion.portable -y
+- choco install gitversion.portable -y --version 4.0.0
 
 before_build:
 - nuget restore
