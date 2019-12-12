@@ -51,7 +51,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             Assert.Equal("int32", actual);
         }
 
-        [Fact]
+        [IgnoreOnMonoRuntimeFact]
         public void Return_IL_Prefixed_Type_For_ValueTypes()
         {
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
@@ -59,7 +59,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             var attribute = fieldDefinition.CustomAttributes.Last();
 
             var actual = attribute.ConstructorArguments[0].Type.ToIL();
-
+            
             Assert.Equal("valuetype [netstandard]System.Diagnostics.DebuggerBrowsableState", actual);
         }
     }
