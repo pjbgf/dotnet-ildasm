@@ -45,7 +45,6 @@ namespace DotNet.Ildasm.Tests.Infrastructure
                 outputWriterMock.WriteLine(".assembly extern netstandard");
                 outputWriterMock.WriteLine("{");
                 outputWriterMock.WriteLine(".publickeytoken = ( CC 7B 13 FF CD 2D DD 51 )");
-                outputWriterMock.WriteLine(".ver 2:0:0:0");
                 outputWriterMock.WriteLine("}");
             });
         }

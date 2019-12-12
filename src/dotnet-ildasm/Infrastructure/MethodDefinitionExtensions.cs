@@ -13,6 +13,8 @@ namespace DotNet.Ildasm
             outputWriter.WriteLine(String.Empty);
             outputWriter.WriteLine("{");
 
+            method.WriteCustomAttributes(outputWriter);
+
             if (method.DeclaringType.Module.EntryPoint == method)
                 outputWriter.WriteLine(".entrypoint");
 
@@ -39,6 +41,14 @@ namespace DotNet.Ildasm
             }
 
             outputWriter.WriteLine($"}} // End of method {method.FullName}");
+        }
+
+        private static void WriteCustomAttributes(this MethodDefinition methodDefinition, IOutputWriter outputWriter)
+        {
+            foreach (var customAttribute in methodDefinition.CustomAttributes)
+            {
+                customAttribute.WriteIL(outputWriter);
+            }
         }
 
         private static void WriteExceptionHandler(MethodDefinition method, Instruction instruction, IOutputWriter outputWriter)
