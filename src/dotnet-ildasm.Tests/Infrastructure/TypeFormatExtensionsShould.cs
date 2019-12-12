@@ -51,7 +51,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             Assert.Equal("int32", actual);
         }
 
-        [IgnoreOnMonoRuntimeFact]
+        [IgnoreOnMonoFact]
         public void Return_IL_Prefixed_Type_For_ValueTypes()
         {
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
