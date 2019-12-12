@@ -60,5 +60,18 @@ namespace DotNet.Ildasm.Infrastructure
 
             outputWriter.Write(Environment.NewLine);
         }
+
+
+        public static void WriteCustomAttributes(this TypeDefinition typeDefinition, IOutputWriter outputWriter)
+        {
+            foreach (var customAttribute in typeDefinition.CustomAttributes)
+            {
+                if (string.Compare(customAttribute.AttributeType.Name, "DebuggableAttribute",
+                        StringComparison.CurrentCultureIgnoreCase) == 0)
+                    continue;
+
+                customAttribute.WriteIL(outputWriter);
+            }
+        }
     }
 }

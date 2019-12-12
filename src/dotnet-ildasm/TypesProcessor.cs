@@ -52,9 +52,9 @@ namespace DotNet.Ildasm
             type.WriteILSignature(_outputWriter);
             _outputWriter.WriteLine("{");
 
+            WriteCustomAttributes(type);
             WriteFields(type);
             WriteMethods(type);
-            WriteCustomAttributes(type);
 
             foreach (var nestedType in type.NestedTypes)
                 HandleType(nestedType);

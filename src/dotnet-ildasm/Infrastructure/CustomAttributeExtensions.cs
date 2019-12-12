@@ -8,7 +8,7 @@ namespace DotNet.Ildasm.Infrastructure
     {
         public static void WriteIL(this CustomAttribute customAttribute, IOutputWriter outputWriter)
         {
-            outputWriter.WriteLine($".custom instance void {customAttribute.AttributeType.ToIL()}::{customAttribute.Constructor.Name}{GetConstructorArguments(customAttribute)}");
+            outputWriter.WriteLine($".custom instance void class {customAttribute.AttributeType.ToIL()}::{customAttribute.Constructor.Name}{GetConstructorArguments(customAttribute)}");
         }
 
         private static string GetConstructorArguments(CustomAttribute customAttribute)

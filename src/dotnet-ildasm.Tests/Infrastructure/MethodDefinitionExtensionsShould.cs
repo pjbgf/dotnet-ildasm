@@ -52,8 +52,11 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             _outputWriterMock.Received(1).WriteLine(".param [1]");
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
                 x => new string [] {
-                    ".custom instance void [System.Runtime]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )",
-                    ".custom instance void [netstandard]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )"
+#if NETFRAMEWORK
+                    ".custom instance void class [System.Runtime]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )",
+#else
+                    ".custom instance void class [netstandard]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )"
+#endif
                 }.Contains(x)
             ));
         }
