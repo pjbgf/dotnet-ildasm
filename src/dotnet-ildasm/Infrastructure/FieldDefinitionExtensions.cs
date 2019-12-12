@@ -22,6 +22,7 @@ namespace DotNet.Ildasm.Infrastructure
                 writer.Write("initonly ");
 
             writer.Write($"{field.FieldType.ToIL()} {EscapeIfNeeded(field.Name)}{Environment.NewLine}");
+            field.WriteCustomAttributes(writer);
         }
 
         private static string EscapeIfNeeded(string fieldName)
@@ -30,6 +31,14 @@ namespace DotNet.Ildasm.Infrastructure
                 return $"'{fieldName}'";
 
             return fieldName;
+        }
+
+        private static void WriteCustomAttributes(this FieldDefinition fieldDefinition, IOutputWriter outputWriter)
+        {
+            foreach (var customAttribute in fieldDefinition.CustomAttributes)
+            {
+                customAttribute.WriteIL(outputWriter);
+            }
         }
     }
 }

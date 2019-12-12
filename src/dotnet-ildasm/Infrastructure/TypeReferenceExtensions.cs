@@ -11,6 +11,10 @@ namespace DotNet.Ildasm.Infrastructure
                     StringComparison.CurrentCultureIgnoreCase) == 0)
                 return $"{typeReference.FullName}";
 
+
+            if (typeReference.MetadataType == MetadataType.ValueType)
+                return $"valuetype [{typeReference.Scope.Name}]{typeReference.FullName}";
+
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 

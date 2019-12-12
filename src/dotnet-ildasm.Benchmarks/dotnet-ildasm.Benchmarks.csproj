@@ -17,7 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
-    <PackageReference Include="Mono.Cecil" Version="0.10.4" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dotnet-ildasm\dotnet-ildasm.csproj" />

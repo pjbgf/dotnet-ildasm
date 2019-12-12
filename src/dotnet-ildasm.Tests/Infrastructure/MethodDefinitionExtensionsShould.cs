@@ -52,8 +52,29 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             _outputWriterMock.Received(1).WriteLine(".param [1]");
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
                 x => new string [] {
-                    ".custom instance void [System.Runtime]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )",
-                    ".custom instance void [netstandard]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )"
+#if NETFRAMEWORK
+                    ".custom instance void class [System.Runtime]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )",
+#else
+                    ".custom instance void class [netstandard]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )"
+#endif
+                }.Contains(x)
+            ));
+        }
+
+        [Fact]
+        public void Write_Custom_Attributes()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
+            var methodDefinition = type.Methods.First(x => x.Name == "SomeMethodWithAttribute");
+
+            methodDefinition.WriteILBody(_outputWriterMock);
+            _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
+                x => new string [] {
+#if NETFRAMEWORK
+                    ".custom instance void class [mscorlib]System.ObsoleteAttribute::.ctor(string) = ( 01 00 21 54 68 69 73 20 6D 65 74 68 6F 64 20 73 68 6F 75 6C 64 20 6E 6F 74 20 62 65 20 75 73 65 64 2E 2E 2E 00 00 00 )",
+#else
+                    ".custom instance void class [netstandard]System.ObsoleteAttribute::.ctor(string) = ( 01 00 21 54 68 69 73 20 6D 65 74 68 6F 64 20 73 68 6F 75 6C 64 20 6E 6F 74 20 62 65 20 75 73 65 64 2E 2E 2E 00 00 00 )"
+#endif
                 }.Contains(x)
             ));
         }
