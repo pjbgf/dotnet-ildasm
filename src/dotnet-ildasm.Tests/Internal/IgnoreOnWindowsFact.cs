@@ -8,31 +8,31 @@ using Xunit.Sdk;
 
 namespace DotNet.Ildasm.Tests.Internal
 {
-    public sealed class IgnoreOnMonoFact : FactAttribute
+    public sealed class IgnoreOnWindowsFact : FactAttribute
     {
-        public IgnoreOnMonoFact()
+        public IgnoreOnWindowsFact()
         {
-            if (IsMonoRuntime())
+            if (IsWindows())
             {
-                Skip = "Ignore on Mono as underlaying dependencies are not stable";
+                Skip = "Ignore on Windows as underlaying dependencies are not stable";
             }
         }
 
-        private static bool IsMonoRuntime() => Type.GetType("Mono.Runtime") != null;
+        private static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     }
 
     [DataDiscoverer("Xunit.Sdk.InlineDataDiscoverer", "xunit.core")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public sealed class IgnoreOnMonoInlineData : DataAttribute
+    public sealed class IgnoreOnWindowsInlineData : DataAttribute
     {
         readonly object[] data;
 
-        public IgnoreOnMonoInlineData(params object[] data)
+        public IgnoreOnWindowsInlineData(params object[] data)
         {
             this.data = data;
-            if (IsMonoRuntime())
+            if (IsWindows())
             {
-                Skip = "Ignore on Mono as underlaying dependencies are not stable";
+                Skip = "Ignore on Windows as underlaying dependencies are not stable";
             }
         }
 
@@ -43,6 +43,6 @@ namespace DotNet.Ildasm.Tests.Internal
             return new[] { data };
         }
 
-        private static bool IsMonoRuntime() => Type.GetType("Mono.Runtime") != null;
+        private static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     }
 }
