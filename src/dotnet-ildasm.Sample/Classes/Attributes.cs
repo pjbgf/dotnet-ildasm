@@ -3,6 +3,9 @@ using System.Diagnostics;
 
 namespace dotnet_ildasm.Sample.Classes
 {
+    [AttributeUsage(AttributeTargets.All)]
+    public class SomeAttribute : System.Attribute { }
+
     [DebuggerDisplayAttribute("Level=Class")]
     public class SomeClassWithAttribute
     {
@@ -14,6 +17,7 @@ namespace dotnet_ildasm.Sample.Classes
         {
         }
 
+        [SomeAttribute]
         [DebuggerDisplayAttribute("Level=Property")]
         public string SomePropertyWithAttribute { get; set; }
     }
