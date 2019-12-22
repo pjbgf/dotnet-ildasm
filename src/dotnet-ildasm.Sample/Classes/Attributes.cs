@@ -12,6 +12,12 @@ namespace dotnet_ildasm.Sample.Classes
     [DebuggerDisplayAttribute("Level=Class")]
     public class SomeClassWithAttribute
     {
+        [SomeAttribute]
+        public SomeClassWithAttribute()
+        {
+
+        }
+
         [DebuggerDisplayAttribute("Level=Field")]
         public readonly string SomeFieldWithAttribute = "Something 2";
 
@@ -26,7 +32,12 @@ namespace dotnet_ildasm.Sample.Classes
             return true;
         }
 
-        [SomeAttribute] 
+        public bool SomeMethodWithAttributeOnParameter([SomeAttribute]string arg1, [AnotherAttribute]bool arg2)
+        {
+            return true;
+        }
+
+        [SomeAttribute]
         [DebuggerDisplayAttribute("Level=Property")]
         public string SomePropertyWithAttribute { get; set; }
 

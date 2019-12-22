@@ -51,8 +51,26 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             _outputWriterMock.Received(1).WriteLine(".param [0]");
             _outputWriterMock.Received(2).WriteLine(Arg.Is<string>(
-                x => new string [] {
+                x => new string[] {
                     ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.AnotherAttribute::.ctor() = ( 01 00 00 00 )"
+                }.Contains(x)
+            ));
+        }
+
+        [Fact]
+        public void Support_Parameters_With_Attributes()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
+            var methodDefinition = type.Methods.First(x => x.Name == "SomeMethodWithAttributeOnParameter");
+
+            methodDefinition.WriteILBody(_outputWriterMock);
+
+            _outputWriterMock.Received(4).WriteLine(Arg.Is<string>(
+                x => new string[] {
+                    ".param [1]",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
+                    ".param [2]",
                     ".custom instance void class dotnet_ildasm.Sample.Classes.AnotherAttribute::.ctor() = ( 01 00 00 00 )"
                 }.Contains(x)
             ));
@@ -68,7 +86,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             _outputWriterMock.Received(1).WriteLine(".param [1]");
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
-                x => new string [] {
+                x => new string[] {
 #if NETFRAMEWORK
                     ".custom instance void class [System.Runtime]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )",
 #else
@@ -86,7 +104,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             methodDefinition.WriteILBody(_outputWriterMock);
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
-                x => new string [] {
+                x => new string[] {
 #if NETFRAMEWORK
                     ".custom instance void class [mscorlib]System.ObsoleteAttribute::.ctor(string) = ( 01 00 21 54 68 69 73 20 6D 65 74 68 6F 64 20 73 68 6F 75 6C 64 20 6E 6F 74 20 62 65 20 75 73 65 64 2E 2E 2E 00 00 00 )",
 #else

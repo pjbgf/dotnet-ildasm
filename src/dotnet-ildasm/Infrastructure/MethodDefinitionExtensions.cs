@@ -31,7 +31,7 @@ namespace DotNet.Ildasm
                 for (int i = 0; i < @params.Length; i++)
                 {
                     outputWriter.WriteLine($".param [{i + 1}]");
-                    @params[0].CustomAttributes.First().WriteIL(outputWriter);
+                    @params[i].CustomAttributes.First().WriteIL(outputWriter);
                 }
 
                 outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
