@@ -20,7 +20,7 @@ namespace DotNet.Ildasm
                 if (method.MethodReturnType.HasCustomAttributes)
                 {
                     outputWriter.WriteLine(".param [0]");
-                    foreach(var attr in method.MethodReturnType.CustomAttributes)
+                    foreach (var attr in method.MethodReturnType.CustomAttributes)
                         attr.WriteIL(outputWriter);
                 }
 
@@ -104,6 +104,9 @@ namespace DotNet.Ildasm
                 {
                     if (i > 0)
                         variables += ", ";
+
+                    if (variable.VariableType.MetadataType == MetadataType.Class || variable.VariableType.IsGenericInstance)
+                        variables += "class ";
 
                     variables += $"{variable.VariableType.ToIL()} V_{i++}";
                 }
