@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace dotnet_ildasm.Sample.Classes
@@ -68,6 +68,9 @@ namespace dotnet_ildasm.Sample.Classes
 
         [SomeAttribute]
         public static event EventHandler<string> SomeStaticEventWithAttribute;
+
+        [SomeAttribute]
+        public delegate int SomeDelegateWithAttribute(int x, int y);
     }
 
     [DebuggerDisplayAttribute("Level=Struct")]
