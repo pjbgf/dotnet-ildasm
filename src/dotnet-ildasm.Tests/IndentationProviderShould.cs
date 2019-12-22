@@ -17,14 +17,30 @@ namespace DotNet.Ildasm.Tests
         }
 
         [Theory]
-        [InlineData(".method public")]
         [InlineData(".assembly")]
         [InlineData(".module")]
         [InlineData(".class")]
-        public void Breakline_Before_Specific_Keywords(string inputIL)
+        public void Double_Breakline_Before_Specific_Keywords(string inputIL)
         {
             var indentation = new AutoIndentOutputWriter(_outputWriterDouble);
             string expectedIL = $"{Environment.NewLine+Environment.NewLine}{inputIL}";
+
+            indentation.Write(inputIL);
+            var actualIL = _outputWriterDouble.ToString();
+
+            Assert.Equal(expectedIL, actualIL);
+        }
+
+        [Theory]
+        [InlineData(".method public")]
+        [InlineData(".field")]
+        [InlineData(".method")]
+        [InlineData(".property")]
+        [InlineData(".event")]
+        public void Single_Breakline_Before_Specific_Keywords(string inputIL)
+        {
+            var indentation = new AutoIndentOutputWriter(_outputWriterDouble);
+            string expectedIL = $"{Environment.NewLine}{inputIL}";
 
             indentation.Write(inputIL);
             var actualIL = _outputWriterDouble.ToString();
@@ -77,7 +93,7 @@ namespace DotNet.Ildasm.Tests
         }
 
         [Fact]
-        public void Add_Two_Spaces_In_Same_Line_As_Second_Brackets_Opens()
+        public void Add_Single_LineBreak_After_Opening_Nested_Brackets()
         {
             var autoIndentWriter = new AutoIndentOutputWriter(_outputWriterDouble);
 
@@ -88,7 +104,7 @@ namespace DotNet.Ildasm.Tests
             autoIndentWriter.Apply(".maxstack 8");
             
             var actualIL = _outputWriterDouble.ToString();
-            var expectedIL = $"{Environment.NewLine+Environment.NewLine}.class {{{Environment.NewLine+Environment.NewLine}  .method public   {{    .maxstack 8";
+            var expectedIL = $"{Environment.NewLine+Environment.NewLine}.class {{{Environment.NewLine}  .method public   {{    .maxstack 8";
 
             Assert.Equal(expectedIL, actualIL);
         }
@@ -141,7 +157,7 @@ namespace DotNet.Ildasm.Tests
             autoIndentWriter.Apply("hidebysig ");
 
             var actualIL = _outputWriterDouble.ToString();
-            var expectedIL = $"{{{Environment.NewLine+Environment.NewLine}  .method public hidebysig ";
+            var expectedIL = $"{{{Environment.NewLine}  .method public hidebysig ";
 
             Assert.Equal(expectedIL, actualIL);
         }
