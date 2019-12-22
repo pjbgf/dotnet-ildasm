@@ -15,9 +15,6 @@ namespace DotNet.Ildasm
 
             method.WriteCustomAttributes(outputWriter);
 
-            if (method.DeclaringType.Module.EntryPoint == method)
-                outputWriter.WriteLine(".entrypoint");
-
             if (method.HasBody)
             {
                 if (method.MethodReturnType.HasCustomAttributes)
@@ -34,7 +31,12 @@ namespace DotNet.Ildasm
                     @params[i].CustomAttributes.First().WriteIL(outputWriter);
                 }
 
-                outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
+                outputWriter.WriteLine($"// Method begins at Relative Virtual Address (RVA) 0x{method.RVA.ToString("X")}");
+
+                if (method.DeclaringType.Module.EntryPoint == method)
+                    outputWriter.WriteLine(".entrypoint");
+
+                outputWriter.WriteLine($"// Code size {method.Body.CodeSize} (0x{method.Body.CodeSize.ToString("X")})");
                 outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
 
                 WriteLocalVariablesIfNeeded(method, outputWriter);
