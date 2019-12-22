@@ -21,10 +21,21 @@ namespace dotnet_ildasm.Sample.Classes
         [DebuggerDisplayAttribute("Level=Property")]
         public string SomePropertyWithAttribute { get; set; }
 
-
         [SomeAttribute]
         [DebuggerDisplayAttribute("Level=Property")]
         public static string SomeStaticPropertyWithAttribute { get; set; }
+
+        protected virtual void OnSomeEventWithAttribute(object e)
+        {
+            EventHandler<object> handler = SomeEventWithAttribute;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        [SomeAttribute]
+        public event EventHandler<object> SomeEventWithAttribute;
     }
 
     [DebuggerDisplayAttribute("Level=Struct")]

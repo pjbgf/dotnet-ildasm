@@ -7,7 +7,7 @@ namespace DotNet.Ildasm.Infrastructure
     {
         private static string ToPrefixedTypeName(TypeReference typeReference)
         {
-            if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
+            if (!typeReference.IsGenericInstance && string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
                     StringComparison.CurrentCultureIgnoreCase) == 0)
                 return $"{typeReference.FullName}";
 
@@ -20,7 +20,8 @@ namespace DotNet.Ildasm.Infrastructure
 
         public static string ToIL(this TypeReference typeReference)
         {
-            if (typeReference.MetadataType == MetadataType.Class ||
+            if (typeReference.IsGenericInstance ||
+                typeReference.MetadataType == MetadataType.Class ||
                 typeReference.MetadataType == MetadataType.Object ||
                 typeReference.MetadataType == MetadataType.ValueType)
             {

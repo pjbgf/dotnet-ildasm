@@ -56,6 +56,7 @@ namespace DotNet.Ildasm
             WriteFields(type);
             WriteMethods(type);
             WriteProperties(type);
+            WriteEvents(type);
 
             foreach (var nestedType in type.NestedTypes)
                 HandleType(nestedType);
@@ -92,6 +93,16 @@ namespace DotNet.Ildasm
             }
         }
 
+        private void WriteEvents(TypeDefinition type)
+        {
+            foreach (var @event in type.Events)
+            {
+                if (string.IsNullOrEmpty(_itemFilter.Method) ||
+                    string.Compare(@event.Name, _itemFilter.Method, StringComparison.CurrentCulture) == 0)
+                    HandleEvent(@event);
+            }
+        }
+
         private void WriteFields(TypeDefinition type)
         {
             if (type.HasFields)
@@ -111,6 +122,12 @@ namespace DotNet.Ildasm
         {
             property.WriteILSignature(_outputWriter);
             property.WriteILBody(_outputWriter);
+        }
+
+        private void HandleEvent(EventDefinition @event)
+        {
+            @event.WriteILSignature(_outputWriter);
+            @event.WriteILBody(_outputWriter);
         }
     }
 }
