@@ -25,7 +25,8 @@ namespace DotNet.Ildasm
             var getMethod = property.GetMethod;
             if (getMethod != null)
             {
-                writer.WriteLine($".get instance default {getMethod.ReturnType.ToIL()} {getMethod.DeclaringType.ToIL()}::{getMethod.Name} ()");
+                var instance = property.HasThis ? "instance " : "";
+                writer.WriteLine($".get {instance}default {getMethod.ReturnType.ToIL()} {getMethod.DeclaringType.ToIL()}::{getMethod.Name} ()");
             }
         }
 
@@ -34,7 +35,8 @@ namespace DotNet.Ildasm
             var setMethod = property.SetMethod;
             if (setMethod != null)
             {
-                writer.WriteLine($".set instance default void {setMethod.DeclaringType.ToIL()}::{setMethod.Name} ({setMethod.Parameters.First().ParameterType.ToIL()} 'value')");
+                var instance = property.HasThis ? "instance " : "";
+                writer.WriteLine($".set {instance}default void {setMethod.DeclaringType.ToIL()}::{setMethod.Name} ({setMethod.Parameters.First().ParameterType.ToIL()} 'value')");
             }
         }
 
@@ -56,7 +58,8 @@ namespace DotNet.Ildasm
             if (property.IsRuntimeSpecialName)
                 writer.Write(" rtspecialname");
 
-            writer.Write(" instance");
+            if (property.HasThis)
+                writer.Write(" instance");
 
             writer.Write($" {property.PropertyType.ToIL()}");
             writer.Write($" {property.Name} ()");

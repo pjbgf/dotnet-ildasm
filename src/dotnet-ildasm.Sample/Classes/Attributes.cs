@@ -20,6 +20,11 @@ namespace dotnet_ildasm.Sample.Classes
         [SomeAttribute]
         [DebuggerDisplayAttribute("Level=Property")]
         public string SomePropertyWithAttribute { get; set; }
+
+
+        [SomeAttribute]
+        [DebuggerDisplayAttribute("Level=Property")]
+        public static string SomeStaticPropertyWithAttribute { get; set; }
     }
 
     [DebuggerDisplayAttribute("Level=Struct")]

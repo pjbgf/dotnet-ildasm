@@ -22,6 +22,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
         [Theory]
         [InlineData("SomeClassWithAttribute", "SomePropertyWithAttribute", ".property instance string SomePropertyWithAttribute ()")]
+        [InlineData("SomeClassWithAttribute", "SomeStaticPropertyWithAttribute", ".property string SomeStaticPropertyWithAttribute ()")]
         public void Write_Property_Signature(string className, string propertyName, string expectedIL)
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
@@ -63,6 +64,21 @@ namespace DotNet.Ildasm.Tests.Infrastructure
                 x => new string [] {
                     ".get instance default string dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::get_SomePropertyWithAttribute ()", 
 		            ".set instance default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::set_SomePropertyWithAttribute (string 'value')"
+                }.Contains(x)
+            ));
+        }
+
+        [Fact]
+        public void Write_Property_Static_Methods()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
+            var propertyDefinition = type.Properties.First(x => x.Name == "SomeStaticPropertyWithAttribute");
+
+            propertyDefinition.WriteILBody(_outputWriterMock);
+            _outputWriterMock.Received(2).WriteLine(Arg.Is<string>(
+                x => new string [] {
+                    ".get default string dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::get_SomeStaticPropertyWithAttribute ()", 
+		            ".set default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::set_SomeStaticPropertyWithAttribute (string 'value')"
                 }.Contains(x)
             ));
         }
