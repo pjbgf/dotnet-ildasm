@@ -20,10 +20,17 @@ namespace DotNet.Ildasm
 
             if (method.HasBody)
             {
+                if (method.MethodReturnType.HasCustomAttributes)
+                {
+                    outputWriter.WriteLine(".param [0]");
+                    foreach(var attr in method.MethodReturnType.CustomAttributes)
+                        attr.WriteIL(outputWriter);
+                }
+
                 var @params = method.Parameters.Where(x => x.HasCustomAttributes).ToArray();
                 for (int i = 0; i < @params.Length; i++)
                 {
-                    outputWriter.WriteLine($".param [{i + 1}]"); // 1-based array?
+                    outputWriter.WriteLine($".param [{i + 1}]");
                     @params[0].CustomAttributes.First().WriteIL(outputWriter);
                 }
 

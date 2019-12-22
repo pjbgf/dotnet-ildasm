@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
 namespace dotnet_ildasm.Sample.Classes
 {
     [AttributeUsage(AttributeTargets.All)]
     public class SomeAttribute : System.Attribute { }
+
+    [AttributeUsage(AttributeTargets.All)]
+    public class AnotherAttribute : System.Attribute { }
 
     [DebuggerDisplayAttribute("Level=Class")]
     public class SomeClassWithAttribute
@@ -17,7 +20,13 @@ namespace dotnet_ildasm.Sample.Classes
         {
         }
 
-        [SomeAttribute]
+        [return: SomeAttribute, Another()]
+        public bool SomeMethodWithAttributeOnReturnValue()
+        {
+            return true;
+        }
+
+        [SomeAttribute] 
         [DebuggerDisplayAttribute("Level=Property")]
         public string SomePropertyWithAttribute { get; set; }
 
@@ -53,5 +62,20 @@ namespace dotnet_ildasm.Sample.Classes
     [DebuggerDisplayAttribute("Level=Struct")]
     public class SomeStructWithAttribute
     {
+    }
+
+    [SomeAttribute]
+    public enum SomeEnumWithAttribute : int
+    {
+        ItemWithoutAttribute = 0,
+
+        [SomeAttribute]
+        ItemWithAttribute = 1
+    }
+
+    [SomeAttribute]
+    public interface SomeInterfaceWithAttribute
+    {
+
     }
 }

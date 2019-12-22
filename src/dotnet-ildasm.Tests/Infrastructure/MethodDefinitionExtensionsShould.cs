@@ -42,6 +42,23 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         }
 
         [Fact]
+        public void Support_Return_Value_Attributes()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
+            var methodDefinition = type.Methods.First(x => x.Name == "SomeMethodWithAttributeOnReturnValue");
+
+            methodDefinition.WriteILBody(_outputWriterMock);
+
+            _outputWriterMock.Received(1).WriteLine(".param [0]");
+            _outputWriterMock.Received(2).WriteLine(Arg.Is<string>(
+                x => new string [] {
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.AnotherAttribute::.ctor() = ( 01 00 00 00 )"
+                }.Contains(x)
+            ));
+        }
+
+        [Fact]
         public void Be_Able_To_Support_Params_Keyword()
         {
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "PublicClass");
