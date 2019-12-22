@@ -18,6 +18,12 @@ namespace DotNet.Ildasm.Infrastructure
             if (field.IsStatic)
                 writer.Write("static ");
 
+            if (field.IsSpecialName)
+                writer.Write("specialname ");
+
+            if (field.IsRuntimeSpecialName)
+                writer.Write("rtspecialname ");
+
             if (field.IsInitOnly)
                 writer.Write("initonly ");
 
