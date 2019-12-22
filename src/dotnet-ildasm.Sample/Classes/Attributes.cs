@@ -34,8 +34,20 @@ namespace dotnet_ildasm.Sample.Classes
             }
         }
 
+        protected virtual void OnSomeStaticEventWithAttribute(string e)
+        {
+            EventHandler<string> handler = SomeStaticEventWithAttribute;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
         [SomeAttribute]
         public event EventHandler<object> SomeEventWithAttribute;
+
+        [SomeAttribute]
+        public static event EventHandler<string> SomeStaticEventWithAttribute;
     }
 
     [DebuggerDisplayAttribute("Level=Struct")]

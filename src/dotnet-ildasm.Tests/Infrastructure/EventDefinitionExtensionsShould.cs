@@ -40,7 +40,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             eventDefinition.WriteILBody(_outputWriterMock);
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
-                x => new string [] {
+                x => new string[] {
 #if NETFRAMEWORK
                     ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
 #else
@@ -58,7 +58,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             eventDefinition.WriteILBody(_outputWriterMock);
             _outputWriterMock.Received(2).WriteLine(Arg.Is<string>(
-                x => new string [] {
+                x => new string[] {
 #if NETFRAMEWORK
                     ".addon instance default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::add_SomeEventWithAttribute (class [mscorlib]System.EventHandler`1<System.Object> 'value')",
                     ".removeon instance default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::remove_SomeEventWithAttribute (class [mscorlib]System.EventHandler`1<System.Object> 'value')"
@@ -74,13 +74,18 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         public void Write_Event_Static_Methods()
         {
             var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
-            var propertyDefinition = type.Properties.First(x => x.Name == "SomeStaticPropertyWithAttribute");
+            var eventDefinition = type.Events.First(x => x.Name == "SomeStaticEventWithAttribute");
 
-            propertyDefinition.WriteILBody(_outputWriterMock);
+            eventDefinition.WriteILBody(_outputWriterMock);
             _outputWriterMock.Received(2).WriteLine(Arg.Is<string>(
-                x => new string [] {
-                    ".get default string dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::get_SomeStaticPropertyWithAttribute ()", 
-		            ".set default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::set_SomeStaticPropertyWithAttribute (string 'value')"
+                x => new string[] {
+#if NETFRAMEWORK
+                    ".addon default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::add_SomeStaticEventWithAttribute (class [mscorlib]System.EventHandler`1<System.String> 'value')",
+                    ".removeon default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::remove_SomeStaticEventWithAttribute (class [mscorlib]System.EventHandler`1<System.String> 'value')"
+#else
+                    ".addon default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::add_SomeStaticEventWithAttribute (class [netstandard]System.EventHandler`1<System.String> 'value')",
+                    ".removeon default void dotnet_ildasm.Sample.Classes.SomeClassWithAttribute::remove_SomeStaticEventWithAttribute (class [netstandard]System.EventHandler`1<System.String> 'value')"
+#endif                
                 }.Contains(x)
             ));
         }
