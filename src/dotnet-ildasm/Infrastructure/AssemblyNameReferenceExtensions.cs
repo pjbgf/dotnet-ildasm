@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Mono.Cecil;
+﻿using Mono.Cecil;
 
 namespace DotNet.Ildasm.Infrastructure
 {
@@ -11,7 +8,7 @@ namespace DotNet.Ildasm.Infrastructure
         {
             writer.WriteLine($".assembly extern {reference.Name}");
             writer.WriteLine("{");
-            writer.WriteLine($".publickeytoken = ( {reference.PublicKeyToken.ToHexadecimal()} )");
+            writer.WriteLine($".publickeytoken = ( {reference.PublicKeyToken.ToHexadecimal()} ) // {reference.PublicKeyToken.ToStringValue()}");
             writer.WriteLine($".ver {reference.Version.Major}:{reference.Version.Minor}:{reference.Version.Revision}:{reference.Version.Build}");
             writer.WriteLine("}");
         }

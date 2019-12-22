@@ -42,9 +42,9 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
                 x => new string[] {
 #if NETFRAMEWORK
-                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 ) // ....",
 #else
-                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 ) // ....",
 #endif
                 }.Contains(x)
             ));

@@ -43,11 +43,11 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             _outputWriterMock.Received(2).WriteLine(Arg.Is<string>(
                 x => new string [] {
 #if NETFRAMEWORK
-                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
-                    ".custom instance void class [mscorlib]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0E 4C 65 76 65 6C 3D 50 72 6F 70 65 72 74 79 00 00 )"
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 ) // ....",
+                    ".custom instance void class [mscorlib]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0E 4C 65 76 65 6C 3D 50 72 6F 70 65 72 74 79 00 00 ) // ...Level.Property.."
 #else
-                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 )",
-                    ".custom instance void class [netstandard]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0E 4C 65 76 65 6C 3D 50 72 6F 70 65 72 74 79 00 00 )"
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 ) // ....",
+                    ".custom instance void class [netstandard]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0E 4C 65 76 65 6C 3D 50 72 6F 70 65 72 74 79 00 00 ) // ...Level.Property.."
 #endif
                 }.Contains(x)
             ));
