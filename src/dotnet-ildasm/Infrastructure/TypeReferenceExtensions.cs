@@ -20,6 +20,9 @@ namespace DotNet.Ildasm.Infrastructure
 
         public static string ToIL(this TypeReference typeReference)
         {
+            if  (typeReference.MetadataType == MetadataType.Boolean)
+                return "bool";
+
             if (typeReference.IsGenericInstance ||
                 typeReference.MetadataType == MetadataType.Class ||
                 typeReference.MetadataType == MetadataType.Object ||
