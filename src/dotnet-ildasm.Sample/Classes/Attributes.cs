@@ -47,7 +47,7 @@ namespace dotnet_ildasm.Sample.Classes
 
         protected virtual void OnSomeEventWithAttribute(object e)
         {
-            EventHandler<object> handler = SomeEventWithAttribute;
+            var handler = SomeEventWithAttribute;
             if (handler != null)
             {
                 handler(this, e);
@@ -56,7 +56,7 @@ namespace dotnet_ildasm.Sample.Classes
 
         protected virtual void OnSomeStaticEventWithAttribute(string e)
         {
-            EventHandler<string> handler = SomeStaticEventWithAttribute;
+            var handler = SomeStaticEventWithAttribute;
             if (handler != null)
             {
                 handler(this, e);
