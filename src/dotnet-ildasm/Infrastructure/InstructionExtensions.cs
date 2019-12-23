@@ -1,5 +1,5 @@
 using System;
-using System.Text;
+using System.Collections.Generic;
 using DotNet.Ildasm.Infrastructure;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -35,13 +35,21 @@ namespace DotNet.Ildasm
                         case MethodReference methodReference:
                             var instanceString = methodReference.HasThis ? "instance " : string.Empty;
                             writer.Write(
-                                $"{instanceString}{methodReference.ReturnType.ToIL()} {methodReference.DeclaringType.ToIL()}::{methodReference.Name}");
+                                $"{instanceString}{methodReference.ReturnType.ToIL()} class {methodReference.DeclaringType.ToIL()}::{methodReference.Name}");
+
                             WriteMethodCallParameters(methodReference, writer);
                             break;
                         case FieldDefinition fieldDefinition:
+                            if (fieldDefinition.FieldType.IsGenericInstance || fieldDefinition.FieldType.MetadataType == MetadataType.Class)
+                                writer.Write("class ");
+
                             writer.Write($"{fieldDefinition.FieldType.ToIL()} {fieldDefinition.DeclaringType.ToIL()}::{EscapeIfNeeded(fieldDefinition.Name)}");
                             break;
                         default:
+                            var operandType = instruction.Operand.GetType();
+                            if (operandType.IsClass)
+                                writer.Write("class ");
+
                             writer.Write(instruction.Operand.ToString());
                             break;
                     }

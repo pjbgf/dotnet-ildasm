@@ -171,9 +171,13 @@ namespace DotNet.Ildasm
                         writer.Write(", ");
 
                     var parameterDefinition = method.Parameters[i];
+                    if (parameterDefinition.ParameterType.IsGenericInstance || 
+                        parameterDefinition.ParameterType.MetadataType == MetadataType.Class)
+                        writer.Write("class ");
+
                     writer.Write($"{parameterDefinition.ParameterType.ToIL()} ");
 
-                    if (parameterDefinition.Name == "value")
+                    if (parameterDefinition.Name == "value" || parameterDefinition.Name == "object" || parameterDefinition.Name == "method")
                         writer.Write($"'{parameterDefinition.Name}'");
                     else
                         writer.Write(parameterDefinition.Name);

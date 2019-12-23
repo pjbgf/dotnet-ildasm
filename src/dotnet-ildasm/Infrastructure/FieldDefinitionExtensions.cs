@@ -27,6 +27,9 @@ namespace DotNet.Ildasm.Infrastructure
             if (field.IsInitOnly)
                 writer.Write("initonly ");
 
+            if (field.FieldType.IsGenericInstance || field.FieldType.MetadataType == MetadataType.Class)
+                writer.Write("class ");
+
             writer.Write($"{field.FieldType.ToIL()} {EscapeIfNeeded(field.Name)}{Environment.NewLine}");
             field.WriteCustomAttributes(writer);
         }
