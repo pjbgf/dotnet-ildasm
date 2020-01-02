@@ -22,6 +22,8 @@ namespace DotNet.Ildasm.Infrastructure
         {
             if  (typeReference.MetadataType == MetadataType.Boolean)
                 return "bool";
+            if  (typeReference.MetadataType == MetadataType.IntPtr)
+                return "native int";
 
             if (typeReference.IsGenericInstance ||
                 typeReference.MetadataType == MetadataType.Class ||

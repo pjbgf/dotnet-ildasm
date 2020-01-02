@@ -26,15 +26,29 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         [InlineData("PublicClass", "PublicVoidMethodTwoParameters", ".method public hidebysig instance void PublicVoidMethodTwoParameters(string parameter1, int32 parameter2) cil managed")]
         [InlineData("PublicClass", "PublicVoidMethodParams", ".method public hidebysig instance void PublicVoidMethodParams(string[] parameters) cil managed")]
         [InlineData("PublicClass", "set_Property1", ".method public hidebysig specialname instance void set_Property1(string 'value') cil managed")]
-        [InlineData("PublicAbstractClass", "PublicAbstractMethod", ".method public hidebysig newslot abstract virtual instance void PublicAbstractMethod() cil managed")]
+        [InlineData("PublicAbstractClass", "PublicAbstractMethod", ".method public hidebysig newslot abstract virtual instance default void PublicAbstractMethod() cil managed")]
         [InlineData("PublicAbstractClass", "PublicImplementedMethod", ".method public hidebysig instance void PublicImplementedMethod() cil managed")]
         [InlineData("DerivedPublicClass", "PublicAbstractMethod", ".method public hidebysig virtual instance void PublicAbstractMethod() cil managed")]
         [InlineData("DerivedPublicClass", "PublicAbstractSealedMethod", ".method public hidebysig virtual final instance void PublicAbstractSealedMethod() cil managed")]
         [InlineData("DerivedPublicClass", "PublicImplementedMethod", ".method public hidebysig instance void PublicImplementedMethod() cil managed")]
+        [InlineData("StaticClass", "Method3", ".method public hidebysig static native int Method3() cil managed")]
         public void Write_Method_Signature(string className, string methodName, string expectedIL)
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
             var method = type.Methods.FirstOrDefault(x => x.Name == methodName);
+
+            method.WriteILSignature(_outputWriter);
+
+            Assert.Equal(expectedIL, _outputWriter.ToString());
+        }
+
+        [Theory]
+        [InlineData("SomeClassWithAttribute", "SomeDelegateWithAttribute", ".ctor", ".method public hidebysig specialname rtspecialname instance default void .ctor([netstandard]System.Object 'object', native int 'method') runtime managed")]
+        public void Write_Method_Signature2(string className, string nestedClassName, string methodName, string expectedIL)
+        {
+            var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
+            var nestedType = type.NestedTypes.FirstOrDefault(x => x.Name == nestedClassName);
+            var method = nestedType.Methods.FirstOrDefault(x => x.Name == methodName);
 
             method.WriteILSignature(_outputWriter);
 

@@ -150,12 +150,17 @@ namespace DotNet.Ildasm
             else
                 writer.Write(" static");
 
+            if (!method.HasBody)
+                writer.Write(" default");
+
             writer.Write($" {method.ReturnType.ToIL()}");
             writer.Write($" {method.Name}");
 
             WriteMethodSignatureParameters(method, writer);
 
-            if (method.IsManaged)
+            if (method.IsRuntime)
+                writer.Write(" runtime managed");
+            else if (method.IsManaged)
                 writer.Write(" cil managed");
         }
 

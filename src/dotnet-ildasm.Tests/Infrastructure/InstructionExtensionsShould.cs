@@ -13,7 +13,6 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         private readonly IOutputWriter _outputWriterMock;
         private readonly AssemblyDefinition _assemblyDefinition;
 
-
         public InstructionExtensionsShould()
         {
             _outputWriter = new OutputWriterDouble();
