@@ -117,7 +117,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             callVirt.WriteIL(_outputWriter);
 
-            Assert.Equal("IL_0014: callvirt instance void class [netstandard]System.EventHandler`1<System.Object>::Invoke([netstandard]System.Object, !0)", _outputWriter.ToString());
+            Assert.Contains("callvirt instance void class [netstandard]System.EventHandler`1<System.Object>::Invoke([netstandard]System.Object, !0)", _outputWriter.ToString());
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             castClass.WriteIL(_outputWriter);
 
-            Assert.Equal("IL_0001: ldsfld native int [netstandard]System.IntPtr::Zero", _outputWriter.ToString());
+            Assert.Contains("ldsfld native int [netstandard]System.IntPtr::Zero", _outputWriter.ToString());
         }
 
         [Fact]
