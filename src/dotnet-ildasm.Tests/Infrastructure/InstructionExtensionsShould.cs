@@ -132,6 +132,17 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         }
 
         [Fact]
+        public void Be_Able_To_Refer_To_Native_Int()
+        {
+            var method = GetMethod("StaticClass", "Method3");
+            var castClass = GetInstruction(method, OpCodes.Ldsfld);
+
+            castClass.WriteIL(_outputWriter);
+
+            Assert.Equal("IL_0001: ldsfld native int [netstandard]System.IntPtr::Zero", _outputWriter.ToString());
+        }
+
+        [Fact]
         public void Be_Able_To_Write_Generic_Method_Call()
         {
             var method = GetMethod("SomeClassWithAttribute", "add_SomeEventWithAttribute");

@@ -60,6 +60,12 @@ namespace DotNet.Ildasm
 
                             writer.Write($"{fieldDefinition.FieldType.ToIL()} {fieldDefinition.DeclaringType.ToIL()}::{EscapeIfNeeded(fieldDefinition.Name)}");
                             break;
+                        case FieldReference fieldReference:
+                            if (fieldReference.FieldType.IsGenericInstance || fieldReference.FieldType.MetadataType == MetadataType.Class)
+                                writer.Write("class ");
+
+                            writer.Write($"{fieldReference.FieldType.ToNativeTypeIL()} {fieldReference.DeclaringType.ToIL()}::{EscapeIfNeeded(fieldReference.Name)}");
+                            break;
                         default:
                             var operandType = instruction.Operand.GetType();
                             if (operandType.IsClass)

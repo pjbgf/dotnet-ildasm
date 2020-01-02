@@ -18,17 +18,24 @@ namespace DotNet.Ildasm.Infrastructure
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 
+        public static string ToNativeTypeIL(this TypeReference typeReference)
+        {
+            if (typeReference.MetadataType == MetadataType.IntPtr)
+                return "native int";
+
+            return typeReference.ToIL();
+        }
+
         public static string ToIL(this TypeReference typeReference)
         {
-            if  (typeReference.MetadataType == MetadataType.Boolean)
+            if (typeReference.MetadataType == MetadataType.Boolean)
                 return "bool";
-            if  (typeReference.MetadataType == MetadataType.IntPtr)
-                return "native int";
 
             if (typeReference.IsGenericInstance ||
                 typeReference.MetadataType == MetadataType.Class ||
                 typeReference.MetadataType == MetadataType.Object ||
-                typeReference.MetadataType == MetadataType.ValueType)
+                typeReference.MetadataType == MetadataType.ValueType ||
+                typeReference.MetadataType == MetadataType.IntPtr)
             {
                 return ToPrefixedTypeName(typeReference);
             }

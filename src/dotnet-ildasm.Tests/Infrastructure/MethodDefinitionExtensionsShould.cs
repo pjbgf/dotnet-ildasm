@@ -12,7 +12,6 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         private readonly AssemblyDefinition _assemblyDefinition;
         private readonly IOutputWriter _outputWriterMock;
 
-
         public MethodDefinitionExtensionsShould()
         {
             _outputWriter = new OutputWriterDouble();
@@ -21,17 +20,17 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         }
 
         [Theory]
-        [InlineData("PublicClass", "PublicVoidMethod", ".method public hidebysig instance void PublicVoidMethod() cil managed")]
-        [InlineData("PublicClass", "PublicVoidMethodSingleParameter", ".method public hidebysig instance void PublicVoidMethodSingleParameter(string parameter1) cil managed")]
-        [InlineData("PublicClass", "PublicVoidMethodTwoParameters", ".method public hidebysig instance void PublicVoidMethodTwoParameters(string parameter1, int32 parameter2) cil managed")]
-        [InlineData("PublicClass", "PublicVoidMethodParams", ".method public hidebysig instance void PublicVoidMethodParams(string[] parameters) cil managed")]
-        [InlineData("PublicClass", "set_Property1", ".method public hidebysig specialname instance void set_Property1(string 'value') cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethod", ".method public hidebysig instance default void PublicVoidMethod() cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethodSingleParameter", ".method public hidebysig instance default void PublicVoidMethodSingleParameter(string parameter1) cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethodTwoParameters", ".method public hidebysig instance default void PublicVoidMethodTwoParameters(string parameter1, int32 parameter2) cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethodParams", ".method public hidebysig instance default void PublicVoidMethodParams(string[] parameters) cil managed")]
+        [InlineData("PublicClass", "set_Property1", ".method public hidebysig specialname instance default void set_Property1(string 'value') cil managed")]
         [InlineData("PublicAbstractClass", "PublicAbstractMethod", ".method public hidebysig newslot abstract virtual instance default void PublicAbstractMethod() cil managed")]
-        [InlineData("PublicAbstractClass", "PublicImplementedMethod", ".method public hidebysig instance void PublicImplementedMethod() cil managed")]
-        [InlineData("DerivedPublicClass", "PublicAbstractMethod", ".method public hidebysig virtual instance void PublicAbstractMethod() cil managed")]
-        [InlineData("DerivedPublicClass", "PublicAbstractSealedMethod", ".method public hidebysig virtual final instance void PublicAbstractSealedMethod() cil managed")]
-        [InlineData("DerivedPublicClass", "PublicImplementedMethod", ".method public hidebysig instance void PublicImplementedMethod() cil managed")]
-        [InlineData("StaticClass", "Method3", ".method public hidebysig static native int Method3() cil managed")]
+        [InlineData("PublicAbstractClass", "PublicImplementedMethod", ".method public hidebysig instance default void PublicImplementedMethod() cil managed")]
+        [InlineData("DerivedPublicClass", "PublicAbstractMethod", ".method public hidebysig virtual instance default void PublicAbstractMethod() cil managed")]
+        [InlineData("DerivedPublicClass", "PublicAbstractSealedMethod", ".method public hidebysig virtual final instance default void PublicAbstractSealedMethod() cil managed")]
+        [InlineData("DerivedPublicClass", "PublicImplementedMethod", ".method public hidebysig instance default void PublicImplementedMethod() cil managed")]
+        [InlineData("StaticClass", "Method3", ".method public hidebysig static default native int Method3() cil managed")]
         public void Write_Method_Signature(string className, string methodName, string expectedIL)
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);

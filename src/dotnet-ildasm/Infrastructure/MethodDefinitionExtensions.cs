@@ -150,10 +150,10 @@ namespace DotNet.Ildasm
             else
                 writer.Write(" static");
 
-            if (!method.HasBody)
+            if (!method.HasBody || method.IsDefinition)
                 writer.Write(" default");
 
-            writer.Write($" {method.ReturnType.ToIL()}");
+            writer.Write($" {method.ReturnType.ToNativeTypeIL()}");
             writer.Write($" {method.Name}");
 
             WriteMethodSignatureParameters(method, writer);
@@ -180,7 +180,7 @@ namespace DotNet.Ildasm
                         parameterDefinition.ParameterType.MetadataType == MetadataType.Class)
                         writer.Write("class ");
 
-                    writer.Write($"{parameterDefinition.ParameterType.ToIL()} ");
+                    writer.Write($"{parameterDefinition.ParameterType.ToNativeTypeIL()} ");
 
                     if (parameterDefinition.Name == "value" || parameterDefinition.Name == "object" || parameterDefinition.Name == "method")
                         writer.Write($"'{parameterDefinition.Name}'");
