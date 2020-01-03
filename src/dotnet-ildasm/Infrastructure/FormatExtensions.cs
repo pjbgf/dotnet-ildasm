@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DotNet.Ildasm.Infrastructure
 {
@@ -18,7 +20,7 @@ namespace DotNet.Ildasm.Infrastructure
         {
             return $"0x{value:x8}";
         }
-        
+
         public static string ToHexadecimal(this byte[] value)
         {
             if (value == null)
@@ -26,5 +28,19 @@ namespace DotNet.Ildasm.Infrastructure
 
             return BitConverter.ToString(value).Replace('-', ' ');
         }
+
+        public static string ToStringValue(this byte[] value)
+        {
+            if (value == null)
+                return string.Empty;
+
+            var encoder = ASCIIEncoding.GetEncoding(0, 
+                                  new EncoderReplacementFallback("."),
+                                  new DecoderReplacementFallback("."));
+
+            var decoded = encoder.GetString(value);
+            return Regex.Replace(decoded, "\\W", ".");
+        }
+        
     }
 }

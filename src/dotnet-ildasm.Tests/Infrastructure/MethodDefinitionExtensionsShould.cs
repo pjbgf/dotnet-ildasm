@@ -12,7 +12,6 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         private readonly AssemblyDefinition _assemblyDefinition;
         private readonly IOutputWriter _outputWriterMock;
 
-
         public MethodDefinitionExtensionsShould()
         {
             _outputWriter = new OutputWriterDouble();
@@ -21,16 +20,17 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         }
 
         [Theory]
-        [InlineData("PublicClass", "PublicVoidMethod", ".method public hidebysig instance void PublicVoidMethod() cil managed")]
-        [InlineData("PublicClass", "PublicVoidMethodSingleParameter", ".method public hidebysig instance void PublicVoidMethodSingleParameter(string parameter1) cil managed")]
-        [InlineData("PublicClass", "PublicVoidMethodTwoParameters", ".method public hidebysig instance void PublicVoidMethodTwoParameters(string parameter1, int32 parameter2) cil managed")]
-        [InlineData("PublicClass", "PublicVoidMethodParams", ".method public hidebysig instance void PublicVoidMethodParams(string[] parameters) cil managed")]
-        [InlineData("PublicClass", "set_Property1", ".method public hidebysig specialname instance void set_Property1(string 'value') cil managed")]
-        [InlineData("PublicAbstractClass", "PublicAbstractMethod", ".method public hidebysig newslot abstract virtual instance void PublicAbstractMethod() cil managed")]
-        [InlineData("PublicAbstractClass", "PublicImplementedMethod", ".method public hidebysig instance void PublicImplementedMethod() cil managed")]
-        [InlineData("DerivedPublicClass", "PublicAbstractMethod", ".method public hidebysig virtual instance void PublicAbstractMethod() cil managed")]
-        [InlineData("DerivedPublicClass", "PublicAbstractSealedMethod", ".method public hidebysig virtual final instance void PublicAbstractSealedMethod() cil managed")]
-        [InlineData("DerivedPublicClass", "PublicImplementedMethod", ".method public hidebysig instance void PublicImplementedMethod() cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethod", ".method public hidebysig instance default void PublicVoidMethod() cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethodSingleParameter", ".method public hidebysig instance default void PublicVoidMethodSingleParameter(string parameter1) cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethodTwoParameters", ".method public hidebysig instance default void PublicVoidMethodTwoParameters(string parameter1, int32 parameter2) cil managed")]
+        [InlineData("PublicClass", "PublicVoidMethodParams", ".method public hidebysig instance default void PublicVoidMethodParams(string[] parameters) cil managed")]
+        [InlineData("PublicClass", "set_Property1", ".method public hidebysig specialname instance default void set_Property1(string 'value') cil managed")]
+        [InlineData("PublicAbstractClass", "PublicAbstractMethod", ".method public hidebysig newslot abstract virtual instance default void PublicAbstractMethod() cil managed")]
+        [InlineData("PublicAbstractClass", "PublicImplementedMethod", ".method public hidebysig instance default void PublicImplementedMethod() cil managed")]
+        [InlineData("DerivedPublicClass", "PublicAbstractMethod", ".method public hidebysig virtual instance default void PublicAbstractMethod() cil managed")]
+        [InlineData("DerivedPublicClass", "PublicAbstractSealedMethod", ".method public hidebysig virtual final instance default void PublicAbstractSealedMethod() cil managed")]
+        [InlineData("DerivedPublicClass", "PublicImplementedMethod", ".method public hidebysig instance default void PublicImplementedMethod() cil managed")]
+        [InlineData("StaticClass", "Method3", ".method public hidebysig static default native int Method3() cil managed")]
         public void Write_Method_Signature(string className, string methodName, string expectedIL)
         {
             var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
@@ -39,6 +39,54 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             method.WriteILSignature(_outputWriter);
 
             Assert.Equal(expectedIL, _outputWriter.ToString());
+        }
+
+        [Theory]
+        [InlineData("SomeClassWithAttribute", "SomeDelegateWithAttribute", ".ctor", ".method public hidebysig specialname rtspecialname instance default void .ctor([netstandard]System.Object 'object', native int 'method') runtime managed")]
+        public void Write_Method_Signature2(string className, string nestedClassName, string methodName, string expectedIL)
+        {
+            var type = _assemblyDefinition.MainModule.Types.FirstOrDefault(x => x.Name == className);
+            var nestedType = type.NestedTypes.FirstOrDefault(x => x.Name == nestedClassName);
+            var method = nestedType.Methods.FirstOrDefault(x => x.Name == methodName);
+
+            method.WriteILSignature(_outputWriter);
+
+            Assert.Equal(expectedIL, _outputWriter.ToString());
+        }
+
+        [Fact]
+        public void Support_Return_Value_Attributes()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
+            var methodDefinition = type.Methods.First(x => x.Name == "SomeMethodWithAttributeOnReturnValue");
+
+            methodDefinition.WriteILBody(_outputWriterMock);
+
+            _outputWriterMock.Received(1).WriteLine(".param [0]");
+            _outputWriterMock.Received(2).WriteLine(Arg.Is<string>(
+                x => new string[] {
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 ) // ....",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.AnotherAttribute::.ctor() = ( 01 00 00 00 ) // ...."
+                }.Contains(x)
+            ));
+        }
+
+        [Fact]
+        public void Support_Parameters_With_Attributes()
+        {
+            var type = DataHelper.SampleAssembly.Value.Modules.First().Types.First(x => x.Name == "SomeClassWithAttribute");
+            var methodDefinition = type.Methods.First(x => x.Name == "SomeMethodWithAttributeOnParameter");
+
+            methodDefinition.WriteILBody(_outputWriterMock);
+
+            _outputWriterMock.Received(4).WriteLine(Arg.Is<string>(
+                x => new string[] {
+                    ".param [1]",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.SomeAttribute::.ctor() = ( 01 00 00 00 ) // ....",
+                    ".param [2]",
+                    ".custom instance void class dotnet_ildasm.Sample.Classes.AnotherAttribute::.ctor() = ( 01 00 00 00 ) // ...."
+                }.Contains(x)
+            ));
         }
 
         [Fact]
@@ -51,11 +99,11 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             _outputWriterMock.Received(1).WriteLine(".param [1]");
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
-                x => new string [] {
+                x => new string[] {
 #if NETFRAMEWORK
-                    ".custom instance void class [System.Runtime]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )",
+                    ".custom instance void class [System.Runtime]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 ) // ....",
 #else
-                    ".custom instance void class [netstandard]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 )"
+                    ".custom instance void class [netstandard]System.ParamArrayAttribute::.ctor() = ( 01 00 00 00 ) // ...."
 #endif
                 }.Contains(x)
             ));
@@ -69,11 +117,11 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             methodDefinition.WriteILBody(_outputWriterMock);
             _outputWriterMock.Received(1).WriteLine(Arg.Is<string>(
-                x => new string [] {
+                x => new string[] {
 #if NETFRAMEWORK
-                    ".custom instance void class [mscorlib]System.ObsoleteAttribute::.ctor(string) = ( 01 00 21 54 68 69 73 20 6D 65 74 68 6F 64 20 73 68 6F 75 6C 64 20 6E 6F 74 20 62 65 20 75 73 65 64 2E 2E 2E 00 00 00 )",
+                    ".custom instance void class [mscorlib]System.ObsoleteAttribute::.ctor(string) = ( 01 00 21 54 68 69 73 20 6D 65 74 68 6F 64 20 73 68 6F 75 6C 64 20 6E 6F 74 20 62 65 20 75 73 65 64 2E 2E 2E 00 00 00 ) // ...This.method.should.not.be.used......",
 #else
-                    ".custom instance void class [netstandard]System.ObsoleteAttribute::.ctor(string) = ( 01 00 21 54 68 69 73 20 6D 65 74 68 6F 64 20 73 68 6F 75 6C 64 20 6E 6F 74 20 62 65 20 75 73 65 64 2E 2E 2E 00 00 00 )"
+                    ".custom instance void class [netstandard]System.ObsoleteAttribute::.ctor(string) = ( 01 00 21 54 68 69 73 20 6D 65 74 68 6F 64 20 73 68 6F 75 6C 64 20 6E 6F 74 20 62 65 20 75 73 65 64 2E 2E 2E 00 00 00 ) // ...This.method.should.not.be.used......"
 #endif
                 }.Contains(x)
             ));

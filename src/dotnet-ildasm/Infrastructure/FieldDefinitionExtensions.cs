@@ -18,8 +18,17 @@ namespace DotNet.Ildasm.Infrastructure
             if (field.IsStatic)
                 writer.Write("static ");
 
+            if (field.IsSpecialName)
+                writer.Write("specialname ");
+
+            if (field.IsRuntimeSpecialName)
+                writer.Write("rtspecialname ");
+
             if (field.IsInitOnly)
                 writer.Write("initonly ");
+
+            if (field.FieldType.IsGenericInstance || field.FieldType.MetadataType == MetadataType.Class)
+                writer.Write("class ");
 
             writer.Write($"{field.FieldType.ToIL()} {EscapeIfNeeded(field.Name)}{Environment.NewLine}");
             field.WriteCustomAttributes(writer);

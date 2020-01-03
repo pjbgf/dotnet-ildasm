@@ -13,7 +13,6 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         private readonly IOutputWriter _outputWriterMock;
         private readonly AssemblyDefinition _assemblyDefinition;
 
-
         public InstructionExtensionsShould()
         {
             _outputWriter = new OutputWriterDouble();
@@ -44,9 +43,8 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         [Fact]
         public void Be_Able_To_Write_BackingField()
         {
-            var type = _assemblyDefinition.Modules.First().Types.First(x => x.Name == "PublicClass");
-            var methoDefinition = type.Methods.First(x => x.Name == "get_Property1");
-            var backingFieldReferenceInstruction = methoDefinition.Body.Instructions[1];
+            var method = GetMethod("PublicClass", "get_Property1");
+            var backingFieldReferenceInstruction = method.Body.Instructions[1];
 
             backingFieldReferenceInstruction.WriteIL(_outputWriter);
 
@@ -80,13 +78,12 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         [Fact]
         public void Be_Able_To_Write_Instance_Method_Call()
         {
-            var type = _assemblyDefinition.Modules.First().Types.First(x => x.Name == "PublicClass");
-            var methoDefinition = type.Methods.First(x => x.Name == "PublicVoidMethodSingleParameter");
-            var instruction = Instruction.Create(OpCodes.Call, methoDefinition);
+            var method = GetMethod("PublicClass", "PublicVoidMethodSingleParameter");
+            var instruction = Instruction.Create(OpCodes.Call, method);
 
             instruction.WriteIL(_outputWriter);
 
-            Assert.Equal("IL_0000: call instance void dotnet_ildasm.Sample.Classes.PublicClass::PublicVoidMethodSingleParameter(string)", _outputWriter.ToString());
+            Assert.Equal("IL_0000: call instance void class dotnet_ildasm.Sample.Classes.PublicClass::PublicVoidMethodSingleParameter(string)", _outputWriter.ToString());
         }
 
         [Fact]
@@ -98,19 +95,83 @@ namespace DotNet.Ildasm.Tests.Infrastructure
 
             instruction.WriteIL(_outputWriter);
 
-            Assert.Equal("IL_0000: call instance string dotnet_ildasm.Sample.Classes.PublicClass::get_Property1()", _outputWriter.ToString());
+            Assert.Equal("IL_0000: call instance string class dotnet_ildasm.Sample.Classes.PublicClass::get_Property1()", _outputWriter.ToString());
         }
 
         [Fact]
         public void Be_Able_To_Write_Static_Method_Call()
         {
-            var type = _assemblyDefinition.Modules.First().Types.First(x => x.Name == "StaticClass");
-            var methoDefinition = type.Methods.First(x => x.Name == "Method2");
-            var instruction = Instruction.Create(OpCodes.Call, methoDefinition);
+            var method = GetMethod("StaticClass", "Method2");
+            var instruction = Instruction.Create(OpCodes.Call, method);
 
             instruction.WriteIL(_outputWriter);
 
-            Assert.Equal("IL_0000: call void dotnet_ildasm.Sample.Classes.StaticClass::Method2()", _outputWriter.ToString());
+            Assert.Equal("IL_0000: call void class dotnet_ildasm.Sample.Classes.StaticClass::Method2()", _outputWriter.ToString());
+        }
+
+        [Fact]
+        public void Be_Able_To_Write_Call_To_Generic_Method()
+        {
+            var method = GetMethod("SomeClassWithAttribute", "OnSomeEventWithAttribute");
+            Instruction callVirt = GetInstruction(method, OpCodes.Callvirt);
+
+            callVirt.WriteIL(_outputWriter);
+
+            Assert.Contains("callvirt instance void class [netstandard]System.EventHandler`1<System.Object>::Invoke([netstandard]System.Object, !0)", _outputWriter.ToString());
+        }
+
+        [Fact]
+        public void Be_Able_To_Write_castclass_For_Generic_Type()
+        {
+            var method = GetMethod("SomeClassWithAttribute", "add_SomeEventWithAttribute");
+            var castClass = GetInstruction(method, OpCodes.Castclass);
+
+            castClass.WriteIL(_outputWriter);
+
+            Assert.Equal("IL_0010: castclass class [netstandard]System.EventHandler`1<System.Object>", _outputWriter.ToString());
+        }
+
+        [Fact]
+        public void Be_Able_To_Refer_To_Native_Int()
+        {
+            var method = GetMethod("StaticClass", "Method3");
+            var castClass = GetInstruction(method, OpCodes.Ldsfld);
+
+            castClass.WriteIL(_outputWriter);
+
+            Assert.Contains("ldsfld native int [netstandard]System.IntPtr::Zero", _outputWriter.ToString());
+        }
+
+        [Fact]
+        public void Be_Able_To_Write_Generic_Method_Call()
+        {
+            var method = GetMethod("SomeClassWithAttribute", "add_SomeEventWithAttribute");
+            var genericCall = method.Body.Instructions[14];
+
+            genericCall.WriteIL(_outputWriter);
+
+            Assert.Equal("IL_001e: call !!0 class [netstandard]System.Threading.Interlocked::CompareExchange<class [netstandard]System.EventHandler`1<[netstandard]System.Object>>(!!0&, !!0, !!0)", _outputWriter.ToString());
+        }
+
+        MethodDefinition GetMethod(string className, string methodName)
+        {
+            var type = _assemblyDefinition.Modules.First().Types.First(x => x.Name == className);
+            return type.Methods.First(x => x.Name == methodName);
+        }
+
+        static Instruction GetInstruction(MethodDefinition method, OpCode opCode)
+        {
+            Instruction instruction = null;
+            foreach (var inst in method.Body.Instructions)
+            {
+                if (inst.OpCode == opCode)
+                {
+                    instruction = inst;
+                    break;
+                }
+            }
+
+            return instruction;
         }
     }
 }

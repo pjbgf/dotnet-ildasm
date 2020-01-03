@@ -15,19 +15,28 @@ namespace DotNet.Ildasm
 
             method.WriteCustomAttributes(outputWriter);
 
-            if (method.DeclaringType.Module.EntryPoint == method)
-                outputWriter.WriteLine(".entrypoint");
-
             if (method.HasBody)
             {
+                if (method.MethodReturnType.HasCustomAttributes)
+                {
+                    outputWriter.WriteLine(".param [0]");
+                    foreach (var attr in method.MethodReturnType.CustomAttributes)
+                        attr.WriteIL(outputWriter);
+                }
+
                 var @params = method.Parameters.Where(x => x.HasCustomAttributes).ToArray();
                 for (int i = 0; i < @params.Length; i++)
                 {
-                    outputWriter.WriteLine($".param [{i + 1}]"); // 1-based array?
-                    @params[0].CustomAttributes.First().WriteIL(outputWriter);
+                    outputWriter.WriteLine($".param [{i + 1}]");
+                    @params[i].CustomAttributes.First().WriteIL(outputWriter);
                 }
 
-                outputWriter.WriteLine($"// Code size {method.Body.CodeSize}");
+                outputWriter.WriteLine($"// Method begins at Relative Virtual Address (RVA) 0x{method.RVA.ToString("X")}");
+
+                if (method.DeclaringType.Module.EntryPoint == method)
+                    outputWriter.WriteLine(".entrypoint");
+
+                outputWriter.WriteLine($"// Code size {method.Body.CodeSize} (0x{method.Body.CodeSize.ToString("X")})");
                 outputWriter.WriteLine($".maxstack {method.Body.MaxStackSize}");
 
                 WriteLocalVariablesIfNeeded(method, outputWriter);
@@ -96,6 +105,9 @@ namespace DotNet.Ildasm
                     if (i > 0)
                         variables += ", ";
 
+                    if (variable.VariableType.MetadataType == MetadataType.Class || variable.VariableType.IsGenericInstance)
+                        variables += "class ";
+
                     variables += $"{variable.VariableType.ToIL()} V_{i++}";
                 }
 
@@ -138,12 +150,17 @@ namespace DotNet.Ildasm
             else
                 writer.Write(" static");
 
-            writer.Write($" {method.ReturnType.ToIL()}");
+            if (!method.HasBody || method.IsDefinition)
+                writer.Write(" default");
+
+            writer.Write($" {method.ReturnType.ToNativeTypeIL()}");
             writer.Write($" {method.Name}");
 
             WriteMethodSignatureParameters(method, writer);
 
-            if (method.IsManaged)
+            if (method.IsRuntime)
+                writer.Write(" runtime managed");
+            else if (method.IsManaged)
                 writer.Write(" cil managed");
         }
 
@@ -159,9 +176,13 @@ namespace DotNet.Ildasm
                         writer.Write(", ");
 
                     var parameterDefinition = method.Parameters[i];
-                    writer.Write($"{parameterDefinition.ParameterType.ToIL()} ");
+                    if (parameterDefinition.ParameterType.IsGenericInstance || 
+                        parameterDefinition.ParameterType.MetadataType == MetadataType.Class)
+                        writer.Write("class ");
 
-                    if (parameterDefinition.Name == "value")
+                    writer.Write($"{parameterDefinition.ParameterType.ToNativeTypeIL()} ");
+
+                    if (parameterDefinition.Name == "value" || parameterDefinition.Name == "object" || parameterDefinition.Name == "method")
                         writer.Write($"'{parameterDefinition.Name}'");
                     else
                         writer.Write(parameterDefinition.Name);

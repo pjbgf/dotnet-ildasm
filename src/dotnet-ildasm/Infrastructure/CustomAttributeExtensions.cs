@@ -24,7 +24,7 @@ namespace DotNet.Ildasm.Infrastructure
             }
 
             return $"({((argument == null || !customAttribute.HasConstructorArguments) ? "" : argument.Value.Type.ToIL())})" +
-                   $" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} )";
+                   $" = ( {BitConverter.ToString(customAttribute.GetBlob()).Replace("-", " ")} ) // {customAttribute.GetBlob().ToStringValue()}";
         }
     }
 }

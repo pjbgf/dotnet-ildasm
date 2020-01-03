@@ -26,7 +26,7 @@ namespace DotNet.Ildasm
                     continue;
 
                 if (!IsFilterSet() ||
-                    DoesTypeMatchFilter(type) || 
+                    DoesTypeMatchFilter(type) ||
                     DoesTypeContainMethodMatchingFilter(type))
                     HandleType(type);
             }
@@ -55,10 +55,12 @@ namespace DotNet.Ildasm
             WriteCustomAttributes(type);
             WriteFields(type);
             WriteMethods(type);
+            WriteProperties(type);
+            WriteEvents(type);
 
             foreach (var nestedType in type.NestedTypes)
                 HandleType(nestedType);
-                
+
             _outputWriter.WriteLine($"}} // End of class {type.FullName}");
         }
 
@@ -81,6 +83,26 @@ namespace DotNet.Ildasm
             }
         }
 
+        private void WriteProperties(TypeDefinition type)
+        {
+            foreach (var property in type.Properties)
+            {
+                if (string.IsNullOrEmpty(_itemFilter.Method) ||
+                    string.Compare(property.Name, _itemFilter.Method, StringComparison.CurrentCulture) == 0)
+                    HandleProperty(property);
+            }
+        }
+
+        private void WriteEvents(TypeDefinition type)
+        {
+            foreach (var @event in type.Events)
+            {
+                if (string.IsNullOrEmpty(_itemFilter.Method) ||
+                    string.Compare(@event.Name, _itemFilter.Method, StringComparison.CurrentCulture) == 0)
+                    HandleEvent(@event);
+            }
+        }
+
         private void WriteFields(TypeDefinition type)
         {
             if (type.HasFields)
@@ -94,6 +116,18 @@ namespace DotNet.Ildasm
         {
             method.WriteILSignature(_outputWriter);
             method.WriteILBody(_outputWriter);
+        }
+
+        private void HandleProperty(PropertyDefinition property)
+        {
+            property.WriteILSignature(_outputWriter);
+            property.WriteILBody(_outputWriter);
+        }
+
+        private void HandleEvent(EventDefinition @event)
+        {
+            @event.WriteILSignature(_outputWriter);
+            @event.WriteILBody(_outputWriter);
         }
     }
 }

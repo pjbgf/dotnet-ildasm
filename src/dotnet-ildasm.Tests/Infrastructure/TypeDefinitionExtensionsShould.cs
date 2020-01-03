@@ -89,14 +89,14 @@ namespace DotNet.Ildasm.Tests.Infrastructure
         [Theory]
 #if NETFRAMEWORK
         [InlineData("SomeClassWithAttribute",
-            ".custom instance void class [System.Runtime]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0B 4C 65 76 65 6C 3D 43 6C 61 73 73 00 00 )")]
+            ".custom instance void class [System.Runtime]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0B 4C 65 76 65 6C 3D 43 6C 61 73 73 00 00 ) // ...Level.Class..")]
         [InlineData("SomeStructWithAttribute",
-            ".custom instance void class [System.Runtime]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0C 4C 65 76 65 6C 3D 53 74 72 75 63 74 00 00 )")]
+            ".custom instance void class [System.Runtime]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0C 4C 65 76 65 6C 3D 53 74 72 75 63 74 00 00 ) // ...Level.Struct..")]
 #else
         [InlineData("SomeClassWithAttribute",
-            ".custom instance void class [netstandard]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0B 4C 65 76 65 6C 3D 43 6C 61 73 73 00 00 )")]
+            ".custom instance void class [netstandard]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0B 4C 65 76 65 6C 3D 43 6C 61 73 73 00 00 ) // ...Level.Class..")]
         [InlineData("SomeStructWithAttribute",
-            ".custom instance void class [netstandard]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0C 4C 65 76 65 6C 3D 53 74 72 75 63 74 00 00 )")]
+            ".custom instance void class [netstandard]System.Diagnostics.DebuggerDisplayAttribute::.ctor(string) = ( 01 00 0C 4C 65 76 65 6C 3D 53 74 72 75 63 74 00 00 ) // ...Level.Struct..")]
 #endif
         public void Generate_Valid_IL_For_Custom_Attributes(string structName, string expectedIL)
         {

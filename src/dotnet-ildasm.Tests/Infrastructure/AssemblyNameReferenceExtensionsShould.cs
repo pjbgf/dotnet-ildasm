@@ -23,7 +23,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             {
                 outputWriterMock.WriteLine(".assembly extern System.Console");
                 outputWriterMock.WriteLine("{");
-                outputWriterMock.WriteLine(".publickeytoken = ( B0 3F 5F 7F 11 D5 0A 3A )");
+                outputWriterMock.WriteLine(".publickeytoken = ( B0 3F 5F 7F 11 D5 0A 3A ) // .......Q");
                 outputWriterMock.WriteLine(".ver 4:0:0:0");
                 outputWriterMock.WriteLine("}");
             });
@@ -44,7 +44,7 @@ namespace DotNet.Ildasm.Tests.Infrastructure
             {
                 outputWriterMock.WriteLine(".assembly extern netstandard");
                 outputWriterMock.WriteLine("{");
-                outputWriterMock.WriteLine(".publickeytoken = ( CC 7B 13 FF CD 2D DD 51 )");
+                outputWriterMock.WriteLine(".publickeytoken = ( CC 7B 13 FF CD 2D DD 51 ) // .......Q");
                 outputWriterMock.WriteLine("}");
             });
         }

@@ -7,7 +7,7 @@ namespace DotNet.Ildasm.Infrastructure
     {
         private static string ToPrefixedTypeName(TypeReference typeReference)
         {
-            if (string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
+            if (!typeReference.IsGenericInstance && string.Compare(typeReference.Scope.Name, typeReference.Module.Name,
                     StringComparison.CurrentCultureIgnoreCase) == 0)
                 return $"{typeReference.FullName}";
 
@@ -18,11 +18,24 @@ namespace DotNet.Ildasm.Infrastructure
             return $"[{typeReference.Scope.Name}]{typeReference.FullName}";
         }
 
+        public static string ToNativeTypeIL(this TypeReference typeReference)
+        {
+            if (typeReference.MetadataType == MetadataType.IntPtr)
+                return "native int";
+
+            return typeReference.ToIL();
+        }
+
         public static string ToIL(this TypeReference typeReference)
         {
-            if (typeReference.MetadataType == MetadataType.Class ||
+            if (typeReference.MetadataType == MetadataType.Boolean)
+                return "bool";
+
+            if (typeReference.IsGenericInstance ||
+                typeReference.MetadataType == MetadataType.Class ||
                 typeReference.MetadataType == MetadataType.Object ||
-                typeReference.MetadataType == MetadataType.ValueType)
+                typeReference.MetadataType == MetadataType.ValueType ||
+                typeReference.MetadataType == MetadataType.IntPtr)
             {
                 return ToPrefixedTypeName(typeReference);
             }

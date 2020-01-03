@@ -34,7 +34,10 @@ namespace DotNet.Ildasm
         {
             var alreadyUpdatedIndentation = false;
 
-            if (IsBreakLineRequired(code))
+            if (IsSingleLineBreakRequired(code))
+                _writer.WriteLine(string.Empty);
+            
+            if (IsDoubleLineBreakRequired(code))
             {
                 _writer.WriteLine(string.Empty);
                 _writer.Write(Environment.NewLine);
@@ -56,9 +59,15 @@ namespace DotNet.Ildasm
                 UpdateIndentationLevel(code);
         }
 
-        private static bool IsBreakLineRequired(string code)
+        private static bool IsSingleLineBreakRequired(string code)
         {
-            return Regex.IsMatch(code, "^(.method|.class|.assembly|.module){1}",
+            return Regex.IsMatch(code, "^(.field|.method|.property|.event){1}",
+                RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline);
+        }
+
+        private static bool IsDoubleLineBreakRequired(string code)
+        {
+            return Regex.IsMatch(code, "^(.class|.assembly|.module){1}",
                 RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.Singleline);
         }
 
