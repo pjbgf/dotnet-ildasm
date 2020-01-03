@@ -7,9 +7,9 @@ namespace DotNet.Ildasm
     {
         private readonly Func<CommandArgument, int> _executor;
         private CommandLineApplication _commandLineApplication;
-        private Func<int> _showHelp;
+        private Func<string, int> _showHelp;
 
-        public CommandHandler(Func<CommandArgument, int> executor, Func<int> showHelp = null)
+        public CommandHandler(Func<CommandArgument, int> executor, Func<string, int> showHelp = null)
         {
             Init();
             
@@ -61,10 +61,7 @@ namespace DotNet.Ildasm
                     return _executor.Invoke(arguments);
                 }
 
-                _showHelp?.Invoke();
-
-                _commandLineApplication.ShowHelp();
-                return -1;
+                return _showHelp?.Invoke(_commandLineApplication.GetHelpText()) ?? -1;
             });
         }
 

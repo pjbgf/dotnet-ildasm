@@ -25,7 +25,10 @@ namespace DotNet.Ildasm
 
         internal int Execute(string[] args)
         {
-            var handler = new CommandHandler(ExecuteDisassembler);
+            var handler = new CommandHandler(ExecuteDisassembler, (string text) => {
+                _writer.WriteLine(text);
+                return -1;
+            });
 
             return handler.Handle(args);
         }
