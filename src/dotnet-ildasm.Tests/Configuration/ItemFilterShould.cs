@@ -47,7 +47,7 @@ namespace DotNet.Ildasm.Tests.Configuration
         }
 
         [Fact]
-        public void Known_When_No_Filter_Is_Set()
+        public void Know_When_No_Filter_Is_Set()
         {
             string itemFilter = String.Empty;
             var filterParser = new ItemFilter(itemFilter);
@@ -56,7 +56,7 @@ namespace DotNet.Ildasm.Tests.Configuration
         }
 
         [Fact]
-        public void Known_When_Class_Filter_Is_Set()
+        public void Know_When_Class_Filter_Is_Set()
         {
             string itemFilter = "Program";
             var filterParser = new ItemFilter(itemFilter);
@@ -65,7 +65,7 @@ namespace DotNet.Ildasm.Tests.Configuration
         }
 
         [Fact]
-        public void Known_When_Method_Filter_Is_Set()
+        public void Know_When_Method_Filter_Is_Set()
         {
             string itemFilter = "::.ctor";
             var filterParser = new ItemFilter(itemFilter);
@@ -74,7 +74,7 @@ namespace DotNet.Ildasm.Tests.Configuration
         }
 
         [Fact]
-        public void Known_When_Both_Filters_Are_Set()
+        public void Know_When_Both_Filters_Are_Set()
         {
             string itemFilter = "Program::.ctor";
             var filterParser = new ItemFilter(itemFilter);

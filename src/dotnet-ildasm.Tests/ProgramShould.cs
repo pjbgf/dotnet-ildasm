@@ -1,6 +1,4 @@
-﻿using System;
-using DotNet.Ildasm.Configuration;
-using NSubstitute;
+﻿using NSubstitute;
 using Xunit;
 
 namespace DotNet.Ildasm.Tests
